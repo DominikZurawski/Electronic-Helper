@@ -1,0 +1,56 @@
+[
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_core.dir/src/core/app.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/app.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/app.cpp",
+  "output": "CMakeFiles/ppe_core.dir/src/core/app.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/module_registry.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/module_registry.cpp",
+  "output": "CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/ltspice_import.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/ltspice_import.cpp",
+  "output": "CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe.dir/src/main.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/main.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/main.cpp",
+  "output": "CMakeFiles/ppe.dir/src/main.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe.dir/src/cli/command_router.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/cli/command_router.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/cli/command_router.cpp",
+  "output": "CMakeFiles/ppe.dir/src/cli/command_router.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe.dir/src/modules/power_supply.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/power_supply.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/power_supply.cpp",
+  "output": "CMakeFiles/ppe.dir/src/modules/power_supply.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe.dir/src/modules/symmetric_supply.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/symmetric_supply.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/symmetric_supply.cpp",
+  "output": "CMakeFiles/ppe.dir/src/modules/symmetric_supply.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe.dir/src/modules/antenna.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna.cpp",
+  "output": "CMakeFiles/ppe.dir/src/modules/antenna.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_tests.dir/tests/test_registry.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/tests/test_registry.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/tests/test_registry.cpp",
+  "output": "CMakeFiles/ppe_tests.dir/tests/test_registry.cpp.o"
+}
+]

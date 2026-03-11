@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Pomocnik Projektanta Elektronika
+Exec=@PPE_DESKTOP_EXEC@
+Icon=ppe
+Categories=Development;Electronics;Engineering;
+Terminal=false
