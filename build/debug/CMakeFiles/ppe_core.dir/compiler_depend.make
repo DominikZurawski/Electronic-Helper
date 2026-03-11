@@ -6,6 +6,9 @@ CMakeFiles/ppe_core.dir/src/core/app.cpp.o: /home/dominik/Dokumenty/Projekty/Ele
   /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/command_router.hpp \
   /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/module.hpp \
   /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/module_registry.hpp \
+  /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/modules/antenna_basic.hpp \
+  /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/modules/psu_basic.hpp \
+  /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/modules/psu_symmetric.hpp \
   /usr/include/alloca.h \
   /usr/include/asm-generic/bitsperlong.h \
   /usr/include/asm-generic/errno-base.h \
@@ -793,13 +796,11 @@ CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o: /home/dominik/Dokumenty/
 
 /usr/include/syscall.h:
 
-/usr/include/sys/types.h:
-
 /usr/include/sys/syscall.h:
 
-/usr/include/bits/types/locale_t.h:
+/usr/include/sys/select.h:
 
-/usr/include/c++/15/bits/iterator_concepts.h:
+/usr/include/stdlib.h:
 
 /usr/include/c++/15/algorithm:
 
@@ -863,6 +864,8 @@ CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o: /home/dominik/Dokumenty/
 
 /usr/include/bits/unistd_ext.h:
 
+/usr/include/c++/15/bits/iterator_concepts.h:
+
 /usr/include/c++/15/bits/concept_check.h:
 
 /usr/include/bits/uio_lim.h:
@@ -897,7 +900,7 @@ CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o: /home/dominik/Dokumenty/
 
 /usr/include/bits/types/mbstate_t.h:
 
-/usr/include/c++/15/bits/ios_base.h:
+/usr/include/bits/types/locale_t.h:
 
 /usr/include/c++/15/pstl/glue_algorithm_defs.h:
 
@@ -907,33 +910,21 @@ CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o: /home/dominik/Dokumenty/
 
 /usr/include/bits/types/__locale_t.h:
 
-/usr/include/c++/15/x86_64-redhat-linux/bits/error_constants.h:
+/usr/include/bits/types/struct_itimerspec.h:
 
-/usr/include/c++/15/bits/basic_string.tcc:
+/usr/include/c++/15/bits/hashtable.h:
 
-/usr/include/c++/15/bits/streambuf.tcc:
+/usr/include/bits/types/time_t.h:
 
-/usr/include/bits/atomic_wide_counter.h:
+/usr/include/bits/timex.h:
 
-/usr/include/bits/posix_opt.h:
-
-/usr/include/c++/15/bits/invoke.h:
-
-/usr/include/bits/types/__mbstate_t.h:
-
-/usr/include/asm/posix_types.h:
-
-/usr/include/bits/time.h:
-
-/usr/include/bits/stdio_lim.h:
-
-/usr/include/c++/15/numbers:
-
-/usr/include/c++/15/x86_64-redhat-linux/bits/ctype_inline.h:
-
-/usr/include/c++/15/cstdio:
+/usr/include/bits/errno.h:
 
 /usr/include/bits/endianness.h:
+
+/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/modules/antenna_basic.hpp:
+
+/usr/include/c++/15/string_view:
 
 /usr/include/bits/uintn-identity.h:
 
@@ -943,25 +934,31 @@ CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o: /home/dominik/Dokumenty/
 
 /usr/include/bits/confname.h:
 
+/usr/include/bits/types/__sigset_t.h:
+
+/usr/include/c++/15/bit:
+
+/usr/include/c++/15/bits/allocator.h:
+
+/usr/include/asm-generic/posix_types.h:
+
+/usr/include/stdc-predef.h:
+
+/usr/include/asm-generic/bitsperlong.h:
+
+/usr/include/asm-generic/types.h:
+
+/usr/include/asm-generic/errno-base.h:
+
+/usr/include/c++/15/bits/ostream_insert.h:
+
+/usr/include/bits/types/error_t.h:
+
 /usr/include/c++/15/bits/ranges_algo.h:
 
 /usr/include/asm/unistd.h:
 
 /usr/include/bits/posix2_lim.h:
-
-/usr/include/asm-generic/int-ll64.h:
-
-/usr/include/c++/15/bits/fstream.tcc:
-
-/usr/include/c++/15/bits/memoryfwd.h:
-
-/usr/include/bits/errno.h:
-
-/usr/include/bits/timex.h:
-
-/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/app.hpp:
-
-/usr/include/bits/thread-shared-types.h:
 
 /usr/include/bits/long-double.h:
 
@@ -993,47 +990,39 @@ CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o: /home/dominik/Dokumenty/
 
 /usr/include/bits/types/__fpos64_t.h:
 
-/usr/include/bits/types/__sigset_t.h:
+/usr/include/c++/15/bits/basic_string.tcc:
 
-/usr/include/c++/15/bit:
+/usr/include/c++/15/bits/streambuf.tcc:
 
-/usr/include/c++/15/bits/allocator.h:
+/usr/include/bits/atomic_wide_counter.h:
 
-/usr/include/asm-generic/posix_types.h:
+/usr/include/bits/posix_opt.h:
 
-/usr/include/stdc-predef.h:
+/usr/include/c++/15/bits/invoke.h:
 
-/usr/include/c++/15/bits/node_handle.h:
+/usr/include/bits/types/__mbstate_t.h:
 
-/usr/include/c++/15/pstl/glue_memory_defs.h:
+/usr/include/asm/posix_types.h:
 
-/usr/include/asm/types.h:
+/usr/include/bits/time.h:
 
-/usr/include/alloca.h:
+/usr/include/bits/stdio_lim.h:
 
-/usr/include/bits/stdint-least.h:
+/usr/include/c++/15/numbers:
 
-/usr/include/c++/15/bits/move.h:
+/usr/include/c++/15/x86_64-redhat-linux/bits/ctype_inline.h:
 
-/usr/include/asm-generic/errno-base.h:
+/usr/include/c++/15/cstdio:
 
-/usr/include/asm-generic/bitsperlong.h:
+/usr/include/asm-generic/int-ll64.h:
 
-/usr/include/asm-generic/types.h:
+/usr/include/c++/15/bits/fstream.tcc:
 
-/usr/include/c++/15/bits/ostream_insert.h:
+/usr/include/c++/15/bits/memoryfwd.h:
 
-/usr/include/bits/types/error_t.h:
+/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/app.hpp:
 
-/usr/include/bits/floatn.h:
-
-/usr/include/c++/15/bits/refwrap.h:
-
-/usr/include/c++/15/type_traits:
-
-/usr/include/c++/15/x86_64-redhat-linux/bits/gthr.h:
-
-/usr/include/bits/libc-header-start.h:
+/usr/include/bits/thread-shared-types.h:
 
 /usr/include/bits/locale.h:
 
@@ -1043,6 +1032,38 @@ CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o: /home/dominik/Dokumenty/
 
 /usr/include/bits/syscall.h:
 
+/usr/include/c++/15/bits/node_handle.h:
+
+/usr/include/c++/15/pstl/glue_memory_defs.h:
+
+/usr/include/asm/types.h:
+
+/usr/include/alloca.h:
+
+/usr/include/sys/types.h:
+
+/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/modules/psu_basic.hpp:
+
+/usr/include/c++/15/x86_64-redhat-linux/bits/error_constants.h:
+
+/usr/include/bits/stdint-least.h:
+
+/usr/include/c++/15/bits/move.h:
+
+/usr/include/bits/floatn.h:
+
+/usr/include/c++/15/bits/refwrap.h:
+
+/usr/include/c++/15/type_traits:
+
+/usr/include/c++/15/x86_64-redhat-linux/bits/gthr.h:
+
+/usr/include/bits/types.h:
+
+/usr/include/c++/15/bits/streambuf_iterator.h:
+
+/usr/include/bits/libc-header-start.h:
+
 /usr/include/wchar.h:
 
 /usr/include/bits/posix1_lim.h:
@@ -1050,6 +1071,8 @@ CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o: /home/dominik/Dokumenty/
 /usr/include/c++/15/cerrno:
 
 /usr/include/c++/15/bits/basic_ios.tcc:
+
+/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/modules/psu_symmetric.hpp:
 
 /usr/include/bits/pthread_stack_min-dynamic.h:
 
@@ -1087,6 +1110,10 @@ CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o: /home/dominik/Dokumenty/
 
 /usr/include/bits/select.h:
 
+/usr/include/sys/cdefs.h:
+
+/usr/include/c++/15/debug/assertions.h:
+
 /usr/include/bits/waitstatus.h:
 
 /usr/include/bits/wchar.h:
@@ -1111,15 +1138,7 @@ CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o: /home/dominik/Dokumenty/
 
 /usr/include/c++/15/x86_64-redhat-linux/bits/atomic_word.h:
 
-/usr/include/bits/types/time_t.h:
-
-/usr/include/bits/types/struct_itimerspec.h:
-
-/usr/include/c++/15/bits/hashtable.h:
-
-/usr/include/bits/types.h:
-
-/usr/include/c++/15/bits/streambuf_iterator.h:
+/usr/include/c++/15/bits/ios_base.h:
 
 /usr/include/bits/types/wint_t.h:
 
@@ -1273,8 +1292,6 @@ CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o: /home/dominik/Dokumenty/
 
 /usr/include/c++/15/string:
 
-/usr/include/c++/15/string_view:
-
 /usr/include/bits/endian.h:
 
 /usr/include/c++/15/system_error:
@@ -1294,10 +1311,6 @@ CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o: /home/dominik/Dokumenty/
 /usr/include/c++/15/x86_64-redhat-linux/bits/c++locale.h:
 
 /usr/include/c++/15/x86_64-redhat-linux/bits/cpu_defines.h:
-
-/usr/include/c++/15/debug/assertions.h:
-
-/usr/include/sys/cdefs.h:
 
 /usr/include/stdint.h:
 
@@ -1336,7 +1349,3 @@ CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o: /home/dominik/Dokumenty/
 /usr/include/bits/wordsize.h:
 
 /usr/include/stdio.h:
-
-/usr/include/stdlib.h:
-
-/usr/include/sys/select.h:

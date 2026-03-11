@@ -184,4 +184,7 @@ CMakeFiles/ppe_core.dir/src/core/app.cpp.o: \
  /usr/include/c++/15/bits/ranges_uninitialized.h \
  /usr/include/c++/15/bits/ranges_algobase.h \
  /usr/include/c++/15/pstl/glue_memory_defs.h \
- /usr/include/c++/15/pstl/execution_defs.h
+ /usr/include/c++/15/pstl/execution_defs.h \
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/modules/antenna_basic.hpp \
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/modules/psu_basic.hpp \
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/modules/psu_symmetric.hpp

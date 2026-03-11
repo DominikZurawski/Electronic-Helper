@@ -10,9 +10,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/cli/command_router.cpp" "CMakeFiles/ppe.dir/src/cli/command_router.cpp.o" "gcc" "CMakeFiles/ppe.dir/src/cli/command_router.cpp.o.d"
   "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/main.cpp" "CMakeFiles/ppe.dir/src/main.cpp.o" "gcc" "CMakeFiles/ppe.dir/src/main.cpp.o.d"
-  "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna.cpp" "CMakeFiles/ppe.dir/src/modules/antenna.cpp.o" "gcc" "CMakeFiles/ppe.dir/src/modules/antenna.cpp.o.d"
-  "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/power_supply.cpp" "CMakeFiles/ppe.dir/src/modules/power_supply.cpp.o" "gcc" "CMakeFiles/ppe.dir/src/modules/power_supply.cpp.o.d"
-  "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/symmetric_supply.cpp" "CMakeFiles/ppe.dir/src/modules/symmetric_supply.cpp.o" "gcc" "CMakeFiles/ppe.dir/src/modules/symmetric_supply.cpp.o.d"
+  "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/model.cpp" "CMakeFiles/ppe.dir/src/modules/antenna_basic/model.cpp.o" "gcc" "CMakeFiles/ppe.dir/src/modules/antenna_basic/model.cpp.o.d"
+  "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/module.cpp" "CMakeFiles/ppe.dir/src/modules/antenna_basic/module.cpp.o" "gcc" "CMakeFiles/ppe.dir/src/modules/antenna_basic/module.cpp.o.d"
+  "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/model.cpp" "CMakeFiles/ppe.dir/src/modules/psu_basic/model.cpp.o" "gcc" "CMakeFiles/ppe.dir/src/modules/psu_basic/model.cpp.o.d"
+  "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/module.cpp" "CMakeFiles/ppe.dir/src/modules/psu_basic/module.cpp.o" "gcc" "CMakeFiles/ppe.dir/src/modules/psu_basic/module.cpp.o.d"
+  "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/model.cpp" "CMakeFiles/ppe.dir/src/modules/psu_symmetric/model.cpp.o" "gcc" "CMakeFiles/ppe.dir/src/modules/psu_symmetric/model.cpp.o.d"
+  "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/module.cpp" "CMakeFiles/ppe.dir/src/modules/psu_symmetric/module.cpp.o" "gcc" "CMakeFiles/ppe.dir/src/modules/psu_symmetric/module.cpp.o.d"
   "" "ppe" "gcc" "CMakeFiles/ppe.dir/link.d"
   )
 

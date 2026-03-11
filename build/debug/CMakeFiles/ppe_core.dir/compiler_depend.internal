@@ -7,6 +7,9 @@ CMakeFiles/ppe_core.dir/src/core/app.cpp.o
  /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include/pep/command_router.hpp
  /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include/pep/module.hpp
  /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include/pep/module_registry.hpp
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include/pep/modules/antenna_basic.hpp
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include/pep/modules/psu_basic.hpp
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include/pep/modules/psu_symmetric.hpp
  /usr/include/alloca.h
  /usr/include/asm-generic/bitsperlong.h
  /usr/include/asm-generic/errno-base.h
