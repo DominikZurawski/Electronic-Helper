@@ -1,0 +1,88 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-9c640e5785daaef55514.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "PomocnikProjektantaElektronika",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ppe::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ppe-Debug-61ae3a2c3a2512bf2638.json",
+					"name" : "ppe",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ppe_core::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ppe_core-Debug-7806b3a892441c1f7830.json",
+					"name" : "ppe_core",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ppe_gui::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ppe_gui-Debug-ca0e234e2552f10a215f.json",
+					"name" : "ppe_gui",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ppe_tests::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ppe_tests-Debug-a8ab19aaf9455a754b20.json",
+					"name" : "ppe_tests",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+		"source" : "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

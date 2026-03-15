@@ -367,7 +367,7 @@ CMakeFiles/ppe_gui.dir/src/gui/main.cpp.o: \
  /usr/include/qt6/QtCore/qvarlengtharray.h \
  /usr/include/qt6/QtCore/qalloc.h \
  /usr/include/qt6/QtGui/qguiapplication_platform.h \
- /usr/include/qt6/QtWidgets/QFrame /usr/include/qt6/QtWidgets/qframe.h \
+ /usr/include/qt6/QtWidgets/QDialog /usr/include/qt6/QtWidgets/qdialog.h \
  /usr/include/qt6/QtWidgets/qwidget.h /usr/include/qt6/QtGui/qaction.h \
  /usr/include/qt6/QtGui/qkeysequence.h /usr/include/qt6/QtGui/qicon.h \
  /usr/include/qt6/QtGui/qpalette.h /usr/include/qt6/QtGui/qbrush.h \
@@ -375,15 +375,29 @@ CMakeFiles/ppe_gui.dir/src/gui/main.cpp.o: \
  /usr/include/qt6/QtGui/qfontmetrics.h /usr/include/qt6/QtGui/qfontinfo.h \
  /usr/include/qt6/QtGui/qfontvariableaxis.h \
  /usr/include/qt6/QtWidgets/qsizepolicy.h \
- /usr/include/qt6/QtWidgets/QHBoxLayout \
- /usr/include/qt6/QtWidgets/qboxlayout.h \
- /usr/include/qt6/QtWidgets/qlayout.h \
+ /usr/include/qt6/QtWidgets/QFileDialog \
+ /usr/include/qt6/QtWidgets/qfiledialog.h /usr/include/qt6/QtCore/qdir.h \
+ /usr/include/qt6/QtCore/qdirlisting.h \
+ /usr/include/qt6/QtCore/qfiledevice.h \
+ /usr/include/qt6/QtCore/qiodevice.h /usr/include/qt6/QtCore/qdatetime.h \
+ /usr/include/qt6/QtCore/qcalendar.h /usr/include/qt6/QtCore/qfile.h \
+ /usr/include/c++/15/filesystem /usr/include/c++/15/bits/fs_fwd.h \
+ /usr/include/c++/15/bits/fs_path.h /usr/include/c++/15/codecvt \
+ /usr/include/c++/15/bits/fs_dir.h /usr/include/c++/15/bits/fs_ops.h \
+ /usr/include/qt6/QtCore/qfileinfo.h /usr/include/qt6/QtCore/qtimezone.h \
+ /usr/include/qt6/QtCore/qurl.h /usr/include/qt6/QtWidgets/qdialog.h \
+ /usr/include/qt6/QtWidgets/QFrame /usr/include/qt6/QtWidgets/qframe.h \
+ /usr/include/qt6/QtWidgets/QFormLayout \
+ /usr/include/qt6/QtWidgets/qformlayout.h \
+ /usr/include/qt6/QtWidgets/QLayout /usr/include/qt6/QtWidgets/qlayout.h \
  /usr/include/qt6/QtWidgets/qlayoutitem.h \
  /usr/include/qt6/QtWidgets/qboxlayout.h \
+ /usr/include/qt6/QtWidgets/qlayout.h \
  /usr/include/qt6/QtWidgets/qgridlayout.h \
- /usr/include/qt6/QtWidgets/QListWidget \
- /usr/include/qt6/QtWidgets/qlistwidget.h \
- /usr/include/qt6/QtWidgets/qlistview.h \
+ /usr/include/qt6/QtWidgets/QHBoxLayout \
+ /usr/include/qt6/QtWidgets/qboxlayout.h \
+ /usr/include/qt6/QtWidgets/QHeaderView \
+ /usr/include/qt6/QtWidgets/qheaderview.h \
  /usr/include/qt6/QtWidgets/qabstractitemview.h \
  /usr/include/qt6/QtWidgets/qabstractscrollarea.h \
  /usr/include/qt6/QtWidgets/qframe.h \
@@ -399,16 +413,41 @@ CMakeFiles/ppe_gui.dir/src/gui/main.cpp.o: \
  /usr/include/qt6/QtWidgets/qstyle.h /usr/include/qt6/QtWidgets/qtabbar.h \
  /usr/include/qt6/QtWidgets/qtabwidget.h \
  /usr/include/qt6/QtWidgets/qrubberband.h \
+ /usr/include/qt6/QtWidgets/QLabel /usr/include/qt6/QtWidgets/qlabel.h \
+ /usr/include/qt6/QtGui/qpicture.h /usr/include/qt6/QtGui/qtextdocument.h \
+ /usr/include/qt6/QtWidgets/QListWidget \
+ /usr/include/qt6/QtWidgets/qlistwidget.h \
+ /usr/include/qt6/QtWidgets/qlistview.h \
+ /usr/include/qt6/QtWidgets/QLineEdit \
+ /usr/include/qt6/QtWidgets/qlineedit.h \
+ /usr/include/qt6/QtGui/qtextcursor.h \
+ /usr/include/qt6/QtGui/qtextformat.h /usr/include/qt6/QtGui/qpen.h \
+ /usr/include/qt6/QtGui/qtextoption.h \
  /usr/include/qt6/QtWidgets/QMainWindow \
  /usr/include/qt6/QtWidgets/qmainwindow.h \
  /usr/include/qt6/QtWidgets/QMenuBar \
  /usr/include/qt6/QtWidgets/qmenubar.h /usr/include/qt6/QtWidgets/qmenu.h \
+ /usr/include/qt6/QtWidgets/QMessageBox \
+ /usr/include/qt6/QtWidgets/qmessagebox.h \
+ /usr/include/qt6/QtWidgets/qdialogbuttonbox.h \
+ /usr/include/qt6/QtWidgets/QPushButton \
+ /usr/include/qt6/QtWidgets/qpushbutton.h \
+ /usr/include/qt6/QtWidgets/qabstractbutton.h \
  /usr/include/qt6/QtWidgets/QStackedWidget \
  /usr/include/qt6/QtWidgets/qstackedwidget.h \
  /usr/include/qt6/QtWidgets/QStyleFactory \
  /usr/include/qt6/QtWidgets/qstylefactory.h \
+ /usr/include/qt6/QtWidgets/QTableWidget \
+ /usr/include/qt6/QtWidgets/qtablewidget.h \
+ /usr/include/qt6/QtWidgets/qtableview.h \
+ /usr/include/qt6/QtWidgets/QTableWidgetItem \
+ /usr/include/qt6/QtWidgets/QToolBar \
+ /usr/include/qt6/QtWidgets/qtoolbar.h \
  /usr/include/qt6/QtWidgets/QVBoxLayout \
  /usr/include/qt6/QtWidgets/QWidget /usr/include/qt6/QtWidgets/qwidget.h \
+ /usr/include/qt6/QtCore/QSettings /usr/include/qt6/QtCore/qsettings.h \
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/ltspice_import.hpp \
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/gui/../modules/project_design/widget.hpp \
  /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/gui/../modules/antenna_basic/widget.hpp \
  /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/gui/../modules/psu_basic/widget.hpp \
  /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/gui/../modules/psu_symmetric/widget.hpp

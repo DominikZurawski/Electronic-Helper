@@ -243,6 +243,30 @@ ppe_tests/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_tests.dir/build.make CMakeFiles/ppe_tests.dir/build
 .PHONY : ppe_tests/fast
 
+ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.o: ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.o
+.PHONY : ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.o
+
+# target to build an object file
+ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.o
+.PHONY : ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.o
+
+ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.i: ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.i
+.PHONY : ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.i
+
+# target to preprocess a source file
+ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.i
+.PHONY : ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.i
+
+ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.s: ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.s
+.PHONY : ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.s
+
+# target to generate assembly for a file
+ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.s
+.PHONY : ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.s
+
 src/cli/command_router.o: src/cli/command_router.cpp.o
 .PHONY : src/cli/command_router.o
 
@@ -291,6 +315,30 @@ src/core/app.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_core.dir/build.make CMakeFiles/ppe_core.dir/src/core/app.cpp.s
 .PHONY : src/core/app.cpp.s
 
+src/core/ltspice_export.o: src/core/ltspice_export.cpp.o
+.PHONY : src/core/ltspice_export.o
+
+# target to build an object file
+src/core/ltspice_export.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_core.dir/build.make CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.o
+.PHONY : src/core/ltspice_export.cpp.o
+
+src/core/ltspice_export.i: src/core/ltspice_export.cpp.i
+.PHONY : src/core/ltspice_export.i
+
+# target to preprocess a source file
+src/core/ltspice_export.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_core.dir/build.make CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.i
+.PHONY : src/core/ltspice_export.cpp.i
+
+src/core/ltspice_export.s: src/core/ltspice_export.cpp.s
+.PHONY : src/core/ltspice_export.s
+
+# target to generate assembly for a file
+src/core/ltspice_export.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_core.dir/build.make CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.s
+.PHONY : src/core/ltspice_export.cpp.s
+
 src/core/ltspice_import.o: src/core/ltspice_import.cpp.o
 .PHONY : src/core/ltspice_import.o
 
@@ -314,6 +362,30 @@ src/core/ltspice_import.s: src/core/ltspice_import.cpp.s
 src/core/ltspice_import.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_core.dir/build.make CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.s
 .PHONY : src/core/ltspice_import.cpp.s
+
+src/core/ltspice_template.o: src/core/ltspice_template.cpp.o
+.PHONY : src/core/ltspice_template.o
+
+# target to build an object file
+src/core/ltspice_template.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_core.dir/build.make CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.o
+.PHONY : src/core/ltspice_template.cpp.o
+
+src/core/ltspice_template.i: src/core/ltspice_template.cpp.i
+.PHONY : src/core/ltspice_template.i
+
+# target to preprocess a source file
+src/core/ltspice_template.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_core.dir/build.make CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.i
+.PHONY : src/core/ltspice_template.cpp.i
+
+src/core/ltspice_template.s: src/core/ltspice_template.cpp.s
+.PHONY : src/core/ltspice_template.s
+
+# target to generate assembly for a file
+src/core/ltspice_template.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_core.dir/build.make CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.s
+.PHONY : src/core/ltspice_template.cpp.s
 
 src/core/module_registry.o: src/core/module_registry.cpp.o
 .PHONY : src/core/module_registry.o
@@ -462,6 +534,54 @@ src/modules/antenna_basic/widget.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/widget.cpp.s
 .PHONY : src/modules/antenna_basic/widget.cpp.s
 
+src/modules/project_design/widget.o: src/modules/project_design/widget.cpp.o
+.PHONY : src/modules/project_design/widget.o
+
+# target to build an object file
+src/modules/project_design/widget.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.o
+.PHONY : src/modules/project_design/widget.cpp.o
+
+src/modules/project_design/widget.i: src/modules/project_design/widget.cpp.i
+.PHONY : src/modules/project_design/widget.i
+
+# target to preprocess a source file
+src/modules/project_design/widget.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.i
+.PHONY : src/modules/project_design/widget.cpp.i
+
+src/modules/project_design/widget.s: src/modules/project_design/widget.cpp.s
+.PHONY : src/modules/project_design/widget.s
+
+# target to generate assembly for a file
+src/modules/project_design/widget.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.s
+.PHONY : src/modules/project_design/widget.cpp.s
+
+src/modules/psu_basic/export.o: src/modules/psu_basic/export.cpp.o
+.PHONY : src/modules/psu_basic/export.o
+
+# target to build an object file
+src/modules/psu_basic/export.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.o
+.PHONY : src/modules/psu_basic/export.cpp.o
+
+src/modules/psu_basic/export.i: src/modules/psu_basic/export.cpp.i
+.PHONY : src/modules/psu_basic/export.i
+
+# target to preprocess a source file
+src/modules/psu_basic/export.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.i
+.PHONY : src/modules/psu_basic/export.cpp.i
+
+src/modules/psu_basic/export.s: src/modules/psu_basic/export.cpp.s
+.PHONY : src/modules/psu_basic/export.s
+
+# target to generate assembly for a file
+src/modules/psu_basic/export.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.s
+.PHONY : src/modules/psu_basic/export.cpp.s
+
 src/modules/psu_basic/model.o: src/modules/psu_basic/model.cpp.o
 .PHONY : src/modules/psu_basic/model.o
 
@@ -512,6 +632,78 @@ src/modules/psu_basic/module.s: src/modules/psu_basic/module.cpp.s
 src/modules/psu_basic/module.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe.dir/build.make CMakeFiles/ppe.dir/src/modules/psu_basic/module.cpp.s
 .PHONY : src/modules/psu_basic/module.cpp.s
+
+src/modules/psu_basic/schematic_widget.o: src/modules/psu_basic/schematic_widget.cpp.o
+.PHONY : src/modules/psu_basic/schematic_widget.o
+
+# target to build an object file
+src/modules/psu_basic/schematic_widget.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.o
+.PHONY : src/modules/psu_basic/schematic_widget.cpp.o
+
+src/modules/psu_basic/schematic_widget.i: src/modules/psu_basic/schematic_widget.cpp.i
+.PHONY : src/modules/psu_basic/schematic_widget.i
+
+# target to preprocess a source file
+src/modules/psu_basic/schematic_widget.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.i
+.PHONY : src/modules/psu_basic/schematic_widget.cpp.i
+
+src/modules/psu_basic/schematic_widget.s: src/modules/psu_basic/schematic_widget.cpp.s
+.PHONY : src/modules/psu_basic/schematic_widget.s
+
+# target to generate assembly for a file
+src/modules/psu_basic/schematic_widget.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.s
+.PHONY : src/modules/psu_basic/schematic_widget.cpp.s
+
+src/modules/psu_basic/template_export.o: src/modules/psu_basic/template_export.cpp.o
+.PHONY : src/modules/psu_basic/template_export.o
+
+# target to build an object file
+src/modules/psu_basic/template_export.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.o
+.PHONY : src/modules/psu_basic/template_export.cpp.o
+
+src/modules/psu_basic/template_export.i: src/modules/psu_basic/template_export.cpp.i
+.PHONY : src/modules/psu_basic/template_export.i
+
+# target to preprocess a source file
+src/modules/psu_basic/template_export.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.i
+.PHONY : src/modules/psu_basic/template_export.cpp.i
+
+src/modules/psu_basic/template_export.s: src/modules/psu_basic/template_export.cpp.s
+.PHONY : src/modules/psu_basic/template_export.s
+
+# target to generate assembly for a file
+src/modules/psu_basic/template_export.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.s
+.PHONY : src/modules/psu_basic/template_export.cpp.s
+
+src/modules/psu_basic/waveform_widget.o: src/modules/psu_basic/waveform_widget.cpp.o
+.PHONY : src/modules/psu_basic/waveform_widget.o
+
+# target to build an object file
+src/modules/psu_basic/waveform_widget.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.o
+.PHONY : src/modules/psu_basic/waveform_widget.cpp.o
+
+src/modules/psu_basic/waveform_widget.i: src/modules/psu_basic/waveform_widget.cpp.i
+.PHONY : src/modules/psu_basic/waveform_widget.i
+
+# target to preprocess a source file
+src/modules/psu_basic/waveform_widget.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.i
+.PHONY : src/modules/psu_basic/waveform_widget.cpp.i
+
+src/modules/psu_basic/waveform_widget.s: src/modules/psu_basic/waveform_widget.cpp.s
+.PHONY : src/modules/psu_basic/waveform_widget.s
+
+# target to generate assembly for a file
+src/modules/psu_basic/waveform_widget.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.s
+.PHONY : src/modules/psu_basic/waveform_widget.cpp.s
 
 src/modules/psu_basic/widget.o: src/modules/psu_basic/widget.cpp.o
 .PHONY : src/modules/psu_basic/widget.o
@@ -655,15 +847,24 @@ help:
 	@echo "... ppe_core"
 	@echo "... ppe_gui"
 	@echo "... ppe_tests"
+	@echo "... ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.o"
+	@echo "... ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.i"
+	@echo "... ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.s"
 	@echo "... src/cli/command_router.o"
 	@echo "... src/cli/command_router.i"
 	@echo "... src/cli/command_router.s"
 	@echo "... src/core/app.o"
 	@echo "... src/core/app.i"
 	@echo "... src/core/app.s"
+	@echo "... src/core/ltspice_export.o"
+	@echo "... src/core/ltspice_export.i"
+	@echo "... src/core/ltspice_export.s"
 	@echo "... src/core/ltspice_import.o"
 	@echo "... src/core/ltspice_import.i"
 	@echo "... src/core/ltspice_import.s"
+	@echo "... src/core/ltspice_template.o"
+	@echo "... src/core/ltspice_template.i"
+	@echo "... src/core/ltspice_template.s"
 	@echo "... src/core/module_registry.o"
 	@echo "... src/core/module_registry.i"
 	@echo "... src/core/module_registry.s"
@@ -682,12 +883,27 @@ help:
 	@echo "... src/modules/antenna_basic/widget.o"
 	@echo "... src/modules/antenna_basic/widget.i"
 	@echo "... src/modules/antenna_basic/widget.s"
+	@echo "... src/modules/project_design/widget.o"
+	@echo "... src/modules/project_design/widget.i"
+	@echo "... src/modules/project_design/widget.s"
+	@echo "... src/modules/psu_basic/export.o"
+	@echo "... src/modules/psu_basic/export.i"
+	@echo "... src/modules/psu_basic/export.s"
 	@echo "... src/modules/psu_basic/model.o"
 	@echo "... src/modules/psu_basic/model.i"
 	@echo "... src/modules/psu_basic/model.s"
 	@echo "... src/modules/psu_basic/module.o"
 	@echo "... src/modules/psu_basic/module.i"
 	@echo "... src/modules/psu_basic/module.s"
+	@echo "... src/modules/psu_basic/schematic_widget.o"
+	@echo "... src/modules/psu_basic/schematic_widget.i"
+	@echo "... src/modules/psu_basic/schematic_widget.s"
+	@echo "... src/modules/psu_basic/template_export.o"
+	@echo "... src/modules/psu_basic/template_export.i"
+	@echo "... src/modules/psu_basic/template_export.s"
+	@echo "... src/modules/psu_basic/waveform_widget.o"
+	@echo "... src/modules/psu_basic/waveform_widget.i"
+	@echo "... src/modules/psu_basic/waveform_widget.s"
 	@echo "... src/modules/psu_basic/widget.o"
 	@echo "... src/modules/psu_basic/widget.i"
 	@echo "... src/modules/psu_basic/widget.s"

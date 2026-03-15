@@ -100,7 +100,11 @@ CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.o: \
  /usr/include/c++/15/bits/memory_resource.h /usr/include/c++/15/cstddef \
  /usr/include/c++/15/bits/uses_allocator.h \
  /usr/include/c++/15/bits/uses_allocator_args.h /usr/include/c++/15/tuple \
- /usr/include/c++/15/bits/ranges_util.h /usr/include/c++/15/fstream \
+ /usr/include/c++/15/bits/ranges_util.h /usr/include/c++/15/vector \
+ /usr/include/c++/15/bits/stl_uninitialized.h \
+ /usr/include/c++/15/bits/stl_vector.h \
+ /usr/include/c++/15/bits/stl_bvector.h \
+ /usr/include/c++/15/bits/vector.tcc /usr/include/c++/15/fstream \
  /usr/include/c++/15/istream /usr/include/c++/15/ios \
  /usr/include/c++/15/exception /usr/include/c++/15/bits/exception_ptr.h \
  /usr/include/c++/15/bits/cxxabi_init_exception.h \
@@ -141,4 +145,5 @@ CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.o: \
  /usr/include/c++/15/bits/istream.tcc /usr/include/c++/15/bits/codecvt.h \
  /usr/include/c++/15/x86_64-redhat-linux/bits/basic_file.h \
  /usr/include/c++/15/x86_64-redhat-linux/bits/c++io.h \
- /usr/include/c++/15/bits/fstream.tcc
+ /usr/include/c++/15/bits/fstream.tcc /usr/include/c++/15/sstream \
+ /usr/include/c++/15/bits/sstream.tcc

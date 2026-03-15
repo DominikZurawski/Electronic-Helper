@@ -9,7 +9,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/app.cpp" "CMakeFiles/ppe_core.dir/src/core/app.cpp.o" "gcc" "CMakeFiles/ppe_core.dir/src/core/app.cpp.o.d"
+  "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/ltspice_export.cpp" "CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.o" "gcc" "CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.o.d"
   "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/ltspice_import.cpp" "CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.o" "gcc" "CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.o.d"
+  "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/ltspice_template.cpp" "CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.o" "gcc" "CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.o.d"
   "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/module_registry.cpp" "CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o" "gcc" "CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o.d"
   )
 

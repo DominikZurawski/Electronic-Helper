@@ -1,8 +1,12 @@
 file(REMOVE_RECURSE
   "CMakeFiles/ppe_core.dir/src/core/app.cpp.o"
   "CMakeFiles/ppe_core.dir/src/core/app.cpp.o.d"
+  "CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.o"
+  "CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.o.d"
   "CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.o"
   "CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.o.d"
+  "CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.o"
+  "CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.o.d"
   "CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o"
   "CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o.d"
   "libppe_core.a"

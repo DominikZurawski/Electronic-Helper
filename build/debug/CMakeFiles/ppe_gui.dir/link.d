@@ -3,12 +3,18 @@ ppe_gui: \
   /usr/lib/gcc/x86_64-redhat-linux/15/../../../../lib64/crti.o \
   /usr/lib/gcc/x86_64-redhat-linux/15/crtbegin.o \
   CMakeFiles/ppe_gui.dir/src/gui/main.cpp.o \
+  CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.o \
   CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.o \
+  CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.o \
+  CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.o \
   CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model.cpp.o \
+  CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.o \
+  CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.o \
   CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/widget.cpp.o \
   CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model.cpp.o \
   CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/widget.cpp.o \
   CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model.cpp.o \
+  CMakeFiles/ppe_gui.dir/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.o \
   libppe_core.a \
   /usr/lib64/libQt6Widgets.so.6.10.2 \
   /usr/lib64/libQt6Gui.so.6.10.2 \
@@ -84,9 +90,19 @@ ppe_gui: \
 
 CMakeFiles/ppe_gui.dir/src/gui/main.cpp.o:
 
+CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.o:
+
 CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.o:
 
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.o:
+
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.o:
+
 CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model.cpp.o:
+
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.o:
+
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.o:
 
 CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/widget.cpp.o:
 
@@ -95,6 +111,8 @@ CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model.cpp.o:
 CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/widget.cpp.o:
 
 CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model.cpp.o:
+
+CMakeFiles/ppe_gui.dir/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.o:
 
 libppe_core.a:
 

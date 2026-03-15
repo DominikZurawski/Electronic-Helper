@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/ppe_tests.dir/link.d"
+  "ppe_tests_autogen"
   "CMakeFiles/ppe_tests.dir/tests/test_registry.cpp.o"
   "CMakeFiles/ppe_tests.dir/tests/test_registry.cpp.o.d"
   "ppe_tests"

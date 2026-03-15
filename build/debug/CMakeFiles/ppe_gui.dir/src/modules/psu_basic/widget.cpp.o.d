@@ -365,6 +365,43 @@ CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.o: \
  /usr/include/qt6/QtWidgets/qsizepolicy.h \
  /usr/include/qt6/QtGui/qcursor.h /usr/include/qt6/QtGui/qbitmap.h \
  /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_basic/model.hpp \
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_basic/export.hpp \
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_basic/template_export.hpp \
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_basic/schematic_widget.hpp \
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_basic/waveform_widget.hpp \
+ /usr/include/qt6/QtWidgets/QComboBox \
+ /usr/include/qt6/QtWidgets/qcombobox.h \
+ /usr/include/qt6/QtWidgets/qwidget.h \
+ /usr/include/qt6/QtWidgets/qabstractitemdelegate.h \
+ /usr/include/qt6/QtWidgets/qstyleoption.h \
+ /usr/include/qt6/QtCore/qlocale.h \
+ /usr/include/qt6/QtWidgets/qabstractspinbox.h \
+ /usr/include/qt6/QtGui/qvalidator.h \
+ /usr/include/qt6/QtCore/qregularexpression.h \
+ /usr/include/qt6/QtWidgets/qslider.h \
+ /usr/include/qt6/QtWidgets/qabstractslider.h \
+ /usr/include/qt6/QtWidgets/qstyle.h /usr/include/qt6/QtWidgets/qtabbar.h \
+ /usr/include/qt6/QtWidgets/qtabwidget.h \
+ /usr/include/qt6/QtWidgets/qrubberband.h \
+ /usr/include/qt6/QtWidgets/qframe.h \
+ /usr/include/qt6/QtCore/qabstractitemmodel.h \
+ /usr/include/qt6/QtCore/QFile /usr/include/qt6/QtCore/qfile.h \
+ /usr/include/qt6/QtCore/qfiledevice.h \
+ /usr/include/qt6/QtCore/qiodevice.h /usr/include/c++/15/filesystem \
+ /usr/include/c++/15/bits/fs_fwd.h /usr/include/c++/15/bits/fs_path.h \
+ /usr/include/c++/15/codecvt /usr/include/c++/15/bits/fs_dir.h \
+ /usr/include/c++/15/bits/fs_ops.h /usr/include/qt6/QtWidgets/QFileDialog \
+ /usr/include/qt6/QtWidgets/qfiledialog.h /usr/include/qt6/QtCore/qdir.h \
+ /usr/include/qt6/QtCore/qdirlisting.h \
+ /usr/include/qt6/QtCore/qdatetime.h /usr/include/qt6/QtCore/qcalendar.h \
+ /usr/include/qt6/QtCore/qfile.h /usr/include/qt6/QtCore/qfileinfo.h \
+ /usr/include/qt6/QtCore/qtimezone.h /usr/include/qt6/QtCore/qurl.h \
+ /usr/include/qt6/QtWidgets/qdialog.h /usr/include/qt6/QtCore/QFileInfo \
+ /usr/include/qt6/QtCore/qfileinfo.h \
+ /usr/include/qt6/QtWidgets/QMessageBox \
+ /usr/include/qt6/QtWidgets/qmessagebox.h \
+ /usr/include/qt6/QtWidgets/qdialogbuttonbox.h \
+ /usr/include/qt6/QtCore/QSettings /usr/include/qt6/QtCore/qsettings.h \
  /usr/include/qt6/QtWidgets/QFormLayout \
  /usr/include/qt6/QtWidgets/qformlayout.h \
  /usr/include/qt6/QtWidgets/QLayout /usr/include/qt6/QtWidgets/qlayout.h \
@@ -372,10 +409,10 @@ CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.o: \
  /usr/include/qt6/QtWidgets/qboxlayout.h \
  /usr/include/qt6/QtWidgets/qlayout.h \
  /usr/include/qt6/QtWidgets/qgridlayout.h \
+ /usr/include/qt6/QtWidgets/QHBoxLayout \
+ /usr/include/qt6/QtWidgets/qboxlayout.h \
  /usr/include/qt6/QtWidgets/QLabel /usr/include/qt6/QtWidgets/qlabel.h \
- /usr/include/qt6/QtWidgets/qframe.h /usr/include/qt6/QtWidgets/qwidget.h \
- /usr/include/qt6/QtGui/qpicture.h /usr/include/qt6/QtCore/qiodevice.h \
- /usr/include/qt6/QtGui/qtextdocument.h /usr/include/qt6/QtCore/qurl.h \
+ /usr/include/qt6/QtGui/qpicture.h /usr/include/qt6/QtGui/qtextdocument.h \
  /usr/include/qt6/QtWidgets/QLineEdit \
  /usr/include/qt6/QtWidgets/qlineedit.h \
  /usr/include/qt6/QtGui/qtextcursor.h \
@@ -384,5 +421,4 @@ CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.o: \
  /usr/include/qt6/QtWidgets/QPushButton \
  /usr/include/qt6/QtWidgets/qpushbutton.h \
  /usr/include/qt6/QtWidgets/qabstractbutton.h \
- /usr/include/qt6/QtWidgets/QVBoxLayout \
- /usr/include/qt6/QtWidgets/qboxlayout.h
+ /usr/include/qt6/QtWidgets/QVBoxLayout
