@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/">
+    <file>ltspice/power.asc</file>
+    <file>ltspice/opamp_model1b.asc</file>
+  </qresource>
+</RCC>

@@ -1,8 +1,0 @@
-set(__QT_DEPLOY_TARGET_ppe_core_FILE /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/libppe_core.a)
-set(__QT_DEPLOY_TARGET_ppe_core_TYPE STATIC_LIBRARY)
-set(__QT_DEPLOY_TARGET_ppe_FILE /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/ppe)
-set(__QT_DEPLOY_TARGET_ppe_TYPE EXECUTABLE)
-set(__QT_DEPLOY_TARGET_ppe_gui_FILE /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/ppe_gui)
-set(__QT_DEPLOY_TARGET_ppe_gui_TYPE EXECUTABLE)
-set(__QT_DEPLOY_TARGET_ppe_tests_FILE /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/ppe_tests)
-set(__QT_DEPLOY_TARGET_ppe_tests_TYPE EXECUTABLE)

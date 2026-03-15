@@ -82,3 +82,11 @@ Jeśli ktoś ma problemy z GUI na Wayland, można uruchomić:
 
 - Windows: `scripts/sign_windows.ps1`
 - macOS: `scripts/sign_macos.sh`
+
+## Lokalna weryfikacja przed zmianami
+
+```bash
+./scripts/verify.sh
+```
+
+Skrypt buduje `ppe_gui` i uruchamia testy.

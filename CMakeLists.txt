@@ -24,7 +24,9 @@ endif()
 add_library(ppe_core
   src/core/app.cpp
   src/core/module_registry.cpp
-  src/core/ltspice_import.cpp
+  src/ltspice/ltspice_import.cpp
+  src/ltspice/ltspice_export.cpp
+  src/ltspice/ltspice_template.cpp
 )
 
 target_include_directories(ppe_core PUBLIC
@@ -34,9 +36,12 @@ target_include_directories(ppe_core PUBLIC
 add_executable(ppe
   src/main.cpp
   src/cli/command_router.cpp
-  src/modules/power_supply.cpp
-  src/modules/symmetric_supply.cpp
-  src/modules/antenna.cpp
+  src/modules/psu_basic/module.cpp
+  src/modules/psu_basic/model/model.cpp
+  src/modules/psu_symmetric/module.cpp
+  src/modules/psu_symmetric/model/model.cpp
+  src/modules/antenna_basic/module.cpp
+  src/modules/antenna_basic/model/model.cpp
 )
 
 target_link_libraries(ppe PRIVATE ppe_core)
@@ -44,8 +49,24 @@ target_link_libraries(ppe PRIVATE ppe_core)
 if (PPE_ENABLE_GUI)
   find_package(Qt6 COMPONENTS Widgets QUIET)
   if (Qt6_FOUND)
+    set(CMAKE_AUTORCC ON)
     add_executable(ppe_gui
       src/gui/main.cpp
+      src/modules/project_design/ui/widget.cpp
+      src/modules/project_design/model/model.cpp
+      src/modules/project_design/graph/graph.cpp
+      src/modules/project_design/export/export.cpp
+      src/modules/psu_basic/ui/widget.cpp
+      src/modules/psu_basic/ui/waveform_widget.cpp
+      src/modules/psu_basic/ui/schematic_widget.cpp
+      src/modules/psu_basic/model/model.cpp
+      src/modules/psu_basic/export/export.cpp
+      src/modules/psu_basic/export/template_export.cpp
+      src/modules/psu_symmetric/ui/widget.cpp
+      src/modules/psu_symmetric/model/model.cpp
+      src/modules/antenna_basic/ui/widget.cpp
+      src/modules/antenna_basic/model/model.cpp
+      assets/ppe.qrc
     )
     target_link_libraries(ppe_gui PRIVATE ppe_core Qt6::Widgets)
     target_include_directories(ppe_gui PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
