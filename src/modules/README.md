@@ -15,6 +15,8 @@ Wewnątrz modułów:
 
 Interfejsy GUI (czytelne include’y):
 - `include/pep/modules/project_design.hpp`
-- `include/pep/modules/psu_basic_ui.hpp`
-- `include/pep/modules/psu_symmetric_ui.hpp`
 - `include/pep/modules/antenna_basic_ui.hpp`
+
+Uwaga:
+- `psu_basic` i `psu_symmetric` są obecnie „headless” (bez własnego GUI).
+- Współdzielone komponenty UI (np. `WaveformWidget`) zostają w `psu_basic/ui/` i są używane przez `project_design`.

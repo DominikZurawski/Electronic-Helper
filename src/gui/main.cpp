@@ -27,8 +27,6 @@
 
 #include "pep/modules/project_design.hpp"
 #include "pep/modules/antenna_basic_ui.hpp"
-#include "pep/modules/psu_basic_ui.hpp"
-#include "pep/modules/psu_symmetric_ui.hpp"
 
 int main(int argc, char** argv) {
   QApplication app(argc, argv);

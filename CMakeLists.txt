@@ -56,13 +56,10 @@ if (PPE_ENABLE_GUI)
       src/modules/project_design/model/model.cpp
       src/modules/project_design/graph/graph.cpp
       src/modules/project_design/export/export.cpp
-      src/modules/psu_basic/ui/widget.cpp
       src/modules/psu_basic/ui/waveform_widget.cpp
-      src/modules/psu_basic/ui/schematic_widget.cpp
       src/modules/psu_basic/model/model.cpp
       src/modules/psu_basic/export/export.cpp
       src/modules/psu_basic/export/template_export.cpp
-      src/modules/psu_symmetric/ui/widget.cpp
       src/modules/psu_symmetric/model/model.cpp
       src/modules/antenna_basic/ui/widget.cpp
       src/modules/antenna_basic/model/model.cpp
