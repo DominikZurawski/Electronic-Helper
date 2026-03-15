@@ -2,9 +2,15 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Build ppe (Debug)",
+      "label": "Build ppe_gui (Debug)",
       "type": "shell",
-      "command": "cmake --build --preset debug --target ppe",
+      "command": "cmake --build --preset debug --target ppe_gui",
+      "problemMatcher": "$gcc"
+    },
+    {
+      "label": "Verify (build + tests)",
+      "type": "shell",
+      "command": "./scripts/verify.sh",
       "problemMatcher": "$gcc"
     }
   ]

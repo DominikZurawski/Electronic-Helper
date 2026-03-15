@@ -3,5 +3,7 @@
   "cmake.configureOnOpen": true,
   "cmake.defaultConfigurePreset": "debug",
   "cmake.defaultBuildPreset": "debug",
-  "cmake.defaultTestPreset": "debug"
+  "cmake.defaultTestPreset": "debug",
+  "cmake.buildTarget": "ppe_gui",
+  "cmake.launchTarget": "ppe_gui"
 }

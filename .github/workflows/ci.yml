@@ -35,3 +35,7 @@ jobs:
 
       - name: Test
         run: ctest --test-dir build/ci --output-on-failure
+
+      - name: Verify script (Linux only)
+        if: runner.os == 'Linux'
+        run: ./scripts/verify.sh
