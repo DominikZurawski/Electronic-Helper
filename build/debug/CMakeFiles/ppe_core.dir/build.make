@@ -100,64 +100,64 @@ CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/module_registry.cpp" -o CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.s
 
-CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.o: CMakeFiles/ppe_core.dir/flags.make
-CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/core/ltspice_import.cpp
-CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.o: CMakeFiles/ppe_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.o -MF CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.o.d -o CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/ltspice_import.cpp"
+CMakeFiles/ppe_core.dir/src/ltspice/ltspice_import.cpp.o: CMakeFiles/ppe_core.dir/flags.make
+CMakeFiles/ppe_core.dir/src/ltspice/ltspice_import.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/ltspice/ltspice_import.cpp
+CMakeFiles/ppe_core.dir/src/ltspice/ltspice_import.cpp.o: CMakeFiles/ppe_core.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ppe_core.dir/src/ltspice/ltspice_import.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_core.dir/src/ltspice/ltspice_import.cpp.o -MF CMakeFiles/ppe_core.dir/src/ltspice/ltspice_import.cpp.o.d -o CMakeFiles/ppe_core.dir/src/ltspice/ltspice_import.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/ltspice/ltspice_import.cpp"
 
-CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/ltspice_import.cpp" > CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.i
+CMakeFiles/ppe_core.dir/src/ltspice/ltspice_import.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_core.dir/src/ltspice/ltspice_import.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/ltspice/ltspice_import.cpp" > CMakeFiles/ppe_core.dir/src/ltspice/ltspice_import.cpp.i
 
-CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/ltspice_import.cpp" -o CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.s
+CMakeFiles/ppe_core.dir/src/ltspice/ltspice_import.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_core.dir/src/ltspice/ltspice_import.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/ltspice/ltspice_import.cpp" -o CMakeFiles/ppe_core.dir/src/ltspice/ltspice_import.cpp.s
 
-CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.o: CMakeFiles/ppe_core.dir/flags.make
-CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/core/ltspice_export.cpp
-CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.o: CMakeFiles/ppe_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.o -MF CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.o.d -o CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/ltspice_export.cpp"
+CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export.cpp.o: CMakeFiles/ppe_core.dir/flags.make
+CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/ltspice/ltspice_export.cpp
+CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export.cpp.o: CMakeFiles/ppe_core.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export.cpp.o -MF CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export.cpp.o.d -o CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/ltspice/ltspice_export.cpp"
 
-CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/ltspice_export.cpp" > CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.i
+CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/ltspice/ltspice_export.cpp" > CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export.cpp.i
 
-CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/ltspice_export.cpp" -o CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.s
+CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/ltspice/ltspice_export.cpp" -o CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export.cpp.s
 
-CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.o: CMakeFiles/ppe_core.dir/flags.make
-CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/core/ltspice_template.cpp
-CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.o: CMakeFiles/ppe_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.o -MF CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.o.d -o CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/ltspice_template.cpp"
+CMakeFiles/ppe_core.dir/src/ltspice/ltspice_template.cpp.o: CMakeFiles/ppe_core.dir/flags.make
+CMakeFiles/ppe_core.dir/src/ltspice/ltspice_template.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/ltspice/ltspice_template.cpp
+CMakeFiles/ppe_core.dir/src/ltspice/ltspice_template.cpp.o: CMakeFiles/ppe_core.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/ppe_core.dir/src/ltspice/ltspice_template.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_core.dir/src/ltspice/ltspice_template.cpp.o -MF CMakeFiles/ppe_core.dir/src/ltspice/ltspice_template.cpp.o.d -o CMakeFiles/ppe_core.dir/src/ltspice/ltspice_template.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/ltspice/ltspice_template.cpp"
 
-CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/ltspice_template.cpp" > CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.i
+CMakeFiles/ppe_core.dir/src/ltspice/ltspice_template.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_core.dir/src/ltspice/ltspice_template.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/ltspice/ltspice_template.cpp" > CMakeFiles/ppe_core.dir/src/ltspice/ltspice_template.cpp.i
 
-CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/ltspice_template.cpp" -o CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.s
+CMakeFiles/ppe_core.dir/src/ltspice/ltspice_template.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_core.dir/src/ltspice/ltspice_template.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/ltspice/ltspice_template.cpp" -o CMakeFiles/ppe_core.dir/src/ltspice/ltspice_template.cpp.s
 
 # Object files for target ppe_core
 ppe_core_OBJECTS = \
 "CMakeFiles/ppe_core.dir/src/core/app.cpp.o" \
 "CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o" \
-"CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.o" \
-"CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.o" \
-"CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.o"
+"CMakeFiles/ppe_core.dir/src/ltspice/ltspice_import.cpp.o" \
+"CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export.cpp.o" \
+"CMakeFiles/ppe_core.dir/src/ltspice/ltspice_template.cpp.o"
 
 # External object files for target ppe_core
 ppe_core_EXTERNAL_OBJECTS =
 
 libppe_core.a: CMakeFiles/ppe_core.dir/src/core/app.cpp.o
 libppe_core.a: CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o
-libppe_core.a: CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.o
-libppe_core.a: CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.o
-libppe_core.a: CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.o
+libppe_core.a: CMakeFiles/ppe_core.dir/src/ltspice/ltspice_import.cpp.o
+libppe_core.a: CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export.cpp.o
+libppe_core.a: CMakeFiles/ppe_core.dir/src/ltspice/ltspice_template.cpp.o
 libppe_core.a: CMakeFiles/ppe_core.dir/build.make
 libppe_core.a: CMakeFiles/ppe_core.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX static library libppe_core.a"

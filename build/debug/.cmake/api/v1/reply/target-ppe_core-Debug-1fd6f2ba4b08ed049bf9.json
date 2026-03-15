@@ -130,19 +130,19 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/core/ltspice_import.cpp",
+			"path" : "src/ltspice/ltspice_import.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/core/ltspice_export.cpp",
+			"path" : "src/ltspice/ltspice_export.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/core/ltspice_template.cpp",
+			"path" : "src/ltspice/ltspice_template.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

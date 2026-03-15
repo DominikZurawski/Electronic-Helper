@@ -95,164 +95,206 @@ CMakeFiles/ppe_gui.dir/src/gui/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/gui/main.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/gui/main.cpp" -o CMakeFiles/ppe_gui.dir/src/gui/main.cpp.s
 
-CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
-CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/project_design/widget.cpp
-CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/widget.cpp"
+CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
+CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/project_design/ui/widget.cpp
+CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/widget.cpp"
 
-CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/widget.cpp" > CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.i
+CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/widget.cpp" > CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget.cpp.i
 
-CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/widget.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.s
+CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/widget.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget.cpp.s
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_basic/widget.cpp
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/widget.cpp"
+CMakeFiles/ppe_gui.dir/src/modules/project_design/model/model.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
+CMakeFiles/ppe_gui.dir/src/modules/project_design/model/model.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/project_design/model/model.cpp
+CMakeFiles/ppe_gui.dir/src/modules/project_design/model/model.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/project_design/model/model.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/project_design/model/model.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/project_design/model/model.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/project_design/model/model.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/model/model.cpp"
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/widget.cpp" > CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.i
+CMakeFiles/ppe_gui.dir/src/modules/project_design/model/model.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/project_design/model/model.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/model/model.cpp" > CMakeFiles/ppe_gui.dir/src/modules/project_design/model/model.cpp.i
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/widget.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.s
+CMakeFiles/ppe_gui.dir/src/modules/project_design/model/model.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/project_design/model/model.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/model/model.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/project_design/model/model.cpp.s
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_basic/waveform_widget.cpp
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/waveform_widget.cpp"
+CMakeFiles/ppe_gui.dir/src/modules/project_design/graph/graph.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
+CMakeFiles/ppe_gui.dir/src/modules/project_design/graph/graph.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/project_design/graph/graph.cpp
+CMakeFiles/ppe_gui.dir/src/modules/project_design/graph/graph.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/project_design/graph/graph.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/project_design/graph/graph.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/project_design/graph/graph.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/project_design/graph/graph.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/graph/graph.cpp"
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/waveform_widget.cpp" > CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.i
+CMakeFiles/ppe_gui.dir/src/modules/project_design/graph/graph.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/project_design/graph/graph.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/graph/graph.cpp" > CMakeFiles/ppe_gui.dir/src/modules/project_design/graph/graph.cpp.i
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/waveform_widget.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.s
+CMakeFiles/ppe_gui.dir/src/modules/project_design/graph/graph.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/project_design/graph/graph.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/graph/graph.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/project_design/graph/graph.cpp.s
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_basic/schematic_widget.cpp
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/schematic_widget.cpp"
+CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
+CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/project_design/export/export.cpp
+CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export.cpp"
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/schematic_widget.cpp" > CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.i
+CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export.cpp" > CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export.cpp.i
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/schematic_widget.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.s
+CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export.cpp.s
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_basic/model.cpp
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/model.cpp"
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/widget.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/widget.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_basic/ui/widget.cpp
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/widget.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/widget.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/widget.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/widget.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/widget.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/ui/widget.cpp"
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/model.cpp" > CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model.cpp.i
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/widget.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/widget.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/ui/widget.cpp" > CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/widget.cpp.i
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/model.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model.cpp.s
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/widget.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/widget.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/ui/widget.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/widget.cpp.s
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_basic/export.cpp
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/export.cpp"
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/waveform_widget.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/waveform_widget.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_basic/ui/waveform_widget.cpp
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/waveform_widget.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/waveform_widget.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/waveform_widget.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/waveform_widget.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/waveform_widget.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/ui/waveform_widget.cpp"
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/export.cpp" > CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.i
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/waveform_widget.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/waveform_widget.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/ui/waveform_widget.cpp" > CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/waveform_widget.cpp.i
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/export.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.s
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/waveform_widget.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/waveform_widget.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/ui/waveform_widget.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/waveform_widget.cpp.s
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_basic/template_export.cpp
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/template_export.cpp"
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/schematic_widget.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/schematic_widget.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_basic/ui/schematic_widget.cpp
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/schematic_widget.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/schematic_widget.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/schematic_widget.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/schematic_widget.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/schematic_widget.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/ui/schematic_widget.cpp"
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/template_export.cpp" > CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.i
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/schematic_widget.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/schematic_widget.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/ui/schematic_widget.cpp" > CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/schematic_widget.cpp.i
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/template_export.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.s
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/schematic_widget.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/schematic_widget.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/ui/schematic_widget.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/schematic_widget.cpp.s
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/widget.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
-CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/widget.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_symmetric/widget.cpp
-CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/widget.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/widget.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/widget.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/widget.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/widget.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/widget.cpp"
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model/model.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model/model.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_basic/model/model.cpp
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model/model.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model/model.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model/model.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model/model.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model/model.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/model/model.cpp"
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/widget.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/widget.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/widget.cpp" > CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/widget.cpp.i
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model/model.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model/model.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/model/model.cpp" > CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model/model.cpp.i
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/widget.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/widget.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/widget.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/widget.cpp.s
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model/model.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model/model.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/model/model.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model/model.cpp.s
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
-CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_symmetric/model.cpp
-CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/model.cpp"
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/export.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/export.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_basic/export/export.cpp
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/export.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/export.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/export.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/export.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/export.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/export/export.cpp"
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/model.cpp" > CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model.cpp.i
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/export.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/export.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/export/export.cpp" > CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/export.cpp.i
 
-CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/model.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model.cpp.s
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/export.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/export.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/export/export.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/export.cpp.s
 
-CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/widget.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
-CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/widget.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/antenna_basic/widget.cpp
-CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/widget.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/widget.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/widget.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/widget.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/widget.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/widget.cpp"
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/template_export.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/template_export.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_basic/export/template_export.cpp
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/template_export.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/template_export.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/template_export.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/template_export.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/template_export.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/export/template_export.cpp"
 
-CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/widget.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/widget.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/widget.cpp" > CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/widget.cpp.i
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/template_export.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/template_export.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/export/template_export.cpp" > CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/template_export.cpp.i
 
-CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/widget.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/widget.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/widget.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/widget.cpp.s
+CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/template_export.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/template_export.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/export/template_export.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/template_export.cpp.s
 
-CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
-CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/antenna_basic/model.cpp
-CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/model.cpp"
+CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/ui/widget.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
+CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/ui/widget.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_symmetric/ui/widget.cpp
+CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/ui/widget.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/ui/widget.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/ui/widget.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/ui/widget.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/ui/widget.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/ui/widget.cpp"
 
-CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/model.cpp" > CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model.cpp.i
+CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/ui/widget.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/ui/widget.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/ui/widget.cpp" > CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/ui/widget.cpp.i
 
-CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/model.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model.cpp.s
+CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/ui/widget.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/ui/widget.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/ui/widget.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/ui/widget.cpp.s
+
+CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model/model.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
+CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model/model.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/psu_symmetric/model/model.cpp
+CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model/model.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model/model.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model/model.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model/model.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model/model.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/model/model.cpp"
+
+CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model/model.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model/model.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/model/model.cpp" > CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model/model.cpp.i
+
+CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model/model.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model/model.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/model/model.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model/model.cpp.s
+
+CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/ui/widget.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
+CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/ui/widget.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/antenna_basic/ui/widget.cpp
+CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/ui/widget.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/ui/widget.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/ui/widget.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/ui/widget.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/ui/widget.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/ui/widget.cpp"
+
+CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/ui/widget.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/ui/widget.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/ui/widget.cpp" > CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/ui/widget.cpp.i
+
+CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/ui/widget.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/ui/widget.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/ui/widget.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/ui/widget.cpp.s
+
+CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model/model.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
+CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model/model.cpp.o: /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/modules/antenna_basic/model/model.cpp
+CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model/model.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model/model.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model/model.cpp.o -MF CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model/model.cpp.o.d -o CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model/model.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/model/model.cpp"
+
+CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model/model.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model/model.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/model/model.cpp" > CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model/model.cpp.i
+
+CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model/model.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model/model.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/model/model.cpp" -o CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model/model.cpp.s
 
 CMakeFiles/ppe_gui.dir/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.o: CMakeFiles/ppe_gui.dir/flags.make
 CMakeFiles/ppe_gui.dir/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.o: ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp
 CMakeFiles/ppe_gui.dir/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.o: CMakeFiles/ppe_gui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/ppe_gui.dir/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/ppe_gui.dir/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ppe_gui.dir/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.o -MF CMakeFiles/ppe_gui.dir/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.o.d -o CMakeFiles/ppe_gui.dir/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.o -c "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp"
 
 CMakeFiles/ppe_gui.dir/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.i: cmake_force
@@ -266,34 +308,40 @@ CMakeFiles/ppe_gui.dir/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.s: cmake_force
 # Object files for target ppe_gui
 ppe_gui_OBJECTS = \
 "CMakeFiles/ppe_gui.dir/src/gui/main.cpp.o" \
-"CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.o" \
-"CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.o" \
-"CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.o" \
-"CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.o" \
-"CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model.cpp.o" \
-"CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.o" \
-"CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.o" \
-"CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/widget.cpp.o" \
-"CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model.cpp.o" \
-"CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/widget.cpp.o" \
-"CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model.cpp.o" \
+"CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget.cpp.o" \
+"CMakeFiles/ppe_gui.dir/src/modules/project_design/model/model.cpp.o" \
+"CMakeFiles/ppe_gui.dir/src/modules/project_design/graph/graph.cpp.o" \
+"CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export.cpp.o" \
+"CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/widget.cpp.o" \
+"CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/waveform_widget.cpp.o" \
+"CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/schematic_widget.cpp.o" \
+"CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model/model.cpp.o" \
+"CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/export.cpp.o" \
+"CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/template_export.cpp.o" \
+"CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/ui/widget.cpp.o" \
+"CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model/model.cpp.o" \
+"CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/ui/widget.cpp.o" \
+"CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model/model.cpp.o" \
 "CMakeFiles/ppe_gui.dir/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.o"
 
 # External object files for target ppe_gui
 ppe_gui_EXTERNAL_OBJECTS =
 
 ppe_gui: CMakeFiles/ppe_gui.dir/src/gui/main.cpp.o
-ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/project_design/widget.cpp.o
-ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/psu_basic/widget.cpp.o
-ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/psu_basic/waveform_widget.cpp.o
-ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/psu_basic/schematic_widget.cpp.o
-ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model.cpp.o
-ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export.cpp.o
-ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/psu_basic/template_export.cpp.o
-ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/widget.cpp.o
-ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model.cpp.o
-ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/widget.cpp.o
-ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model.cpp.o
+ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget.cpp.o
+ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/project_design/model/model.cpp.o
+ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/project_design/graph/graph.cpp.o
+ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export.cpp.o
+ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/widget.cpp.o
+ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/waveform_widget.cpp.o
+ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/schematic_widget.cpp.o
+ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model/model.cpp.o
+ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/export.cpp.o
+ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/template_export.cpp.o
+ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/ui/widget.cpp.o
+ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model/model.cpp.o
+ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/ui/widget.cpp.o
+ppe_gui: CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model/model.cpp.o
 ppe_gui: CMakeFiles/ppe_gui.dir/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.o
 ppe_gui: CMakeFiles/ppe_gui.dir/build.make
 ppe_gui: CMakeFiles/ppe_gui.dir/compiler_depend.ts
@@ -304,7 +352,7 @@ ppe_gui: /usr/lib64/libGLX.so
 ppe_gui: /usr/lib64/libOpenGL.so
 ppe_gui: /usr/lib64/libQt6Core.so.6.10.2
 ppe_gui: CMakeFiles/ppe_gui.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_15) "Linking CXX executable ppe_gui"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_18) "Linking CXX executable ppe_gui"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ppe_gui.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

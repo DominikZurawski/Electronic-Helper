@@ -158,12 +158,12 @@ CMakeFiles/ppe.dir/clean:
 CMakeFiles/ppe_gui.dir/all: CMakeFiles/ppe_core.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=16,17,18,19,20,21,22,23,24,25,26,27,28,29,30 "Built target ppe_gui"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33 "Built target ppe_gui"
 .PHONY : CMakeFiles/ppe_gui.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/ppe_gui.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" 21
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" 24
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/ppe_gui.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" 0
 .PHONY : CMakeFiles/ppe_gui.dir/rule
@@ -175,7 +175,7 @@ ppe_gui: CMakeFiles/ppe_gui.dir/rule
 # codegen rule for target.
 CMakeFiles/ppe_gui.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_gui.dir/build.make CMakeFiles/ppe_gui.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=16,17,18,19,20,21,22,23,24,25,26,27,28,29,30 "Finished codegen for target ppe_gui"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33 "Finished codegen for target ppe_gui"
 .PHONY : CMakeFiles/ppe_gui.dir/codegen
 
 # clean rule for target.
@@ -190,7 +190,7 @@ CMakeFiles/ppe_gui.dir/clean:
 CMakeFiles/ppe_tests.dir/all: CMakeFiles/ppe_core.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_tests.dir/build.make CMakeFiles/ppe_tests.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_tests.dir/build.make CMakeFiles/ppe_tests.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=31,32 "Built target ppe_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=34,35 "Built target ppe_tests"
 .PHONY : CMakeFiles/ppe_tests.dir/all
 
 # Build rule for subdir invocation for target.
@@ -207,7 +207,7 @@ ppe_tests: CMakeFiles/ppe_tests.dir/rule
 # codegen rule for target.
 CMakeFiles/ppe_tests.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ppe_tests.dir/build.make CMakeFiles/ppe_tests.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=31,32 "Finished codegen for target ppe_tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/CMakeFiles" --progress-num=34,35 "Finished codegen for target ppe_tests"
 .PHONY : CMakeFiles/ppe_tests.dir/codegen
 
 # clean rule for target.

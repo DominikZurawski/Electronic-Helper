@@ -1,2 +1,2 @@
-/usr/bin/ar qc libppe_core.a CMakeFiles/ppe_core.dir/src/core/app.cpp.o CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o CMakeFiles/ppe_core.dir/src/core/ltspice_import.cpp.o CMakeFiles/ppe_core.dir/src/core/ltspice_export.cpp.o CMakeFiles/ppe_core.dir/src/core/ltspice_template.cpp.o
+/usr/bin/ar qc libppe_core.a CMakeFiles/ppe_core.dir/src/core/app.cpp.o CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o CMakeFiles/ppe_core.dir/src/ltspice/ltspice_import.cpp.o CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export.cpp.o CMakeFiles/ppe_core.dir/src/ltspice/ltspice_template.cpp.o
 /usr/bin/ranlib libppe_core.a

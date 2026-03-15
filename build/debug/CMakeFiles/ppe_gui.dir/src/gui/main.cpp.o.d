@@ -447,7 +447,11 @@ CMakeFiles/ppe_gui.dir/src/gui/main.cpp.o: \
  /usr/include/qt6/QtWidgets/QWidget /usr/include/qt6/QtWidgets/qwidget.h \
  /usr/include/qt6/QtCore/QSettings /usr/include/qt6/QtCore/qsettings.h \
  /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/ltspice_import.hpp \
- /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/gui/../modules/project_design/widget.hpp \
- /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/gui/../modules/antenna_basic/widget.hpp \
- /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/gui/../modules/psu_basic/widget.hpp \
- /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/src/gui/../modules/psu_symmetric/widget.hpp
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/modules/project_design.hpp \
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/modules/project_design/ui/widget.hpp \
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/modules/antenna_basic_ui.hpp \
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/modules/antenna_basic/ui/widget.hpp \
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/modules/psu_basic_ui.hpp \
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/modules/psu_basic/ui/widget.hpp \
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/modules/psu_symmetric_ui.hpp \
+ /home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik\ projektanta/include/pep/modules/psu_symmetric/ui/widget.hpp
