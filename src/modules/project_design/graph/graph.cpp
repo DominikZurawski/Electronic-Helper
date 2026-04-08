@@ -61,7 +61,7 @@ void CanvasView::mousePressEvent(QMouseEvent *event) {
         const QVariant pid = item->data(2);
         if (bid.isValid() && pid.isValid()) {
           if (on_port_clicked) {
-            on_port_clicked(bid.toInt(), pid.toString());
+            on_port_clicked(bid.toInt(), pid.toString().toStdString());
           }
           event->accept();
           return;

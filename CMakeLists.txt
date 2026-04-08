@@ -93,6 +93,7 @@ add_library(ppe_core
   src/core/module_registry.cpp
   src/ltspice/ltspice_import.cpp
   src/ltspice/ltspice_export.cpp
+  src/ltspice/ltspice_export_render.cpp
   src/ltspice/ltspice_template.cpp
 )
 
@@ -120,9 +121,26 @@ if (PPE_ENABLE_GUI)
     add_executable(ppe_gui
       src/gui/main.cpp
       src/modules/project_design/ui/widget.cpp
+      src/modules/project_design/ui/enum_ui.cpp
+      src/modules/project_design/ui/canvas_layout.cpp
+      src/modules/project_design/ui/canvas_scene.cpp
+      src/modules/project_design/ui/connection_ui.cpp
+      src/modules/project_design/ui/active_block_view.cpp
+      src/modules/project_design/ui/widget_actions.cpp
+      src/modules/project_design/ui/widget_bindings.cpp
+      src/modules/project_design/ui/export_dialog.cpp
+      src/modules/project_design/ui/export_actions.cpp
+      src/modules/project_design/ui/form_sync.cpp
       src/modules/project_design/model/model.cpp
+      src/modules/project_design/model/connection_ops.cpp
       src/modules/project_design/graph/graph.cpp
       src/modules/project_design/export/export.cpp
+      src/modules/project_design/export/export_component_order.cpp
+      src/modules/project_design/export/export_render.cpp
+      src/modules/project_design/export/export_topology.cpp
+      src/modules/project_design/export/export_value_builders.cpp
+      src/modules/project_design/export/asc_ops.cpp
+      src/modules/project_design/export/template_loader.cpp
       src/modules/psu_basic/ui/waveform_widget.cpp
       src/modules/psu_basic/model/model.cpp
       src/modules/psu_basic/export/export.cpp
@@ -173,6 +191,56 @@ if (PPE_ENABLE_TESTS)
   add_executable(ppe_tests tests/test_registry.cpp)
   target_link_libraries(ppe_tests PRIVATE ppe_core)
   add_test(NAME registry COMMAND ppe_tests)
+
+  add_executable(ppe_ltspice_export_tests tests/test_ltspice_export.cpp)
+  target_link_libraries(ppe_ltspice_export_tests PRIVATE ppe_core)
+  target_include_directories(ppe_ltspice_export_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}
+  )
+  add_test(NAME ltspice_export COMMAND ppe_ltspice_export_tests)
+
+  add_executable(ppe_psu_basic_model_tests
+    tests/test_psu_basic_model.cpp
+    src/modules/psu_basic/model/model.cpp
+  )
+  target_include_directories(ppe_psu_basic_model_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}
+  )
+  add_test(NAME psu_basic_model COMMAND ppe_psu_basic_model_tests)
+
+  if (TARGET Qt6::Widgets)
+    add_executable(ppe_project_design_tests
+      tests/test_project_design_connection_ops.cpp
+      src/modules/project_design/model/model.cpp
+      src/modules/project_design/model/connection_ops.cpp
+    )
+    target_include_directories(ppe_project_design_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include
+      ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+    target_link_libraries(ppe_project_design_tests PRIVATE Qt6::Widgets)
+    add_test(NAME project_design_connection_ops COMMAND ppe_project_design_tests)
+
+    add_executable(ppe_project_design_export_tests
+      tests/test_project_design_export.cpp
+      src/modules/project_design/export/export.cpp
+      src/modules/project_design/export/export_component_order.cpp
+      src/modules/project_design/export/export_render.cpp
+      src/modules/project_design/export/export_topology.cpp
+      src/modules/project_design/export/export_value_builders.cpp
+      src/modules/project_design/export/asc_ops.cpp
+      src/modules/project_design/export/template_loader.cpp
+      src/modules/project_design/model/model.cpp
+      src/modules/psu_basic/export/template_export.cpp
+    )
+    target_include_directories(ppe_project_design_export_tests PRIVATE
+      ${CMAKE_CURRENT_SOURCE_DIR}/include
+      ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+    target_link_libraries(ppe_project_design_export_tests PRIVATE ppe_core Qt6::Widgets)
+    add_test(NAME project_design_export COMMAND ppe_project_design_export_tests)
+  endif()
 endif()
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/Packaging.cmake)

@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/ppe_tests.dir/link.d CMakeFiles/ppe_tests.dir/tests/test_registry.cpp.o -o ppe_tests  libppe_core.a

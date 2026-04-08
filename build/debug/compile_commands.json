@@ -1,0 +1,368 @@
+[
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_core.dir/src/core/app.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/app.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/app.cpp",
+  "output": "CMakeFiles/ppe_core.dir/src/core/app.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/module_registry.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/core/module_registry.cpp",
+  "output": "CMakeFiles/ppe_core.dir/src/core/module_registry.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_core.dir/src/ltspice/ltspice_import.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/ltspice/ltspice_import.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/ltspice/ltspice_import.cpp",
+  "output": "CMakeFiles/ppe_core.dir/src/ltspice/ltspice_import.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/ltspice/ltspice_export.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/ltspice/ltspice_export.cpp",
+  "output": "CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export_render.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/ltspice/ltspice_export_render.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/ltspice/ltspice_export_render.cpp",
+  "output": "CMakeFiles/ppe_core.dir/src/ltspice/ltspice_export_render.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_core.dir/src/ltspice/ltspice_template.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/ltspice/ltspice_template.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/ltspice/ltspice_template.cpp",
+  "output": "CMakeFiles/ppe_core.dir/src/ltspice/ltspice_template.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe.dir/src/main.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/main.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/main.cpp",
+  "output": "CMakeFiles/ppe.dir/src/main.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe.dir/src/cli/command_router.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/cli/command_router.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/cli/command_router.cpp",
+  "output": "CMakeFiles/ppe.dir/src/cli/command_router.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe.dir/src/modules/psu_basic/module.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/module.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/module.cpp",
+  "output": "CMakeFiles/ppe.dir/src/modules/psu_basic/module.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe.dir/src/modules/psu_basic/model/model.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/model/model.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/model/model.cpp",
+  "output": "CMakeFiles/ppe.dir/src/modules/psu_basic/model/model.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe.dir/src/modules/psu_symmetric/module.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/module.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/module.cpp",
+  "output": "CMakeFiles/ppe.dir/src/modules/psu_symmetric/module.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe.dir/src/modules/psu_symmetric/model/model.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/model/model.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/model/model.cpp",
+  "output": "CMakeFiles/ppe.dir/src/modules/psu_symmetric/model/model.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe.dir/src/modules/antenna_basic/module.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/module.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/module.cpp",
+  "output": "CMakeFiles/ppe.dir/src/modules/antenna_basic/module.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe.dir/src/modules/antenna_basic/model/model.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/model/model.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/model/model.cpp",
+  "output": "CMakeFiles/ppe.dir/src/modules/antenna_basic/model/model.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/gui/main.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/gui/main.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/gui/main.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/gui/main.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/widget.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/widget.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/enum_ui.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/enum_ui.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/enum_ui.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/enum_ui.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/canvas_layout.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/canvas_layout.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/canvas_layout.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/canvas_layout.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/canvas_scene.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/canvas_scene.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/canvas_scene.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/canvas_scene.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/connection_ui.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/connection_ui.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/connection_ui.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/connection_ui.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/active_block_view.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/active_block_view.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/active_block_view.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/active_block_view.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget_actions.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/widget_actions.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/widget_actions.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget_actions.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget_bindings.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/widget_bindings.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/widget_bindings.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/widget_bindings.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/export_dialog.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/export_dialog.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/export_dialog.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/export_dialog.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/export_actions.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/export_actions.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/export_actions.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/export_actions.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/form_sync.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/form_sync.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/ui/form_sync.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/ui/form_sync.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/model/model.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/model/model.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/model/model.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/model/model.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/model/connection_ops.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/model/connection_ops.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/model/connection_ops.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/model/connection_ops.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/graph/graph.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/graph/graph.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/graph/graph.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/graph/graph.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export_component_order.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export_component_order.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export_component_order.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export_component_order.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export_render.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export_render.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export_render.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export_render.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export_topology.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export_topology.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export_topology.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export_topology.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export_value_builders.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export_value_builders.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export_value_builders.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/export/export_value_builders.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/export/asc_ops.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/asc_ops.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/asc_ops.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/export/asc_ops.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/project_design/export/template_loader.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/template_loader.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/template_loader.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/project_design/export/template_loader.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/waveform_widget.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/ui/waveform_widget.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/ui/waveform_widget.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/psu_basic/ui/waveform_widget.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model/model.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/model/model.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/model/model.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/psu_basic/model/model.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/export.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/export/export.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/export/export.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/export.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/template_export.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/export/template_export.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/export/template_export.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/psu_basic/export/template_export.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model/model.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/model/model.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_symmetric/model/model.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/psu_symmetric/model/model.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/ui/widget.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/ui/widget.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/ui/widget.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/ui/widget.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model/model.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/model/model.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/antenna_basic/model/model.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/src/modules/antenna_basic/model/model.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_gui.dir/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp",
+  "output": "CMakeFiles/ppe_gui.dir/ppe_gui_autogen/GBFAFXFCVO/qrc_ppe.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_tests.dir/tests/test_registry.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/tests/test_registry.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/tests/test_registry.cpp",
+  "output": "CMakeFiles/ppe_tests.dir/tests/test_registry.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_ltspice_export_tests.dir/tests/test_ltspice_export.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/tests/test_ltspice_export.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/tests/test_ltspice_export.cpp",
+  "output": "CMakeFiles/ppe_ltspice_export_tests.dir/tests/test_ltspice_export.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_psu_basic_model_tests.dir/tests/test_psu_basic_model.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/tests/test_psu_basic_model.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/tests/test_psu_basic_model.cpp",
+  "output": "CMakeFiles/ppe_psu_basic_model_tests.dir/tests/test_psu_basic_model.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++  -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta\" -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_psu_basic_model_tests.dir/src/modules/psu_basic/model/model.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/model/model.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/model/model.cpp",
+  "output": "CMakeFiles/ppe_psu_basic_model_tests.dir/src/modules/psu_basic/model/model.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_project_design_tests.dir/tests/test_project_design_connection_ops.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/tests/test_project_design_connection_ops.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/tests/test_project_design_connection_ops.cpp",
+  "output": "CMakeFiles/ppe_project_design_tests.dir/tests/test_project_design_connection_ops.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_project_design_tests.dir/src/modules/project_design/model/model.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/model/model.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/model/model.cpp",
+  "output": "CMakeFiles/ppe_project_design_tests.dir/src/modules/project_design/model/model.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_project_design_tests.dir/src/modules/project_design/model/connection_ops.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/model/connection_ops.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/model/connection_ops.cpp",
+  "output": "CMakeFiles/ppe_project_design_tests.dir/src/modules/project_design/model/connection_ops.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_project_design_export_tests.dir/tests/test_project_design_export.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/tests/test_project_design_export.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/tests/test_project_design_export.cpp",
+  "output": "CMakeFiles/ppe_project_design_export_tests.dir/tests/test_project_design_export.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_project_design_export_tests.dir/src/modules/project_design/export/export.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export.cpp",
+  "output": "CMakeFiles/ppe_project_design_export_tests.dir/src/modules/project_design/export/export.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_project_design_export_tests.dir/src/modules/project_design/export/export_component_order.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export_component_order.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export_component_order.cpp",
+  "output": "CMakeFiles/ppe_project_design_export_tests.dir/src/modules/project_design/export/export_component_order.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_project_design_export_tests.dir/src/modules/project_design/export/export_render.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export_render.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export_render.cpp",
+  "output": "CMakeFiles/ppe_project_design_export_tests.dir/src/modules/project_design/export/export_render.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_project_design_export_tests.dir/src/modules/project_design/export/export_topology.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export_topology.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export_topology.cpp",
+  "output": "CMakeFiles/ppe_project_design_export_tests.dir/src/modules/project_design/export/export_topology.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_project_design_export_tests.dir/src/modules/project_design/export/export_value_builders.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export_value_builders.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/export_value_builders.cpp",
+  "output": "CMakeFiles/ppe_project_design_export_tests.dir/src/modules/project_design/export/export_value_builders.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_project_design_export_tests.dir/src/modules/project_design/export/asc_ops.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/asc_ops.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/asc_ops.cpp",
+  "output": "CMakeFiles/ppe_project_design_export_tests.dir/src/modules/project_design/export/asc_ops.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_project_design_export_tests.dir/src/modules/project_design/export/template_loader.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/template_loader.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/export/template_loader.cpp",
+  "output": "CMakeFiles/ppe_project_design_export_tests.dir/src/modules/project_design/export/template_loader.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_project_design_export_tests.dir/src/modules/project_design/model/model.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/model/model.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/project_design/model/model.cpp",
+  "output": "CMakeFiles/ppe_project_design_export_tests.dir/src/modules/project_design/model/model.cpp.o"
+},
+{
+  "directory": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+  "command": "/usr/bin/c++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/include\" -I\"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta\" -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib64/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -g -std=c++20 -Wall -Wextra -Wpedantic -o CMakeFiles/ppe_project_design_export_tests.dir/src/modules/psu_basic/export/template_export.cpp.o -c \"/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/export/template_export.cpp\"",
+  "file": "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/src/modules/psu_basic/export/template_export.cpp",
+  "output": "CMakeFiles/ppe_project_design_export_tests.dir/src/modules/psu_basic/export/template_export.cpp.o"
+}
+]

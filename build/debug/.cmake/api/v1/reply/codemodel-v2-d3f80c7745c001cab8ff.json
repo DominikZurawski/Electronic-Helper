@@ -1,0 +1,160 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-506fbb87408272e44cf2.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "PomocnikProjektantaElektronika",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "format::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-format-Debug-61997031880c417ce645.json",
+					"name" : "format",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "format-check::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-format-check-Debug-cab36b81b3d7dcc65a1d.json",
+					"name" : "format-check",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "lint::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-lint-Debug-f23227360812cf0798aa.json",
+					"name" : "lint",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "lint-fix::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-lint-fix-Debug-dc85deae931b538a5a59.json",
+					"name" : "lint-fix",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ppe::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ppe-Debug-6f406b61388d255b8353.json",
+					"name" : "ppe",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ppe_core::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ppe_core-Debug-0ebb933d95c18361cf3b.json",
+					"name" : "ppe_core",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ppe_gui::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ppe_gui-Debug-565efd6850ed5006f0c6.json",
+					"name" : "ppe_gui",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ppe_ltspice_export_tests::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ppe_ltspice_export_tests-Debug-8f665a68c3e3ee24ac59.json",
+					"name" : "ppe_ltspice_export_tests",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ppe_project_design_export_tests::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ppe_project_design_export_tests-Debug-a2ffbfcb0163977cda38.json",
+					"name" : "ppe_project_design_export_tests",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ppe_project_design_tests::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ppe_project_design_tests-Debug-848370bb1b601b1f77cc.json",
+					"name" : "ppe_project_design_tests",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ppe_psu_basic_model_tests::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ppe_psu_basic_model_tests-Debug-7a19d150a5f62bc45b6d.json",
+					"name" : "ppe_psu_basic_model_tests",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ppe_tests::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ppe_tests-Debug-70a88077e85842ea0d4d.json",
+					"name" : "ppe_tests",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta/build/debug",
+		"source" : "/home/dominik/Dokumenty/Projekty/Elekronika/Pomocnik projektanta"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

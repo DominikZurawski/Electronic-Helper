@@ -4,6 +4,7 @@
 #include <QGraphicsView>
 
 #include <functional>
+#include <string>
 
 namespace pep::modules::project_design {
 
@@ -30,7 +31,7 @@ public:
   std::function<void()> on_add_power;
   std::function<void()> on_add_amp_model1b;
   std::function<void()> on_delete_selected;
-  std::function<void(int block_id, const QString &port_id)> on_port_clicked;
+  std::function<void(int block_id, const std::string &port_id)> on_port_clicked;
 
 protected:
   void wheelEvent(QWheelEvent *event) override;
