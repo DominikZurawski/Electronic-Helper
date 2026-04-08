@@ -15,7 +15,7 @@ class Module {
 public:
   virtual ~Module() = default;
   virtual ModuleInfo info() const = 0;
-  virtual int run(const std::vector<std::string>& args) = 0;
+  virtual int run(const std::vector<std::string> &args) = 0;
 };
 
 } // namespace pep

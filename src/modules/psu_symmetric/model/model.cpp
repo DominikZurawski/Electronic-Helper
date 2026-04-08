@@ -2,7 +2,7 @@
 
 namespace pep::modules::psu_symmetric {
 
-Output compute(const Input& input) {
+Output compute(const Input &input) {
   Output out;
   const double vpeak = input.vin_ac_rms * 1.414;
   const double vrect = vpeak - 2.0 * input.diode_drop;

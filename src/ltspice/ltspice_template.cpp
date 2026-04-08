@@ -13,7 +13,7 @@ static bool is_digit(char ch) {
   return ch >= '0' && ch <= '9';
 }
 
-std::vector<std::string> split_lines(const std::string& text) {
+std::vector<std::string> split_lines(const std::string &text) {
   std::vector<std::string> lines;
   std::string current;
   current.reserve(128);
@@ -29,33 +29,48 @@ std::vector<std::string> split_lines(const std::string& text) {
   return lines;
 }
 
-std::string join_lines(const std::vector<std::string>& lines) {
+std::string join_lines(const std::vector<std::string> &lines) {
   std::ostringstream out;
   for (std::size_t i = 0; i < lines.size(); ++i) {
     out << lines[i];
-    if (i + 1 != lines.size()) out << "\n";
+    if (i + 1 != lines.size()) {
+      out << "\n";
+    }
   }
   return out.str();
 }
 
 } // namespace
 
-std::string ltspice_detect_value_suffix(const std::string& asc, const std::string& inst_name) {
+std::string ltspice_detect_value_suffix(const std::string &asc, const std::string &inst_name) {
   const auto lines = split_lines(asc);
   for (std::size_t i = 0; i < lines.size(); ++i) {
-    const auto& line = lines[i];
-    if (line.rfind("SYMATTR InstName ", 0) != 0) continue;
+    const auto &line = lines[i];
+    if (line.rfind("SYMATTR InstName ", 0) != 0) {
+      continue;
+    }
     const std::string name = line.substr(std::string("SYMATTR InstName ").size());
-    if (name != inst_name) continue;
+    if (name != inst_name) {
+      continue;
+    }
 
     for (std::size_t j = i + 1; j < lines.size(); ++j) {
-      const auto& next = lines[j];
-      if (next.rfind("SYMATTR InstName ", 0) == 0) break;
-      if (next.rfind("SYMATTR Value ", 0) != 0) continue;
+      const auto &next = lines[j];
+      if (next.rfind("SYMATTR InstName ", 0) == 0) {
+        break;
+      }
+      if (next.rfind("SYMATTR Value ", 0) != 0) {
+        continue;
+      }
       const std::string raw = next.substr(std::string("SYMATTR Value ").size());
       std::size_t k = 0;
-      while (k < raw.size() && (is_digit(raw[k]) || raw[k] == '.' || raw[k] == '+' || raw[k] == '-')) ++k;
-      if (k >= raw.size()) return "";
+      while (k < raw.size() &&
+             (is_digit(raw[k]) || raw[k] == '.' || raw[k] == '+' || raw[k] == '-')) {
+        ++k;
+      }
+      if (k >= raw.size()) {
+        return "";
+      }
       return raw.substr(k);
     }
     return "";
@@ -63,9 +78,9 @@ std::string ltspice_detect_value_suffix(const std::string& asc, const std::strin
   return "";
 }
 
-LtspiceAscPatchResult ltspice_patch_asc_values(
-    const std::string& asc,
-    const std::unordered_map<std::string, std::string>& inst_to_value) {
+LtspiceAscPatchResult
+ltspice_patch_asc_values(const std::string &asc,
+                         const std::unordered_map<std::string, std::string> &inst_to_value) {
   LtspiceAscPatchResult result;
   result.asc = asc;
   if (asc.empty()) {
@@ -78,17 +93,21 @@ LtspiceAscPatchResult ltspice_patch_asc_values(
   std::unordered_set<std::string> seen_insts;
   std::unordered_set<std::string> patched_insts;
 
-  for (auto& line : lines) {
+  for (auto &line : lines) {
     std::istringstream iss(line);
     std::string head;
     iss >> head;
-    if (head != "SYMATTR") continue;
+    if (head != "SYMATTR") {
+      continue;
+    }
 
     std::string key;
     iss >> key;
     if (key == "InstName") {
       iss >> current_inst;
-      if (!current_inst.empty()) seen_insts.insert(current_inst);
+      if (!current_inst.empty()) {
+        seen_insts.insert(current_inst);
+      }
       continue;
     }
 
@@ -101,7 +120,7 @@ LtspiceAscPatchResult ltspice_patch_asc_values(
     }
   }
 
-  for (const auto& [inst, _] : inst_to_value) {
+  for (const auto &[inst, _] : inst_to_value) {
     if (patched_insts.find(inst) == patched_insts.end()) {
       if (seen_insts.find(inst) == seen_insts.end()) {
         result.warnings.push_back("Nie znaleziono elementu w .asc: " + inst);
@@ -116,4 +135,3 @@ LtspiceAscPatchResult ltspice_patch_asc_values(
 }
 
 } // namespace pep
-

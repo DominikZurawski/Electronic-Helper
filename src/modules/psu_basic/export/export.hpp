@@ -11,11 +11,9 @@ struct ExportInput {
   double capacitor_uF = 0.0;
 };
 
-std::string export_netlist(const ExportInput& input);
-std::string export_schematic(const ExportInput& input,
-                             bool full_wave,
-                             const std::string& cir_filename,
-                             const std::string& symbol_transformer,
-                             const std::string& symbol_bridge);
+std::string export_netlist(const ExportInput &input);
+std::string export_schematic(const ExportInput &input, bool full_wave,
+                             const std::string &cir_filename, const std::string &symbol_transformer,
+                             const std::string &symbol_bridge);
 
 } // namespace pep::modules::psu_basic

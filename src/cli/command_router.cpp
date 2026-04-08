@@ -5,7 +5,8 @@
 
 namespace pep {
 
-int CommandRouter::route(const std::vector<std::string>& args, const ModuleRegistry& registry) const {
+int CommandRouter::route(const std::vector<std::string> &args,
+                         const ModuleRegistry &registry) const {
   if (args.size() <= 1) {
     print_usage();
     return 1;
@@ -36,16 +37,16 @@ int CommandRouter::route(const std::vector<std::string>& args, const ModuleRegis
   return 1;
 }
 
-int CommandRouter::run_list(const ModuleRegistry& registry) const {
+int CommandRouter::run_list(const ModuleRegistry &registry) const {
   auto modules = registry.list();
   std::cout << "Dostępne moduły:" << "\n";
-  for (const auto& module : modules) {
+  for (const auto &module : modules) {
     std::cout << "- " << module.id << " | " << module.name << " | " << module.description << "\n";
   }
   return 0;
 }
 
-int CommandRouter::run_ltspice_import(const std::vector<std::string>& args) const {
+int CommandRouter::run_ltspice_import(const std::vector<std::string> &args) const {
   if (args.size() < 3) {
     std::cout << "Podaj ścieżkę do pliku .asc/.cir/.net\n";
     return 1;

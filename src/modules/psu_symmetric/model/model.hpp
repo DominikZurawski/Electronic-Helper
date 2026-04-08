@@ -16,6 +16,6 @@ struct Output {
   double ripple_vpp = 0.0;
 };
 
-Output compute(const Input& input);
+Output compute(const Input &input);
 
 } // namespace pep::modules::psu_symmetric

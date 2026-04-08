@@ -4,7 +4,7 @@
 
 namespace pep {
 
-std::string LtspiceExporter::export_psu_basic_netlist(const LtspiceExportRequest& req) const {
+std::string LtspiceExporter::export_psu_basic_netlist(const LtspiceExportRequest &req) const {
   std::ostringstream out;
   out << "* " << (req.title.empty() ? "PPE PSU Basic" : req.title) << "\n";
   out << "V1 in 0 SINE(0 " << req.vin_ac_rms << " " << req.mains_hz << ")\n";
@@ -25,10 +25,10 @@ std::string LtspiceExporter::export_psu_basic_netlist(const LtspiceExportRequest
   return out.str();
 }
 
-std::string LtspiceExporter::export_psu_basic_schematic(const LtspiceExportRequest& req,
-                                                        const std::string& cir_filename,
-                                                        const std::string& symbol_transformer,
-                                                        const std::string& symbol_bridge) const {
+std::string LtspiceExporter::export_psu_basic_schematic(const LtspiceExportRequest &req,
+                                                        const std::string &cir_filename,
+                                                        const std::string &symbol_transformer,
+                                                        const std::string &symbol_bridge) const {
   std::ostringstream out;
   out << "Version 4\n";
   out << "SHEET 1 880 680\n";
@@ -64,14 +64,14 @@ std::string LtspiceExporter::export_psu_basic_schematic(const LtspiceExportReque
     out << "TEXT 248 120 Left 2 Mostek\n";
 
     // AC rails from source
-    out << "WIRE 96 176 240 176\n";   // AC1 to D1/D2
-    out << "WIRE 96 208 240 208\n";   // AC2 to D2/D1
+    out << "WIRE 96 176 240 176\n"; // AC1 to D1/D2
+    out << "WIRE 96 208 240 208\n"; // AC2 to D2/D1
 
     // Bridge internal connections
-    out << "WIRE 240 176 240 208\n";  // left vertical
-    out << "WIRE 320 176 320 208\n";  // right vertical
-    out << "WIRE 352 176 416 176\n";  // + output
-    out << "WIRE 352 208 416 208\n";  // - output
+    out << "WIRE 240 176 240 208\n"; // left vertical
+    out << "WIRE 320 176 320 208\n"; // right vertical
+    out << "WIRE 352 176 416 176\n"; // + output
+    out << "WIRE 352 208 416 208\n"; // - output
   } else {
     out << "SYMBOL diode 256 160 R0\n";
     out << "SYMATTR InstName D1\n";
@@ -87,7 +87,8 @@ std::string LtspiceExporter::export_psu_basic_schematic(const LtspiceExportReque
 
   out << "SYMBOL res 576 160 R0\n";
   out << "SYMATTR InstName Rload\n";
-  out << "SYMATTR Value " << (req.load_current > 0.0 ? (req.vin_ac_rms / req.load_current) : 1000.0) << "\n";
+  out << "SYMATTR Value " << (req.load_current > 0.0 ? (req.vin_ac_rms / req.load_current) : 1000.0)
+      << "\n";
 
   out << "WIRE 496 176 576 176\n";
   out << "WIRE 656 176 720 176\n";

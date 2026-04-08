@@ -20,7 +20,7 @@ struct LtspiceImportResult {
 
 class LtspiceImporter {
 public:
-  LtspiceImportResult import_file(const std::string& path) const;
+  LtspiceImportResult import_file(const std::string &path) const;
 };
 
 } // namespace pep

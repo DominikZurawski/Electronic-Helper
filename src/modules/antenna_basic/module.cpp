@@ -10,13 +10,11 @@ public:
     return {"antenna-basic", "Anteny", "Podstawowe wzory i checklisty dla anten"};
   }
 
-  int run(const std::vector<std::string>&) override {
-    return 0;
-  }
+  int run(const std::vector<std::string> &) override { return 0; }
 };
-}  // namespace
+} // namespace
 
-void register_module(pep::ModuleRegistry& registry) {
+void register_module(pep::ModuleRegistry &registry) {
   registry.register_module("antenna-basic", [] { return std::make_unique<AntennaModule>(); });
 }
 

@@ -10,11 +10,9 @@ struct TemplateExportResult {
   std::vector<std::string> warnings;
 };
 
-TemplateExportResult export_schematic_from_asc_template(double vin_ac_rms,
-                                                        double mains_hz,
-                                                        double load_current,
-                                                        double capacitor_uF,
-                                                        const std::string& asc_template);
+TemplateExportResult export_schematic_from_asc_template(double vin_ac_rms, double mains_hz,
+                                                        double load_current, double capacitor_uF,
+                                                        const std::string &asc_template);
 
 // Exact built-in template (same content as the bundled resource), used only as a fallback
 // if Qt resources fail to load at runtime.

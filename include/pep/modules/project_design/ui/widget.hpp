@@ -8,7 +8,7 @@ namespace pep::modules::project_design {
 
 class Widget : public QWidget {
 public:
-  explicit Widget(QWidget* parent = nullptr);
+  explicit Widget(QWidget *parent = nullptr);
   ~Widget() override;
 
 private:

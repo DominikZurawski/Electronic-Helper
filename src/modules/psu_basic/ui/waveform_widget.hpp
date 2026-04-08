@@ -4,14 +4,7 @@
 
 namespace pep::modules::psu_basic {
 
-enum class WaveformType {
-  Sinus,
-  Square,
-  Triangle,
-  HalfWave,
-  FullWave,
-  Filtered
-};
+enum class WaveformType { Sinus, Square, Triangle, HalfWave, FullWave, Filtered };
 
 struct WaveformParams {
   double vpeak = 0.0;
@@ -23,12 +16,12 @@ struct WaveformParams {
 
 class WaveformWidget : public QWidget {
 public:
-  explicit WaveformWidget(QWidget* parent = nullptr);
+  explicit WaveformWidget(QWidget *parent = nullptr);
 
-  void set_params(const WaveformParams& params);
+  void set_params(const WaveformParams &params);
 
 protected:
-  void paintEvent(QPaintEvent* event) override;
+  void paintEvent(QPaintEvent *event) override;
 
 private:
   WaveformParams params_;

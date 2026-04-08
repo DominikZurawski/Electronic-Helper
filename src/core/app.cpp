@@ -19,9 +19,9 @@ ModuleRegistry build_registry() {
   return registry;
 }
 
-}  // namespace
+} // namespace
 
-int App::run(const std::vector<std::string>& args) {
+int App::run(const std::vector<std::string> &args) {
   ModuleRegistry registry = build_registry();
   CommandRouter router;
   return router.route(args, registry);

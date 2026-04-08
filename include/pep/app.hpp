@@ -7,7 +7,7 @@ namespace pep {
 
 class App {
 public:
-  int run(const std::vector<std::string>& args);
+  int run(const std::vector<std::string> &args);
 };
 
 } // namespace pep

@@ -24,8 +24,8 @@ struct PortDef {
 
 struct Block {
   int id = 0;
-  QString kind;     // "power" | "amplifier"
-  QString variant;  // e.g. "psu_symmetric" | "psu_unregulated" | "model1b"
+  QString kind;    // "power" | "amplifier"
+  QString variant; // e.g. "psu_symmetric" | "psu_unregulated" | "model1b"
   QString title;
   QPointF canvas_pos{0.0, 0.0};
 
@@ -59,11 +59,11 @@ struct Connection {
 QString port_type_label(PortType t);
 bool ports_compatible(PortType a, PortType b);
 
-Block make_power_block(int id, const QString& title, const QString& variant);
-Block make_amp_model1b_block(int id, const QString& title);
+Block make_power_block(int id, const QString &title, const QString &variant);
+Block make_amp_model1b_block(int id, const QString &title);
 
-std::vector<PortDef> ports_for(const Block& b);
-std::optional<PortDef> find_port(const Block& b, const QString& port_id);
-Block* find_block(std::vector<Block>& blocks, int id);
+std::vector<PortDef> ports_for(const Block &b);
+std::optional<PortDef> find_port(const Block &b, const QString &port_id);
+Block *find_block(std::vector<Block> &blocks, int id);
 
 } // namespace pep::modules::project_design

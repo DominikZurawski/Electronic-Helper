@@ -8,10 +8,77 @@ project(PomocnikProjektantaElektronika
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 option(PPE_ENABLE_WARNINGS "Enable warnings" ON)
 option(PPE_ENABLE_TESTS "Enable tests" ON)
 option(PPE_ENABLE_GUI "Enable Qt GUI" ON)
+
+file(GLOB_RECURSE PPE_CLANG_FORMAT_FILES CONFIGURE_DEPENDS
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cxx
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cxx
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.h
+)
+
+file(GLOB_RECURSE PPE_CLANG_TIDY_FILES CONFIGURE_DEPENDS
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cxx
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cc
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cxx
+)
+
+find_program(PPE_CLANG_FORMAT_EXE NAMES clang-format)
+if (PPE_CLANG_FORMAT_EXE)
+  add_custom_target(format
+    COMMAND ${PPE_CLANG_FORMAT_EXE} -i --style=file ${PPE_CLANG_FORMAT_FILES}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMENT "Formatting C++ sources with clang-format"
+    VERBATIM
+    COMMAND_EXPAND_LISTS
+  )
+
+  add_custom_target(format-check
+    COMMAND ${PPE_CLANG_FORMAT_EXE} --dry-run --Werror --style=file ${PPE_CLANG_FORMAT_FILES}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMENT "Checking C++ formatting with clang-format"
+    VERBATIM
+    COMMAND_EXPAND_LISTS
+  )
+else()
+  message(STATUS "clang-format not found. Targets 'format' and 'format-check' will not be available.")
+endif()
+
+find_program(PPE_CLANG_TIDY_EXE NAMES clang-tidy)
+if (PPE_CLANG_TIDY_EXE)
+  add_custom_target(lint
+    COMMAND ${PPE_CLANG_TIDY_EXE} --quiet -p ${CMAKE_BINARY_DIR} ${PPE_CLANG_TIDY_FILES}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMENT "Running clang-tidy"
+    VERBATIM
+    COMMAND_EXPAND_LISTS
+  )
+
+  add_custom_target(lint-fix
+    COMMAND ${PPE_CLANG_TIDY_EXE} --quiet -fix -format-style=file -p ${CMAKE_BINARY_DIR} ${PPE_CLANG_TIDY_FILES}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMENT "Running clang-tidy with automatic fixes"
+    VERBATIM
+    COMMAND_EXPAND_LISTS
+  )
+else()
+  message(STATUS "clang-tidy not found. Targets 'lint' and 'lint-fix' will not be available.")
+endif()
 
 if (PPE_ENABLE_WARNINGS)
   if (MSVC)

@@ -11,12 +11,8 @@ struct CalcResult {
   double vmin = 0.0;
 };
 
-CalcResult compute_case(double vin_ac_rms,
-                        double diode_drop,
-                        double load_current,
-                        double capacitor_uF,
-                        double mains_hz,
-                        RectifierType rectifier) {
+CalcResult compute_case(double vin_ac_rms, double diode_drop, double load_current,
+                        double capacitor_uF, double mains_hz, RectifierType rectifier) {
   CalcResult out;
   const int diode_count = (rectifier == RectifierType::FullWaveBridge) ? 2 : 1;
   const double ripple_factor = (rectifier == RectifierType::FullWaveBridge) ? 2.0 : 1.0;
@@ -43,9 +39,9 @@ static double pct_up(double value, double pct) {
   return value * (1.0 + pct / 100.0);
 }
 
-}  // namespace
+} // namespace
 
-Output compute(const Input& input) {
+Output compute(const Input &input) {
   Output out;
 
   const int diode_count = (input.rectifier == RectifierType::FullWaveBridge) ? 2 : 1;
@@ -76,8 +72,10 @@ Output compute(const Input& input) {
   const double mains_min = pct_down(input.mains_hz, input.mains_tol_pct);
   const double mains_max = pct_up(input.mains_hz, input.mains_tol_pct);
 
-  const auto low = compute_case(vin_min, diode_max, current_max, cap_min, mains_min, input.rectifier);
-  const auto high = compute_case(vin_max, diode_min, current_min, cap_max, mains_max, input.rectifier);
+  const auto low =
+      compute_case(vin_min, diode_max, current_max, cap_min, mains_min, input.rectifier);
+  const auto high =
+      compute_case(vin_max, diode_min, current_min, cap_max, mains_max, input.rectifier);
 
   out.vdc_loaded_min = low.vdc_loaded;
   out.vdc_loaded_max = high.vdc_loaded;

@@ -8,33 +8,42 @@ namespace pep::modules::project_design {
 
 QString port_type_label(PortType t) {
   switch (t) {
-    case PortType::PowerPos:
-      return "Power +";
-    case PortType::PowerNeg:
-      return "Power -";
-    case PortType::Ground:
-      return "GND";
-    case PortType::AnalogIn:
-      return "Audio IN";
-    case PortType::AnalogOut:
-      return "Audio OUT";
-    default:
-      return "Unknown";
+  case PortType::PowerPos:
+    return "Power +";
+  case PortType::PowerNeg:
+    return "Power -";
+  case PortType::Ground:
+    return "GND";
+  case PortType::AnalogIn:
+    return "Audio IN";
+  case PortType::AnalogOut:
+    return "Audio OUT";
+  default:
+    return "Unknown";
   }
 }
 
 bool ports_compatible(PortType a, PortType b) {
-  if (a == PortType::Unknown || b == PortType::Unknown) return true;
-  if (a == PortType::Ground || b == PortType::Ground) return a == b;
-  if ((a == PortType::PowerPos || a == PortType::PowerNeg) || (b == PortType::PowerPos || b == PortType::PowerNeg)) {
+  if (a == PortType::Unknown || b == PortType::Unknown) {
+    return true;
+  }
+  if (a == PortType::Ground || b == PortType::Ground) {
     return a == b;
   }
-  if (a == PortType::AnalogOut) return b == PortType::AnalogIn;
-  if (b == PortType::AnalogOut) return a == PortType::AnalogIn;
+  if ((a == PortType::PowerPos || a == PortType::PowerNeg) ||
+      (b == PortType::PowerPos || b == PortType::PowerNeg)) {
+    return a == b;
+  }
+  if (a == PortType::AnalogOut) {
+    return b == PortType::AnalogIn;
+  }
+  if (b == PortType::AnalogOut) {
+    return a == PortType::AnalogIn;
+  }
   return true;
 }
 
-Block make_power_block(int id, const QString& title, const QString& variant) {
+Block make_power_block(int id, const QString &title, const QString &variant) {
   Block b;
   b.id = id;
   b.kind = "power";
@@ -46,7 +55,7 @@ Block make_power_block(int id, const QString& title, const QString& variant) {
   return b;
 }
 
-Block make_amp_model1b_block(int id, const QString& title) {
+Block make_amp_model1b_block(int id, const QString &title) {
   Block b;
   b.id = id;
   b.kind = "amplifier";
@@ -61,7 +70,7 @@ Block make_amp_model1b_block(int id, const QString& title) {
   return b;
 }
 
-std::vector<PortDef> ports_for(const Block& b) {
+std::vector<PortDef> ports_for(const Block &b) {
   if (b.kind == "power") {
     if (b.variant == "psu_symmetric") {
       // Port flags based on provided template (assets/ltspice/power.asc).
@@ -75,12 +84,15 @@ std::vector<PortDef> ports_for(const Block& b) {
       int i = 0;
       for (QString s : items) {
         s = s.trimmed();
-        if (s.isEmpty()) continue;
+        if (s.isEmpty()) {
+          continue;
+        }
         ports.push_back({QString("pos%1").arg(i++), s, PortType::PowerPos, {}});
       }
       return ports;
     }
-    // Unregulated PSU currently has no exported template, but still participates in typed connections.
+    // Unregulated PSU currently has no exported template, but still participates in typed
+    // connections.
     std::vector<PortDef> ports = {
         {"vcc", "Vcc", PortType::PowerPos, {}},
         {"vee", "Vee", PortType::PowerNeg, {}},
@@ -90,7 +102,9 @@ std::vector<PortDef> ports_for(const Block& b) {
     int i = 0;
     for (QString s : items) {
       s = s.trimmed();
-      if (s.isEmpty()) continue;
+      if (s.isEmpty()) {
+        continue;
+      }
       ports.push_back({QString("pos%1").arg(i++), s, PortType::PowerPos, {}});
     }
     return ports;
@@ -106,16 +120,20 @@ std::vector<PortDef> ports_for(const Block& b) {
   };
 }
 
-std::optional<PortDef> find_port(const Block& b, const QString& port_id) {
-  for (const auto& p : ports_for(b)) {
-    if (p.id == port_id) return p;
+std::optional<PortDef> find_port(const Block &b, const QString &port_id) {
+  for (const auto &p : ports_for(b)) {
+    if (p.id == port_id) {
+      return p;
+    }
   }
   return std::nullopt;
 }
 
-Block* find_block(std::vector<Block>& blocks, int id) {
-  for (auto& b : blocks) {
-    if (b.id == id) return &b;
+Block *find_block(std::vector<Block> &blocks, int id) {
+  for (auto &b : blocks) {
+    if (b.id == id) {
+      return &b;
+    }
   }
   return nullptr;
 }

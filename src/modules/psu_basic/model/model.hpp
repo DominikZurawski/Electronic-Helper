@@ -2,10 +2,7 @@
 
 namespace pep::modules::psu_basic {
 
-enum class RectifierType {
-  HalfWave,
-  FullWaveBridge
-};
+enum class RectifierType { HalfWave, FullWaveBridge };
 
 struct Input {
   double vin_ac_rms = 0.0;
@@ -39,6 +36,6 @@ struct Output {
   double vmin_max = 0.0;
 };
 
-Output compute(const Input& input);
+Output compute(const Input &input);
 
 } // namespace pep::modules::psu_basic

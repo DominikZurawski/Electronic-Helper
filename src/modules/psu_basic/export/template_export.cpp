@@ -18,8 +18,12 @@ std::string format_number(double v, int precision = 10) {
   out.setf(std::ios::fixed);
   out << std::setprecision(precision) << v;
   std::string s = out.str();
-  while (s.size() > 1 && s.find('.') != std::string::npos && s.back() == '0') s.pop_back();
-  if (!s.empty() && s.back() == '.') s.pop_back();
+  while (s.size() > 1 && s.find('.') != std::string::npos && s.back() == '0') {
+    s.pop_back();
+  }
+  if (!s.empty() && s.back() == '.') {
+    s.pop_back();
+  }
   return s;
 }
 
@@ -27,15 +31,14 @@ std::string format_number(double v, int precision = 10) {
 
 std::string built_in_psu_basic_asc_template() {
   // W tej chwili nie shipujemy już wbudowanego szablonu dla "PSU niestabilizowany".
-  // Szablony są rozdzielone na klocki (np. zasilanie symetryczne i wzmacniacz) w module "Projektowanie układu".
+  // Szablony są rozdzielone na elementy (np. zasilanie symetryczne i wzmacniacz) w module
+  // "Projektowanie układu".
   return "";
 }
 
-TemplateExportResult export_schematic_from_asc_template(double vin_ac_rms,
-                                                        double mains_hz,
-                                                        double load_current,
-                                                        double capacitor_uF,
-                                                        const std::string& asc_template) {
+TemplateExportResult export_schematic_from_asc_template(double vin_ac_rms, double mains_hz,
+                                                        double load_current, double capacitor_uF,
+                                                        const std::string &asc_template) {
   TemplateExportResult out;
   if (asc_template.empty()) {
     out.warnings.push_back("Pusty szablon .asc.");

@@ -12,6 +12,6 @@ struct Output {
   double half_wave_m = 0.0;
 };
 
-Output compute(const Input& input);
+Output compute(const Input &input);
 
 } // namespace pep::modules::antenna_basic

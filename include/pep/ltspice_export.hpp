@@ -15,11 +15,11 @@ struct LtspiceExportRequest {
 
 class LtspiceExporter {
 public:
-  std::string export_psu_basic_netlist(const LtspiceExportRequest& req) const;
-  std::string export_psu_basic_schematic(const LtspiceExportRequest& req,
-                                         const std::string& cir_filename,
-                                         const std::string& symbol_transformer,
-                                         const std::string& symbol_bridge) const;
+  std::string export_psu_basic_netlist(const LtspiceExportRequest &req) const;
+  std::string export_psu_basic_schematic(const LtspiceExportRequest &req,
+                                         const std::string &cir_filename,
+                                         const std::string &symbol_transformer,
+                                         const std::string &symbol_bridge) const;
 };
 
 } // namespace pep

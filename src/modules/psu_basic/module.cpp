@@ -7,16 +7,15 @@ namespace {
 class PsuBasicModule : public Module {
 public:
   ModuleInfo info() const override {
-    return {"psu-basic", "Zasilacz niestabilizowany", "Prosty kalkulator zasilacza niestabilizowanego"};
+    return {"psu-basic", "Zasilacz niestabilizowany",
+            "Prosty kalkulator zasilacza niestabilizowanego"};
   }
 
-  int run(const std::vector<std::string>&) override {
-    return 0;
-  }
+  int run(const std::vector<std::string> &) override { return 0; }
 };
-}  // namespace
+} // namespace
 
-void register_module(pep::ModuleRegistry& registry) {
+void register_module(pep::ModuleRegistry &registry) {
   registry.register_module("psu-basic", [] { return std::make_unique<PsuBasicModule>(); });
 }
 

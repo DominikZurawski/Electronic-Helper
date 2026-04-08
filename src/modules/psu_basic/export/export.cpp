@@ -4,7 +4,7 @@
 
 namespace pep::modules::psu_basic {
 
-std::string export_netlist(const ExportInput& input) {
+std::string export_netlist(const ExportInput &input) {
   pep::LtspiceExporter exporter;
   pep::LtspiceExportRequest req;
   req.title = "PPE PSU Basic";
@@ -15,11 +15,9 @@ std::string export_netlist(const ExportInput& input) {
   return exporter.export_psu_basic_netlist(req);
 }
 
-std::string export_schematic(const ExportInput& input,
-                             bool full_wave,
-                             const std::string& cir_filename,
-                             const std::string& symbol_transformer,
-                             const std::string& symbol_bridge) {
+std::string export_schematic(const ExportInput &input, bool full_wave,
+                             const std::string &cir_filename, const std::string &symbol_transformer,
+                             const std::string &symbol_bridge) {
   pep::LtspiceExporter exporter;
   pep::LtspiceExportRequest req;
   req.title = "PPE PSU Basic";

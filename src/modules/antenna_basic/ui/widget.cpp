@@ -10,17 +10,17 @@
 
 namespace pep::modules::antenna_basic {
 
-Widget::Widget(QWidget* parent) : QWidget(parent) {
-  auto* root = new QVBoxLayout(this);
+Widget::Widget(QWidget *parent) : QWidget(parent) {
+  auto *root = new QVBoxLayout(this);
 
-  auto* form = new QFormLayout();
-  auto* freq_input = new QLineEdit();
+  auto *form = new QFormLayout();
+  auto *freq_input = new QLineEdit();
   freq_input->setPlaceholderText("MHz");
 
   form->addRow("Częstotliwość (MHz)", freq_input);
 
-  auto* result = new QLabel("Wyniki pojawią się tutaj");
-  auto* button = new QPushButton("Oblicz");
+  auto *result = new QLabel("Wyniki pojawią się tutaj");
+  auto *button = new QPushButton("Oblicz");
 
   QObject::connect(button, &QPushButton::clicked, this, [=]() {
     Input input;

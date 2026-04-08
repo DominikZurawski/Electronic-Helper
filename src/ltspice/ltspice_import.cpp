@@ -5,7 +5,7 @@
 
 namespace pep {
 
-static void parse_asc_line(const std::string& line, LtspiceImportResult& result) {
+static void parse_asc_line(const std::string &line, LtspiceImportResult &result) {
   std::istringstream iss(line);
   std::string head;
   iss >> head;
@@ -37,7 +37,7 @@ static void parse_asc_line(const std::string& line, LtspiceImportResult& result)
   }
 }
 
-LtspiceImportResult LtspiceImporter::import_file(const std::string& path) const {
+LtspiceImportResult LtspiceImporter::import_file(const std::string &path) const {
   LtspiceImportResult result;
   result.source_path = path;
 

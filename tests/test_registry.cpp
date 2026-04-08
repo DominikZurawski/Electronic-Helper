@@ -8,7 +8,7 @@ int main() {
   registry.register_module("demo", [] {
     struct Demo : pep::Module {
       pep::ModuleInfo info() const override { return {"demo", "Demo", "Test"}; }
-      int run(const std::vector<std::string>&) override { return 0; }
+      int run(const std::vector<std::string> &) override { return 0; }
     };
     return std::make_unique<Demo>();
   });

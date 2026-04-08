@@ -2,7 +2,7 @@
 
 namespace pep::modules::antenna_basic {
 
-Output compute(const Input& input) {
+Output compute(const Input &input) {
   Output out;
   if (input.frequency_mhz > 0.0) {
     out.wavelength_m = 300.0 / input.frequency_mhz;
