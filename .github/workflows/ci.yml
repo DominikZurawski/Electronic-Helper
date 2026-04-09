@@ -30,11 +30,21 @@ jobs:
       - name: Configure
         run: cmake -S . -B build/ci -DCMAKE_BUILD_TYPE=Debug
 
-      - name: Build
+      - name: Build (Linux/macOS)
+        if: runner.os != 'Windows'
         run: cmake --build build/ci
 
-      - name: Test
+      - name: Build (Windows)
+        if: runner.os == 'Windows'
+        run: cmake --build build/ci --config Debug
+
+      - name: Test (Linux/macOS)
+        if: runner.os != 'Windows'
         run: ctest --test-dir build/ci --output-on-failure
+
+      - name: Test (Windows)
+        if: runner.os == 'Windows'
+        run: ctest --test-dir build/ci -C Debug --output-on-failure
 
       - name: Verify script (Linux only)
         if: runner.os == 'Linux'
