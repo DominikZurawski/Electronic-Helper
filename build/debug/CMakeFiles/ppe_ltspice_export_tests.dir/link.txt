@@ -1,1 +1,0 @@
-/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/ppe_ltspice_export_tests.dir/link.d CMakeFiles/ppe_ltspice_export_tests.dir/tests/test_ltspice_export.cpp.o -o ppe_ltspice_export_tests  libppe_core.a

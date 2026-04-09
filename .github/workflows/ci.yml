@@ -13,7 +13,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
@@ -31,7 +31,7 @@ jobs:
         run: cmake -S . -B build/ci -DCMAKE_BUILD_TYPE=Debug
 
       - name: Build
-        run: cmake --build build/ci --target ppe ppe_gui
+        run: cmake --build build/ci
 
       - name: Test
         run: ctest --test-dir build/ci --output-on-failure

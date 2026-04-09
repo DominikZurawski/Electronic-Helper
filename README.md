@@ -8,6 +8,7 @@ Celem projektu jest zestaw modułów i kalkulatorów pomagających w projektowan
 cmake -S . -B build
 cmake --build build
 ./build/ppe list
+./build/ppe_gui
 ```
 
 ## Polecenia CLI
@@ -90,3 +91,13 @@ Jeśli ktoś ma problemy z GUI na Wayland, można uruchomić:
 ```
 
 Skrypt buduje `ppe_gui` i uruchamia testy.
+
+## Formatowanie, lint i testy
+
+```bash
+cmake --build build --target format
+cmake --build build --target format-check
+cmake --build build --target lint
+cmake --build build --target lint-fix
+ctest --test-dir build --output-on-failure
+```
