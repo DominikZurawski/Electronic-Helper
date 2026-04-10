@@ -267,11 +267,16 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   auto *canvas_toolbar = new QWidget(right);
   auto *canvas_toolbar_l = new QHBoxLayout(canvas_toolbar);
   canvas_toolbar_l->setContentsMargins(0, 0, 0, 0);
-  auto *btn_add_power = new QPushButton("Dodaj zasilanie", canvas_toolbar);
-  auto *btn_add_amp = new QPushButton("Dodaj wzmacniacz 1(B)", canvas_toolbar);
+  auto *btn_add_element = new QPushButton("Dodaj element", canvas_toolbar);
+  auto *add_element_menu = new QMenu(btn_add_element);
+  auto *action_add_power = add_element_menu->addAction("Zasilacz liniowy");
+  auto *action_add_switching = add_element_menu->addAction("Zasilacz impulsowy");
+  auto *action_add_amp = add_element_menu->addAction("Wzmacniacz 1(B)");
+  btn_add_element->setMenu(add_element_menu);
+  auto *btn_remove_selected = new QPushButton("Usuń zaznaczony", canvas_toolbar);
   auto *btn_auto_layout = new QPushButton("Auto-rozmieszczenie", canvas_toolbar);
-  canvas_toolbar_l->addWidget(btn_add_power);
-  canvas_toolbar_l->addWidget(btn_add_amp);
+  canvas_toolbar_l->addWidget(btn_add_element);
+  canvas_toolbar_l->addWidget(btn_remove_selected);
   canvas_toolbar_l->addWidget(btn_auto_layout);
   canvas_toolbar_l->addStretch(1);
 
@@ -790,6 +795,11 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
     add_block(make_power_block(id, QString("Zasilanie #%1").arg(id).toStdString(),
                                BlockVariant::PsuSymmetric));
   };
+  auto add_switching_power_block = [this, add_block]() {
+    const int id = impl_->next_block_id++;
+    add_block(make_power_block(id, QString("Zasilanie #%1").arg(id).toStdString(),
+                               BlockVariant::PsuSwitching));
+  };
   auto add_amp_block = [this, add_block]() {
     const int id = impl_->next_block_id++;
     add_block(make_amp_model1b_block(id, QString("Wzmacniacz 1(B) #%1").arg(id).toStdString()));
@@ -823,6 +833,15 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
     impl_->manual_layout = false;
     refresh_canvas();
   };
+
+  QObject::connect(action_add_power, &QAction::triggered, this,
+                   [add_power_block]() { add_power_block(); });
+  QObject::connect(action_add_switching, &QAction::triggered, this,
+                   [add_switching_power_block]() { add_switching_power_block(); });
+  QObject::connect(action_add_amp, &QAction::triggered, this,
+                   [add_amp_block]() { add_amp_block(); });
+  QObject::connect(btn_remove_selected, &QPushButton::clicked, this,
+                   [delete_selected_block]() { delete_selected_block(); });
 
   auto handle_port_clicked = [this, refresh_connections_ui, recompute_and_validate,
                               refresh_canvas](int block_id, const std::string &port_id) {
@@ -971,8 +990,8 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   bind_widget_interactions(WidgetBindings{this,
                                           scene,
                                           view,
-                                          btn_add_power,
-                                          btn_add_amp,
+                                          nullptr,
+                                          nullptr,
                                           btn_auto_layout,
                                           add_conn,
                                           remove_conn,

@@ -2,9 +2,11 @@
 #include "src/ui/calculation/calculation_view.hpp"
 
 #include <QApplication>
+#include <QAction>
 #include <QComboBox>
 #include <QLabel>
 #include <QLineEdit>
+#include <QMenu>
 #include <QPushButton>
 
 #include <cassert>
@@ -111,10 +113,13 @@ void test_can_add_power_block_without_crash() {
   widget.show();
   app.processEvents();
 
-  auto *button = find_button(widget, "Dodaj zasilanie");
+  auto *button = find_button(widget, "Dodaj element");
   assert(button != nullptr);
-
-  button->click();
+  auto *menu = button->menu();
+  assert(menu != nullptr);
+  auto actions = menu->actions();
+  assert(!actions.empty());
+  actions.front()->trigger();
   app.processEvents();
 }
 
