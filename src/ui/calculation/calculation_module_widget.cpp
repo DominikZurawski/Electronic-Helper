@@ -20,6 +20,8 @@ CalculationModuleWidget::CalculationModuleWidget(QWidget *parent) : QWidget(pare
   description_label_ = description_label;
   layout->addWidget(description_label);
 
+  layout->addSpacing(4);
+
   auto *form_layout = new QFormLayout();
   form_layout->setContentsMargins(0, 0, 0, 0);
   form_layout->setRowWrapPolicy(QFormLayout::DontWrapRows);

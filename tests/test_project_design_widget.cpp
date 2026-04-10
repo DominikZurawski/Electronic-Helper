@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QComboBox>
 #include <QLabel>
+#include <QLineEdit>
 #include <QPushButton>
 
 #include <cassert>
@@ -62,6 +63,26 @@ QLabel *find_label_by_object_name(QWidget &widget, const QString &object_name) {
   for (auto *label : labels) {
     if (label && label->objectName() == object_name) {
       return label;
+    }
+  }
+  return nullptr;
+}
+
+QLineEdit *find_line_edit_by_object_name(QWidget &widget, const QString &object_name) {
+  const auto edits = widget.findChildren<QLineEdit *>();
+  for (auto *edit : edits) {
+    if (edit && edit->objectName() == object_name) {
+      return edit;
+    }
+  }
+  return nullptr;
+}
+
+QComboBox *find_combo_by_object_name(QWidget &widget, const QString &object_name) {
+  const auto combos = widget.findChildren<QComboBox *>();
+  for (auto *combo : combos) {
+    if (combo && combo->objectName() == object_name) {
+      return combo;
     }
   }
   return nullptr;
@@ -187,6 +208,35 @@ void test_transformer_mode_hides_irrelevant_input_row() {
   assert(!hint->isVisible());
 }
 
+void test_voltage_quantity_switch_converts_primary_value() {
+  int argc = 0;
+  char **argv = nullptr;
+  qputenv("QT_QPA_PLATFORM", "offscreen");
+  QApplication app(argc, argv);
+
+  pep::modules::project_design::Widget widget;
+  widget.show();
+  app.processEvents();
+
+  auto *quantity_combo = find_combo_by_object_name(widget, "transformerVoltageQuantity");
+  auto *primary_input = find_line_edit_by_object_name(widget, "transformerPrimaryInput");
+  assert(quantity_combo != nullptr);
+  assert(primary_input != nullptr);
+
+  primary_input->setText("230");
+  app.processEvents();
+
+  quantity_combo->setCurrentIndex(1);
+  app.processEvents();
+  const double peak_value = primary_input->text().toDouble();
+  assert(peak_value > 325.0 && peak_value < 325.5);
+
+  quantity_combo->setCurrentIndex(0);
+  app.processEvents();
+  const double rms_value = primary_input->text().toDouble();
+  assert(rms_value > 229.9 && rms_value < 230.1);
+}
+
 void test_calculation_panel_is_visible_and_has_space() {
   int argc = 0;
   char **argv = nullptr;
@@ -210,6 +260,7 @@ int main() {
   test_power_type_exposes_linear_and_switching_choices();
   test_symmetric_transformer_hint_is_visible();
   test_transformer_mode_hides_irrelevant_input_row();
+  test_voltage_quantity_switch_converts_primary_value();
   test_calculation_panel_is_visible_and_has_space();
   return 0;
 }

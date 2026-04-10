@@ -1,4 +1,5 @@
 /build/
+/build-asan/
 /build-debug/
 /build-release/
 .cmake/
@@ -23,6 +24,7 @@
 /ppe_gui
 /ppe_tests
 /build/
+/build-asan/
 /build-debug/
 /build-release/
 .cmake/

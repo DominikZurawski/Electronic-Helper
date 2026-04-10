@@ -12,6 +12,7 @@
 #include "widget_actions.hpp"
 #include "widget_bindings.hpp"
 
+#include "../../psu_basic/model/model.hpp"
 #include "../../psu_basic/ui/waveform_widget.hpp"
 #include "../../../ui/calculation/calculation_module_widget.hpp"
 #include "../../../ui/calculation/calculation_view.hpp"
@@ -72,6 +73,30 @@ namespace {
 constexpr int kLeftPanelHorizontalPadding = 8;
 constexpr int kFormLabelMinWidth = 230;
 
+pep::modules::psu_basic::WaveformShape to_psu_waveform(SignalWaveform waveform) {
+  switch (waveform) {
+  case SignalWaveform::Square:
+    return pep::modules::psu_basic::WaveformShape::Square;
+  case SignalWaveform::Triangle:
+    return pep::modules::psu_basic::WaveformShape::Triangle;
+  default:
+    return pep::modules::psu_basic::WaveformShape::Sine;
+  }
+}
+
+double convert_transformer_voltage_value(double value, VoltageQuantity from, VoltageQuantity to,
+                                         SignalWaveform waveform) {
+  if (from == to) {
+    return value;
+  }
+
+  const auto psu_waveform = to_psu_waveform(waveform);
+  if (from == VoltageQuantity::Rms && to == VoltageQuantity::Peak) {
+    return pep::modules::psu_basic::rms_to_peak(value, psu_waveform);
+  }
+  return pep::modules::psu_basic::peak_to_rms(value, psu_waveform);
+}
+
 void set_form_row_visible(QWidget *label, QWidget *field, bool visible) {
   if (label) {
     label->setVisible(visible);
@@ -86,6 +111,7 @@ void tune_form_layout(QFormLayout *layout) {
     return;
   }
 
+  layout->setContentsMargins(0, 0, 0, 0);
   layout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
   layout->setRowWrapPolicy(QFormLayout::DontWrapRows);
   layout->setLabelAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -208,6 +234,7 @@ struct Widget::Impl {
   std::function<void()> update_calculator_panels;
   std::function<void()> update_props_stack_height;
   std::function<void(int)> set_active;
+  VoltageQuantity last_transformer_voltage_quantity = VoltageQuantity::Rms;
 };
 
 Widget::Widget(QWidget *parent) : QWidget(parent) {
@@ -365,6 +392,8 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   impl_->current_input = current_input;
   impl_->cap_input = cap_input;
   transformer_primary_input->setPlaceholderText("np. 230");
+  transformer_primary_input->setObjectName("transformerPrimaryInput");
+  transformer_voltage_quantity->setObjectName("transformerVoltageQuantity");
   transformer_ratio_input->setPlaceholderText("Np:Ns, np. 19.17");
   transformer_secondary_input->setPlaceholderText("np. 12 RMS");
   vin_input->setPlaceholderText("VAC RMS");
@@ -376,14 +405,26 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   transformer_hint->setObjectName("transformerHint");
   transformer_hint->setStyleSheet(
       "QLabel#transformerHint { color: palette(window-text); font-size: 12px; font-style: italic; }");
+  auto *power_variant_row = new QWidget(power_props);
+  auto *power_variant_row_layout = new QHBoxLayout(power_variant_row);
+  power_variant_row_layout->setContentsMargins(0, 0, 0, 0);
+  power_variant_row_layout->setSpacing(8);
+  power_variant_row_layout->addWidget(power_family, 1);
+  power_variant_row_layout->addWidget(power_linear_variant, 1);
   auto *transformer_secondary_with_hint = new QWidget(power_props);
   auto *transformer_secondary_with_hint_layout = new QVBoxLayout(transformer_secondary_with_hint);
   transformer_secondary_with_hint_layout->setContentsMargins(0, 0, 0, 0);
   transformer_secondary_with_hint_layout->setSpacing(4);
   transformer_secondary_with_hint_layout->addWidget(transformer_secondary_input);
   transformer_secondary_with_hint_layout->addWidget(transformer_hint);
-  power_form->addRow("Typ zasilacza", power_family);
-  power_form->addRow("Podtyp liniowego", power_linear_variant);
+  auto *transformer_primary_with_quantity = new QWidget(power_props);
+  auto *transformer_primary_with_quantity_layout =
+      new QHBoxLayout(transformer_primary_with_quantity);
+  transformer_primary_with_quantity_layout->setContentsMargins(0, 0, 0, 0);
+  transformer_primary_with_quantity_layout->setSpacing(8);
+  transformer_primary_with_quantity_layout->addWidget(transformer_voltage_quantity, 0);
+  transformer_primary_with_quantity_layout->addWidget(transformer_primary_input, 1);
+  power_form->addRow("Rodzaj zasilacza", power_variant_row);
   tune_form_layout(power_form);
 
   auto *amp_props = new QWidget(props_stack);
@@ -432,10 +473,8 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   auto *transformer_module = new pep::ui::calculation::CalculationModuleWidget(power_calculator_tabs);
   transformer_module->form_layout()->addRow("Co chcesz obliczyć", transformer_mode);
   transformer_module->form_layout()->addRow("Przebieg napięcia", transformer_waveform);
-  transformer_module->form_layout()->addRow("Jaką wartość napięcia podajesz",
-                                            transformer_voltage_quantity);
   transformer_module->form_layout()->addRow("Napięcie uzwojenia pierwotnego",
-                                            transformer_primary_input);
+                                            transformer_primary_with_quantity);
   transformer_module->form_layout()->addRow(transformer_ratio_label, transformer_ratio_input);
   transformer_module->form_layout()->addRow(transformer_secondary_label, transformer_secondary_with_hint);
   tune_form_layout(transformer_module->form_layout());
@@ -593,6 +632,10 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
         refresh_power_source_combo);
     if (impl_->update_transformer_labels) {
       impl_->update_transformer_labels();
+    }
+    if (impl_->transformer_voltage_quantity) {
+      impl_->last_transformer_voltage_quantity =
+          static_cast<VoltageQuantity>(impl_->transformer_voltage_quantity->currentData().toInt());
     }
     if (impl_->update_calculator_panels) {
       impl_->update_calculator_panels();
@@ -824,7 +867,29 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
     recompute_and_validate();
   };
 
-  auto handle_transformer_voltage_quantity_changed = [=]() {
+  auto handle_transformer_voltage_quantity_changed = [=, this]() {
+    if (!impl_->syncing_active_to_form) {
+      const auto previous_quantity = impl_->last_transformer_voltage_quantity;
+      const auto new_quantity =
+          static_cast<VoltageQuantity>(impl_->transformer_voltage_quantity->currentData().toInt());
+      const auto waveform =
+          static_cast<SignalWaveform>(impl_->transformer_waveform->currentData().toInt());
+
+      const auto convert_line_edit = [&](QLineEdit *edit) {
+        if (!edit || edit->text().trimmed().isEmpty()) {
+          return;
+        }
+        const double converted =
+            convert_transformer_voltage_value(edit->text().toDouble(), previous_quantity,
+                                              new_quantity, waveform);
+        edit->setText(QString::number(converted, 'f', 3));
+      };
+
+      convert_line_edit(impl_->transformer_primary_input);
+      convert_line_edit(impl_->transformer_secondary_input);
+      impl_->last_transformer_voltage_quantity = new_quantity;
+    }
+
     sync_form_to_active();
     sync_active_to_form();
     update_transformer_labels();
