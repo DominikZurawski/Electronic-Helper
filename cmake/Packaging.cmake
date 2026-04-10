@@ -10,6 +10,18 @@ set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
 # Default generators (cross-platform safe)
 set(CPACK_GENERATOR "ZIP;TGZ")
 
+if (UNIX AND NOT APPLE)
+  list(APPEND CPACK_GENERATOR "RPM;DEB")
+
+  # Runtime dependencies for packaged GUI builds.
+  set(CPACK_RPM_PACKAGE_REQUIRES
+    "qt6-qtbase-gui, qt6-qtwebengine"
+  )
+  set(CPACK_DEBIAN_PACKAGE_DEPENDS
+    "libqt6widgets6, libqt6webenginewidgets6"
+  )
+endif()
+
 if (WIN32)
   list(APPEND CPACK_GENERATOR "NSIS")
   set(CPACK_NSIS_DISPLAY_NAME "Pomocnik Projektanta Elektronika")

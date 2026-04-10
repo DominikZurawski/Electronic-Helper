@@ -116,10 +116,16 @@ target_link_libraries(ppe PRIVATE ppe_core)
 
 if (PPE_ENABLE_GUI)
   find_package(Qt6 COMPONENTS Widgets QUIET)
-  if (Qt6_FOUND)
+  find_package(Qt6 COMPONENTS WebEngineWidgets QUIET)
+  if (TARGET Qt6::Widgets)
     set(CMAKE_AUTORCC ON)
     add_executable(ppe_gui
       src/gui/main.cpp
+      src/ui/calculation/calculation_builders.cpp
+      src/ui/calculation/calculation_html_renderer.cpp
+      src/ui/calculation/calculation_module_widget.cpp
+      src/ui/calculation/calculation_validation.cpp
+      src/ui/calculation/calculation_view.cpp
       src/modules/project_design/ui/widget.cpp
       src/modules/project_design/ui/enum_ui.cpp
       src/modules/project_design/ui/canvas_layout.cpp
@@ -151,6 +157,12 @@ if (PPE_ENABLE_GUI)
       assets/ppe.qrc
     )
     target_link_libraries(ppe_gui PRIVATE ppe_core Qt6::Widgets)
+    if (TARGET Qt6::WebEngineWidgets)
+      target_link_libraries(ppe_gui PRIVATE Qt6::WebEngineWidgets)
+      target_compile_definitions(ppe_gui PRIVATE PPE_HAS_QT_WEBENGINE)
+    else()
+      message(STATUS "Qt6 WebEngineWidgets not found. Calculation renderer will use fallback view.")
+    endif()
     target_include_directories(ppe_gui PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
     set_target_properties(ppe_gui PROPERTIES OUTPUT_NAME "ppe_gui")
     if (APPLE)
@@ -164,7 +176,7 @@ if (PPE_ENABLE_GUI)
       endif()
     endif()
   else()
-    message(STATUS "Qt6 not found. GUI target 'ppe_gui' will not be built.")
+    message(STATUS "Qt6 Widgets not found. GUI target 'ppe_gui' will not be built.")
     message(STATUS "Install on Fedora: sudo dnf install qt6-qtbase-devel qt6-qtbase-gui")
     message(STATUS "Install on Ubuntu/Debian: sudo apt install qt6-base-dev")
     message(STATUS "Install on macOS: brew install qt")
@@ -210,7 +222,68 @@ if (PPE_ENABLE_TESTS)
   )
   add_test(NAME psu_basic_model COMMAND ppe_psu_basic_model_tests)
 
+  add_executable(ppe_calculation_renderer_tests
+    tests/test_calculation_html_renderer.cpp
+    src/ui/calculation/calculation_html_renderer.cpp
+    src/ui/calculation/calculation_validation.cpp
+  )
+  target_include_directories(ppe_calculation_renderer_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}
+  )
+  add_test(NAME calculation_renderer COMMAND ppe_calculation_renderer_tests)
+
+  add_executable(ppe_calculation_builders_tests
+    tests/test_calculation_builders.cpp
+    src/ui/calculation/calculation_builders.cpp
+  )
+  target_include_directories(ppe_calculation_builders_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}
+  )
+  add_test(NAME calculation_builders COMMAND ppe_calculation_builders_tests)
+
+  add_executable(ppe_calculation_validation_tests
+    tests/test_calculation_validation.cpp
+    src/ui/calculation/calculation_builders.cpp
+    src/ui/calculation/calculation_validation.cpp
+  )
+  target_include_directories(ppe_calculation_validation_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}
+  )
+  add_test(NAME calculation_validation COMMAND ppe_calculation_validation_tests)
+
+  add_executable(ppe_calculation_pipeline_tests
+    tests/test_calculation_pipeline.cpp
+    src/ui/calculation/calculation_builders.cpp
+    src/ui/calculation/calculation_html_renderer.cpp
+    src/ui/calculation/calculation_validation.cpp
+  )
+  target_include_directories(ppe_calculation_pipeline_tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}
+  )
+  add_test(NAME calculation_pipeline COMMAND ppe_calculation_pipeline_tests)
+
   if (TARGET Qt6::Widgets)
+    add_executable(ppe_antenna_basic_widget_tests
+      tests/test_antenna_basic_widget.cpp
+      src/ui/calculation/calculation_builders.cpp
+      src/ui/calculation/calculation_html_renderer.cpp
+      src/ui/calculation/calculation_module_widget.cpp
+      src/ui/calculation/calculation_validation.cpp
+      src/ui/calculation/calculation_view.cpp
+      src/modules/antenna_basic/ui/widget.cpp
+      src/modules/antenna_basic/model/model.cpp
+    )
+    target_include_directories(ppe_antenna_basic_widget_tests PRIVATE
+      ${CMAKE_CURRENT_SOURCE_DIR}/include
+      ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+    target_link_libraries(ppe_antenna_basic_widget_tests PRIVATE Qt6::Widgets)
+    add_test(NAME antenna_basic_widget COMMAND ppe_antenna_basic_widget_tests)
+
     add_executable(ppe_project_design_tests
       tests/test_project_design_connection_ops.cpp
       src/modules/project_design/model/model.cpp
@@ -221,6 +294,46 @@ if (PPE_ENABLE_TESTS)
     )
     target_link_libraries(ppe_project_design_tests PRIVATE Qt6::Widgets)
     add_test(NAME project_design_connection_ops COMMAND ppe_project_design_tests)
+
+    add_executable(ppe_project_design_widget_tests
+      tests/test_project_design_widget.cpp
+      src/ui/calculation/calculation_builders.cpp
+      src/ui/calculation/calculation_html_renderer.cpp
+      src/ui/calculation/calculation_module_widget.cpp
+      src/ui/calculation/calculation_validation.cpp
+      src/ui/calculation/calculation_view.cpp
+      src/modules/project_design/ui/widget.cpp
+      src/modules/project_design/ui/enum_ui.cpp
+      src/modules/project_design/ui/canvas_layout.cpp
+      src/modules/project_design/ui/canvas_scene.cpp
+      src/modules/project_design/ui/connection_ui.cpp
+      src/modules/project_design/ui/active_block_view.cpp
+      src/modules/project_design/ui/widget_actions.cpp
+      src/modules/project_design/ui/widget_bindings.cpp
+      src/modules/project_design/ui/export_dialog.cpp
+      src/modules/project_design/ui/export_actions.cpp
+      src/modules/project_design/ui/form_sync.cpp
+      src/modules/project_design/model/model.cpp
+      src/modules/project_design/model/connection_ops.cpp
+      src/modules/project_design/graph/graph.cpp
+      src/modules/project_design/export/export.cpp
+      src/modules/project_design/export/export_component_order.cpp
+      src/modules/project_design/export/export_render.cpp
+      src/modules/project_design/export/export_topology.cpp
+      src/modules/project_design/export/export_value_builders.cpp
+      src/modules/project_design/export/asc_ops.cpp
+      src/modules/project_design/export/template_loader.cpp
+      src/modules/psu_basic/ui/waveform_widget.cpp
+      src/modules/psu_basic/model/model.cpp
+      src/modules/psu_basic/export/export.cpp
+      src/modules/psu_basic/export/template_export.cpp
+    )
+    target_include_directories(ppe_project_design_widget_tests PRIVATE
+      ${CMAKE_CURRENT_SOURCE_DIR}/include
+      ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+    target_link_libraries(ppe_project_design_widget_tests PRIVATE ppe_core Qt6::Widgets)
+    add_test(NAME project_design_widget COMMAND ppe_project_design_widget_tests)
 
     add_executable(ppe_project_design_export_tests
       tests/test_project_design_export.cpp

@@ -41,6 +41,41 @@ void bind_widget_interactions(const WidgetBindings &bindings) {
                      [on_auto_layout = bindings.on_auto_layout]() { on_auto_layout(); });
   }
 
+  if (bindings.power_family && bindings.on_power_family_changed) {
+    QObject::connect(
+        bindings.power_family, &QComboBox::currentIndexChanged, bindings.owner,
+        [on_power_family_changed = bindings.on_power_family_changed]() { on_power_family_changed(); });
+  }
+
+  if (bindings.power_linear_variant && bindings.on_power_linear_variant_changed) {
+    QObject::connect(bindings.power_linear_variant, &QComboBox::currentIndexChanged, bindings.owner,
+                     [on_power_linear_variant_changed = bindings.on_power_linear_variant_changed]() {
+                       on_power_linear_variant_changed();
+                     });
+  }
+
+  if (bindings.transformer_mode && bindings.on_transformer_mode_changed) {
+    QObject::connect(bindings.transformer_mode, &QComboBox::currentIndexChanged, bindings.owner,
+                     [on_transformer_mode_changed = bindings.on_transformer_mode_changed]() {
+                       on_transformer_mode_changed();
+                     });
+  }
+
+  if (bindings.transformer_waveform && bindings.on_transformer_waveform_changed) {
+    QObject::connect(bindings.transformer_waveform, &QComboBox::currentIndexChanged, bindings.owner,
+                     [on_transformer_waveform_changed = bindings.on_transformer_waveform_changed]() {
+                       on_transformer_waveform_changed();
+                     });
+  }
+
+  if (bindings.transformer_voltage_quantity && bindings.on_transformer_voltage_quantity_changed) {
+    QObject::connect(
+        bindings.transformer_voltage_quantity, &QComboBox::currentIndexChanged, bindings.owner,
+        [on_transformer_voltage_quantity_changed = bindings.on_transformer_voltage_quantity_changed]() {
+          on_transformer_voltage_quantity_changed();
+        });
+  }
+
   if (bindings.variant && bindings.on_variant_changed) {
     QObject::connect(
         bindings.variant, &QComboBox::currentIndexChanged, bindings.owner,
@@ -55,11 +90,13 @@ void bind_widget_interactions(const WidgetBindings &bindings) {
     QObject::connect(line_edit, &QLineEdit::textChanged, bindings.owner,
                      [handler]() { handler(); });
   };
+  connect_line_edit(bindings.transformer_primary_input, bindings.on_power_input_changed);
+  connect_line_edit(bindings.transformer_ratio_input, bindings.on_power_input_changed);
+  connect_line_edit(bindings.transformer_secondary_input, bindings.on_power_input_changed);
   connect_line_edit(bindings.vin_input, bindings.on_power_input_changed);
   connect_line_edit(bindings.freq_input, bindings.on_power_input_changed);
   connect_line_edit(bindings.current_input, bindings.on_power_input_changed);
   connect_line_edit(bindings.cap_input, bindings.on_power_input_changed);
-  connect_line_edit(bindings.extra_rails_input, bindings.on_extra_rails_changed);
   connect_line_edit(bindings.amp_amp_input, bindings.on_amp_amp_changed);
   connect_line_edit(bindings.amp_freq_input, bindings.on_amp_freq_changed);
   connect_line_edit(bindings.amp_gain_input, bindings.on_amp_gain_changed);
@@ -78,16 +115,21 @@ void bind_widget_interactions(const WidgetBindings &bindings) {
   }
 
   if (bindings.conn_from_block && bindings.conn_from_port && bindings.refresh_ports_combo) {
-    QObject::connect(
-        bindings.conn_from_block, &QComboBox::currentIndexChanged, bindings.owner, [&bindings]() {
-          bindings.refresh_ports_combo(bindings.conn_from_block, bindings.conn_from_port);
-        });
+    auto *from_block = bindings.conn_from_block;
+    auto *from_port = bindings.conn_from_port;
+    const auto refresh_ports_combo = bindings.refresh_ports_combo;
+    QObject::connect(from_block, &QComboBox::currentIndexChanged, bindings.owner,
+                     [from_block, from_port, refresh_ports_combo]() {
+                       refresh_ports_combo(from_block, from_port);
+                     });
   }
   if (bindings.conn_to_block && bindings.conn_to_port && bindings.refresh_ports_combo) {
-    QObject::connect(bindings.conn_to_block, &QComboBox::currentIndexChanged, bindings.owner,
-                     [&bindings]() {
-                       bindings.refresh_ports_combo(bindings.conn_to_block, bindings.conn_to_port);
-                     });
+    auto *to_block = bindings.conn_to_block;
+    auto *to_port = bindings.conn_to_port;
+    const auto refresh_ports_combo = bindings.refresh_ports_combo;
+    QObject::connect(
+        to_block, &QComboBox::currentIndexChanged, bindings.owner,
+        [to_block, to_port, refresh_ports_combo]() { refresh_ports_combo(to_block, to_port); });
   }
 
   if (bindings.add_conn && bindings.on_add_connection) {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../psu_basic/ui/waveform_widget.hpp"
+#include "../../../ui/calculation/calculation_view.hpp"
 
 #include <vector>
 
@@ -14,9 +15,11 @@ struct Connection;
 
 struct ActiveBlockWidgets {
   QLabel *active_title = nullptr;
-  QLabel *compute_result = nullptr;
   QLabel *validation = nullptr;
   QLabel *ports_label = nullptr;
+  pep::ui::calculation::CalculationView *compute_view = nullptr;
+  pep::ui::calculation::CalculationView *transformer_compute_view = nullptr;
+  pep::ui::calculation::CalculationView *rectifier_compute_view = nullptr;
   pep::modules::psu_basic::WaveformWidget *waveform_in = nullptr;
   pep::modules::psu_basic::WaveformWidget *waveform_out = nullptr;
   QTabWidget *bottom_tabs = nullptr;

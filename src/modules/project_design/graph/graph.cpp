@@ -10,17 +10,18 @@
 namespace pep::modules::project_design {
 
 BlockItem::BlockItem(int block_id, const QString &text,
-                     std::function<void(int, const QPointF &)> on_moved, QGraphicsItem *parent)
+                     std::function<void(int, const QPointF &)> on_moved, const QColor &fill_color,
+                     const QColor &text_color, QGraphicsItem *parent)
     : QGraphicsRectItem(parent), block_id_(block_id), on_moved_(std::move(on_moved)) {
   setRect(0, 0, 240, 70);
   setFlag(QGraphicsItem::ItemIsSelectable, true);
   setFlag(QGraphicsItem::ItemIsMovable, true);
   setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
-  setBrush(QColor(245, 245, 245));
-  setPen(QPen(QColor(180, 180, 180)));
+  setBrush(fill_color);
+  setPen(QPen(fill_color.darker(125)));
 
   label_ = new QGraphicsTextItem(text, this);
-  label_->setDefaultTextColor(QColor(20, 20, 20));
+  label_->setDefaultTextColor(text_color);
   label_->setPos(10, 8);
 }
 

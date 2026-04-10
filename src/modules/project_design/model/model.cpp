@@ -1,55 +1,9 @@
 #include "model.hpp"
 
-#include <cctype>
 #include <string>
 #include <string_view>
-#include <utility>
-#include <vector>
 
 namespace pep::modules::project_design {
-
-namespace {
-
-std::string trim_copy(std::string_view text) {
-  std::size_t begin = 0;
-  while (begin < text.size() && std::isspace(static_cast<unsigned char>(text[begin])) != 0) {
-    ++begin;
-  }
-
-  std::size_t end = text.size();
-  while (end > begin && std::isspace(static_cast<unsigned char>(text[end - 1])) != 0) {
-    --end;
-  }
-
-  return std::string(text.substr(begin, end - begin));
-}
-
-std::vector<std::string> split_extra_rails(std::string_view csv) {
-  std::vector<std::string> rails;
-  std::size_t start = 0;
-  while (start <= csv.size()) {
-    const std::size_t comma = csv.find(',', start);
-    const std::size_t end = (comma == std::string_view::npos) ? csv.size() : comma;
-    std::string item = trim_copy(csv.substr(start, end - start));
-    if (!item.empty()) {
-      rails.push_back(std::move(item));
-    }
-    if (comma == std::string_view::npos) {
-      break;
-    }
-    start = comma + 1;
-  }
-  return rails;
-}
-
-void append_extra_positive_rails(std::vector<PortDef> &ports, std::string_view csv) {
-  int i = 0;
-  for (const auto &rail : split_extra_rails(csv)) {
-    ports.push_back({"pos" + std::to_string(i++), rail, PortType::PowerPos, {}});
-  }
-}
-
-} // namespace
 
 bool ports_compatible(PortType a, PortType b) {
   if (a == PortType::Unknown || b == PortType::Unknown) {
@@ -77,6 +31,8 @@ const char *block_variant_id(BlockVariant variant) {
     return "psu_symmetric";
   case BlockVariant::PsuUnregulated:
     return "psu_unregulated";
+  case BlockVariant::PsuSwitching:
+    return "psu_switching";
   case BlockVariant::AmpModel1b:
     return "model1b";
   default:
@@ -90,6 +46,9 @@ BlockVariant block_variant_from_id(std::string_view variant_id) {
   }
   if (variant_id == "psu_unregulated") {
     return BlockVariant::PsuUnregulated;
+  }
+  if (variant_id == "psu_switching") {
+    return BlockVariant::PsuSwitching;
   }
   if (variant_id == "model1b") {
     return BlockVariant::AmpModel1b;
@@ -125,8 +84,15 @@ Block make_power_block(int id, const std::string &title, BlockVariant variant) {
   b.variant = variant;
   b.title = title;
   b.canvas_pos = CanvasPoint{0.0, 0.0};
+  b.vin_ac_rms = 12.0;
   b.mains_hz = 50.0;
   b.signal_waveform = SignalWaveform::Sine;
+  b.transformer_primary_v = 230.0;
+  b.transformer_secondary_v = 12.0;
+  b.transformer_turns_ratio = 230.0 / 12.0;
+  b.transformer_solve_mode = TransformerSolveMode::SecondaryFromRatio;
+  b.transformer_voltage_quantity = VoltageQuantity::Rms;
+  b.transformer_waveform = SignalWaveform::Sine;
   return b;
 }
 
@@ -149,24 +115,20 @@ std::vector<PortDef> ports_for(const Block &b) {
   if (b.kind == BlockKind::Power) {
     if (b.variant == BlockVariant::PsuSymmetric) {
       // Port flags based on provided template (assets/ltspice/power.asc).
-      std::vector<PortDef> ports = {
+      return {
           {std::string("vcc"), "Vcc", PortType::PowerPos, {FlagRef{672, -352}}},
           {std::string("vee"), "Vee", PortType::PowerNeg, {FlagRef{672, -64}}},
           {std::string("gnd"), "0", PortType::Ground, {}},
       };
-      // Dynamic extra + rails (no export flags yet).
-      append_extra_positive_rails(ports, b.extra_pos_rails_csv);
-      return ports;
     }
-    // Unregulated PSU currently has no exported template, but still participates in typed
-    // connections.
-    std::vector<PortDef> ports = {
+
+    // Unregulated and switching PSUs currently have no exported template, but still participate
+    // in typed connections.
+    return {
         {std::string("vcc"), "Vcc", PortType::PowerPos, {}},
         {std::string("vee"), "Vee", PortType::PowerNeg, {}},
         {std::string("gnd"), "0", PortType::Ground, {}},
     };
-    append_extra_positive_rails(ports, b.extra_pos_rails_csv);
-    return ports;
   }
 
   // Amplifier model 1(B) (template: assets/ltspice/opamp_model1b.asc).

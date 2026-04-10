@@ -11,7 +11,8 @@ namespace pep::modules::project_design {
 class BlockItem : public QGraphicsRectItem {
 public:
   BlockItem(int block_id, const QString &text, std::function<void(int, const QPointF &)> on_moved,
-            QGraphicsItem *parent = nullptr);
+            const QColor &fill_color = QColor(245, 245, 245),
+            const QColor &text_color = QColor(20, 20, 20), QGraphicsItem *parent = nullptr);
 
   int block_id() const;
 

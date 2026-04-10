@@ -102,19 +102,15 @@ void test_remap_block_power_connections_replaces_existing_power_mapping() {
   assert(pd::connection_exists(connections, endpoint(3, "out"), endpoint(4, "in")));
 }
 
-void test_ports_for_trims_and_numbers_extra_power_rails() {
+void test_symmetric_power_supply_exposes_only_standard_power_ports() {
   auto block = pd::make_power_block(1, "PSU #1", pd::BlockVariant::PsuSymmetric);
-  block.extra_pos_rails_csv = " +5V, ,+12V ,  +24V  ";
 
   const auto ports = pd::ports_for(block);
 
-  assert(ports.size() == 6);
-  assert(ports[3].id == "pos0");
-  assert(ports[3].label == "+5V");
-  assert(ports[4].id == "pos1");
-  assert(ports[4].label == "+12V");
-  assert(ports[5].id == "pos2");
-  assert(ports[5].label == "+24V");
+  assert(ports.size() == 3);
+  assert(ports[0].id == "vcc");
+  assert(ports[1].id == "vee");
+  assert(ports[2].id == "gnd");
 }
 
 } // namespace
@@ -125,6 +121,6 @@ int main() {
   test_connect_new_block_auto_connects_power_rails();
   test_remove_block_removes_related_connections();
   test_remap_block_power_connections_replaces_existing_power_mapping();
-  test_ports_for_trims_and_numbers_extra_power_rails();
+  test_symmetric_power_supply_exposes_only_standard_power_ports();
   return 0;
 }

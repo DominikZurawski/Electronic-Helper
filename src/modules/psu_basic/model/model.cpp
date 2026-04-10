@@ -1,5 +1,7 @@
 #include "model.hpp"
 
+#include <cmath>
+
 namespace pep::modules::psu_basic {
 
 namespace {
@@ -39,7 +41,57 @@ static double pct_up(double value, double pct) {
   return value * (1.0 + pct / 100.0);
 }
 
+double waveform_rms_factor(WaveformShape waveform) {
+  switch (waveform) {
+  case WaveformShape::Square:
+    return 1.0;
+  case WaveformShape::Triangle:
+    return 1.0 / std::sqrt(3.0);
+  default:
+    return 1.0 / std::sqrt(2.0);
+  }
+}
+
 } // namespace
+
+double rms_to_peak(double rms, WaveformShape waveform) {
+  const double factor = waveform_rms_factor(waveform);
+  if (factor <= 0.0) {
+    return 0.0;
+  }
+  return rms / factor;
+}
+
+double peak_to_rms(double peak, WaveformShape waveform) {
+  return peak * waveform_rms_factor(waveform);
+}
+
+TransformerOutput compute_transformer(const TransformerInput &input) {
+  TransformerOutput out;
+
+  out.primary_rms = (input.voltage_quantity == VoltageQuantity::Peak)
+                        ? peak_to_rms(input.primary_voltage, input.waveform)
+                        : input.primary_voltage;
+  out.primary_peak = rms_to_peak(out.primary_rms, input.waveform);
+
+  if (input.solve_mode == TransformerSolveMode::SecondaryFromRatio) {
+    out.turns_ratio = input.turns_ratio;
+    if (input.turns_ratio > 0.0) {
+      out.secondary_rms = out.primary_rms / input.turns_ratio;
+      out.secondary_peak = rms_to_peak(out.secondary_rms, input.waveform);
+    }
+    return out;
+  }
+
+  out.secondary_rms = (input.voltage_quantity == VoltageQuantity::Peak)
+                          ? peak_to_rms(input.secondary_voltage, input.waveform)
+                          : input.secondary_voltage;
+  out.secondary_peak = rms_to_peak(out.secondary_rms, input.waveform);
+  if (out.secondary_rms > 0.0) {
+    out.turns_ratio = out.primary_rms / out.secondary_rms;
+  }
+  return out;
+}
 
 Output compute(const Input &input) {
   Output out;

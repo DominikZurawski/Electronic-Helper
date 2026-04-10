@@ -3,6 +3,9 @@
 namespace pep::modules::psu_basic {
 
 enum class RectifierType { HalfWave, FullWaveBridge };
+enum class WaveformShape { Sine, Square, Triangle };
+enum class VoltageQuantity { Rms, Peak };
+enum class TransformerSolveMode { SecondaryFromRatio, RatioFromSecondary };
 
 struct Input {
   double vin_ac_rms = 0.0;
@@ -17,6 +20,23 @@ struct Input {
   double mains_hz = 50.0;
   double mains_tol_pct = 2.0;
   RectifierType rectifier = RectifierType::FullWaveBridge;
+};
+
+struct TransformerInput {
+  double primary_voltage = 0.0;
+  double secondary_voltage = 0.0;
+  double turns_ratio = 0.0; // Np:Ns
+  WaveformShape waveform = WaveformShape::Sine;
+  VoltageQuantity voltage_quantity = VoltageQuantity::Rms;
+  TransformerSolveMode solve_mode = TransformerSolveMode::SecondaryFromRatio;
+};
+
+struct TransformerOutput {
+  double primary_rms = 0.0;
+  double primary_peak = 0.0;
+  double secondary_rms = 0.0;
+  double secondary_peak = 0.0;
+  double turns_ratio = 0.0;
 };
 
 struct Output {
@@ -36,6 +56,9 @@ struct Output {
   double vmin_max = 0.0;
 };
 
+double rms_to_peak(double rms, WaveformShape waveform);
+double peak_to_rms(double peak, WaveformShape waveform);
+TransformerOutput compute_transformer(const TransformerInput &input);
 Output compute(const Input &input);
 
 } // namespace pep::modules::psu_basic

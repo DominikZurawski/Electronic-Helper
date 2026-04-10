@@ -28,6 +28,11 @@ struct WidgetBindings {
   QPushButton *export_active = nullptr;
   QPushButton *export_project = nullptr;
 
+  QComboBox *power_family = nullptr;
+  QComboBox *power_linear_variant = nullptr;
+  QComboBox *transformer_mode = nullptr;
+  QComboBox *transformer_waveform = nullptr;
+  QComboBox *transformer_voltage_quantity = nullptr;
   QComboBox *variant = nullptr;
   QComboBox *amp_waveform = nullptr;
   QComboBox *amp_power_source = nullptr;
@@ -36,11 +41,13 @@ struct WidgetBindings {
   QComboBox *conn_to_block = nullptr;
   QComboBox *conn_to_port = nullptr;
 
+  QLineEdit *transformer_primary_input = nullptr;
+  QLineEdit *transformer_ratio_input = nullptr;
+  QLineEdit *transformer_secondary_input = nullptr;
   QLineEdit *vin_input = nullptr;
   QLineEdit *freq_input = nullptr;
   QLineEdit *current_input = nullptr;
   QLineEdit *cap_input = nullptr;
-  QLineEdit *extra_rails_input = nullptr;
   QLineEdit *amp_amp_input = nullptr;
   QLineEdit *amp_freq_input = nullptr;
   QLineEdit *amp_gain_input = nullptr;
@@ -52,9 +59,13 @@ struct WidgetBindings {
   std::function<void(int, const std::string &)> on_port_clicked;
   std::function<void()> on_scene_selection_changed;
 
+  std::function<void()> on_power_family_changed;
+  std::function<void()> on_power_linear_variant_changed;
+  std::function<void()> on_transformer_mode_changed;
+  std::function<void()> on_transformer_waveform_changed;
+  std::function<void()> on_transformer_voltage_quantity_changed;
   std::function<void()> on_variant_changed;
   std::function<void()> on_power_input_changed;
-  std::function<void()> on_extra_rails_changed;
   std::function<void()> on_amp_power_source_changed;
   std::function<void()> on_amp_waveform_changed;
   std::function<void()> on_amp_amp_changed;

@@ -91,6 +91,42 @@ void test_tolerance_ranges_are_ordered_consistently() {
   assert(out.vdc_loaded <= out.vdc_loaded_max);
 }
 
+void test_transformer_secondary_is_computed_from_ratio_for_sine_rms_input() {
+  psu::TransformerInput input;
+  input.primary_voltage = 230.0;
+  input.turns_ratio = 230.0 / 12.0;
+  input.waveform = psu::WaveformShape::Sine;
+  input.voltage_quantity = psu::VoltageQuantity::Rms;
+  input.solve_mode = psu::TransformerSolveMode::SecondaryFromRatio;
+
+  const auto out = psu::compute_transformer(input);
+
+  assert(approx(out.primary_rms, 230.0, 1e-9));
+  assert(approx(out.secondary_rms, 12.0, 1e-9));
+  assert(approx(out.secondary_peak, psu::rms_to_peak(12.0, psu::WaveformShape::Sine), 1e-9));
+}
+
+void test_transformer_ratio_is_computed_from_requested_secondary_peak() {
+  psu::TransformerInput input;
+  input.primary_voltage = 325.269119;
+  input.secondary_voltage = 16.97056275;
+  input.waveform = psu::WaveformShape::Sine;
+  input.voltage_quantity = psu::VoltageQuantity::Peak;
+  input.solve_mode = psu::TransformerSolveMode::RatioFromSecondary;
+
+  const auto out = psu::compute_transformer(input);
+
+  assert(approx(out.primary_rms, 230.0, 1e-6));
+  assert(approx(out.secondary_rms, 12.0, 1e-6));
+  assert(approx(out.turns_ratio, 230.0 / 12.0, 1e-6));
+}
+
+void test_triangle_peak_conversion_uses_sqrt3_factor() {
+  const double rms = psu::peak_to_rms(9.0, psu::WaveformShape::Triangle);
+  assert(approx(rms, 9.0 / std::sqrt(3.0), 1e-9));
+  assert(approx(psu::rms_to_peak(rms, psu::WaveformShape::Triangle), 9.0, 1e-9));
+}
+
 } // namespace
 
 int main() {
@@ -98,5 +134,8 @@ int main() {
   test_half_wave_uses_one_diode_and_single_ripple_frequency();
   test_zero_capacitor_keeps_ripple_at_zero();
   test_tolerance_ranges_are_ordered_consistently();
+  test_transformer_secondary_is_computed_from_ratio_for_sine_rms_input();
+  test_transformer_ratio_is_computed_from_requested_secondary_peak();
+  test_triangle_peak_conversion_uses_sqrt3_factor();
   return 0;
 }

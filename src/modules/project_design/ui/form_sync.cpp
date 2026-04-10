@@ -2,6 +2,8 @@
 
 #include "../model/model.hpp"
 
+#include "../../psu_basic/model/model.hpp"
+
 #include <QComboBox>
 #include <QLineEdit>
 #include <QSignalBlocker>
@@ -10,6 +12,8 @@
 namespace pep::modules::project_design {
 
 namespace {
+
+enum class PowerFamily { Linear, Switching };
 
 double read_or(QLineEdit *edit, double fallback) {
   return edit->text().isEmpty() ? fallback : edit->text().toDouble();
@@ -32,10 +36,103 @@ struct SyncGuard {
 };
 
 bool widgets_ready(const FormWidgets &widgets) {
-  return widgets.props_stack && widgets.variant && widgets.vin_input && widgets.freq_input &&
-         widgets.current_input && widgets.cap_input && widgets.extra_rails_input &&
+  return widgets.props_stack && widgets.power_family && widgets.power_linear_variant &&
+         widgets.transformer_mode && widgets.transformer_waveform &&
+         widgets.transformer_voltage_quantity && widgets.variant &&
+         widgets.transformer_primary_input && widgets.transformer_ratio_input &&
+         widgets.transformer_secondary_input && widgets.vin_input && widgets.freq_input &&
+         widgets.current_input && widgets.cap_input &&
          widgets.amp_waveform && widgets.amp_power_source && widgets.amp_amp_input &&
          widgets.amp_freq_input && widgets.amp_gain_input;
+}
+
+PowerFamily power_family_for(BlockVariant variant) {
+  if (variant == BlockVariant::PsuSwitching) {
+    return PowerFamily::Switching;
+  }
+  return PowerFamily::Linear;
+}
+
+pep::modules::psu_basic::WaveformShape to_psu_waveform(SignalWaveform waveform) {
+  switch (waveform) {
+  case SignalWaveform::Square:
+    return pep::modules::psu_basic::WaveformShape::Square;
+  case SignalWaveform::Triangle:
+    return pep::modules::psu_basic::WaveformShape::Triangle;
+  default:
+    return pep::modules::psu_basic::WaveformShape::Sine;
+  }
+}
+
+pep::modules::psu_basic::VoltageQuantity to_psu_voltage_quantity(VoltageQuantity quantity) {
+  return quantity == VoltageQuantity::Peak ? pep::modules::psu_basic::VoltageQuantity::Peak
+                                           : pep::modules::psu_basic::VoltageQuantity::Rms;
+}
+
+pep::modules::psu_basic::TransformerSolveMode to_psu_transformer_mode(
+    TransformerSolveMode mode) {
+  return mode == TransformerSolveMode::RatioFromSecondary
+             ? pep::modules::psu_basic::TransformerSolveMode::RatioFromSecondary
+             : pep::modules::psu_basic::TransformerSolveMode::SecondaryFromRatio;
+}
+
+void update_transformer_controls(const FormWidgets &widgets) {
+  const bool linear = static_cast<PowerFamily>(widgets.power_family->currentData().toInt()) ==
+                      PowerFamily::Linear;
+  const bool solve_ratio = static_cast<TransformerSolveMode>(
+                               widgets.transformer_mode->currentData().toInt()) ==
+                           TransformerSolveMode::RatioFromSecondary;
+
+  widgets.power_linear_variant->setEnabled(linear);
+  widgets.power_linear_variant->setVisible(linear);
+  widgets.transformer_mode->setEnabled(linear);
+  widgets.transformer_waveform->setEnabled(linear);
+  widgets.transformer_voltage_quantity->setEnabled(linear);
+  widgets.transformer_primary_input->setEnabled(linear);
+  widgets.transformer_ratio_input->setEnabled(linear && !solve_ratio);
+  widgets.transformer_secondary_input->setEnabled(linear && solve_ratio);
+  widgets.vin_input->setReadOnly(true);
+}
+
+void sync_power_variant_controls(const FormWidgets &widgets, BlockVariant variant) {
+  const QSignalBlocker family_blocker(widgets.power_family);
+  const QSignalBlocker linear_variant_blocker(widgets.power_linear_variant);
+
+  const int family_index =
+      widgets.power_family->findData(static_cast<int>(power_family_for(variant)));
+  if (family_index >= 0) {
+    widgets.power_family->setCurrentIndex(family_index);
+  }
+
+  const bool is_linear = power_family_for(variant) == PowerFamily::Linear;
+  const int linear_variant_index = widgets.power_linear_variant->findData(static_cast<int>(variant));
+  if (is_linear && linear_variant_index >= 0) {
+    widgets.power_linear_variant->setCurrentIndex(linear_variant_index);
+  }
+
+  update_transformer_controls(widgets);
+}
+
+BlockVariant selected_power_variant(const FormWidgets &widgets) {
+  if (static_cast<PowerFamily>(widgets.power_family->currentData().toInt()) ==
+      PowerFamily::Switching) {
+    return BlockVariant::PsuSwitching;
+  }
+  return static_cast<BlockVariant>(widgets.power_linear_variant->currentData().toInt());
+}
+
+pep::modules::psu_basic::TransformerOutput compute_transformer_from_widgets(
+    const FormWidgets &widgets) {
+  return pep::modules::psu_basic::compute_transformer(pep::modules::psu_basic::TransformerInput{
+      widgets.transformer_primary_input->text().toDouble(),
+      widgets.transformer_secondary_input->text().toDouble(),
+      widgets.transformer_ratio_input->text().toDouble(),
+      to_psu_waveform(
+          static_cast<SignalWaveform>(widgets.transformer_waveform->currentData().toInt())),
+      to_psu_voltage_quantity(
+          static_cast<VoltageQuantity>(widgets.transformer_voltage_quantity->currentData().toInt())),
+      to_psu_transformer_mode(
+          static_cast<TransformerSolveMode>(widgets.transformer_mode->currentData().toInt()))});
 }
 
 int selected_psu_for_active(const Block &active, const std::vector<Block> &blocks,
@@ -83,10 +180,42 @@ void sync_active_to_form(const Block *active, const std::vector<Block> &blocks,
 
   if (active->kind == BlockKind::Power) {
     widgets.props_stack->setCurrentIndex(0);
+    sync_power_variant_controls(widgets, active->variant);
+    {
+      const QSignalBlocker blocker_mode(widgets.transformer_mode);
+      const QSignalBlocker blocker_waveform(widgets.transformer_waveform);
+      const QSignalBlocker blocker_quantity(widgets.transformer_voltage_quantity);
+      const int mode_idx =
+          widgets.transformer_mode->findData(static_cast<int>(active->transformer_solve_mode));
+      const int waveform_idx =
+          widgets.transformer_waveform->findData(static_cast<int>(active->transformer_waveform));
+      const int quantity_idx = widgets.transformer_voltage_quantity->findData(
+          static_cast<int>(active->transformer_voltage_quantity));
+      if (mode_idx >= 0) {
+        widgets.transformer_mode->setCurrentIndex(mode_idx);
+      }
+      if (waveform_idx >= 0) {
+        widgets.transformer_waveform->setCurrentIndex(waveform_idx);
+      }
+      if (quantity_idx >= 0) {
+        widgets.transformer_voltage_quantity->setCurrentIndex(quantity_idx);
+      }
+    }
+    update_transformer_controls(widgets);
+
     const int idx = widgets.variant->findData(static_cast<int>(active->variant));
     if (idx >= 0) {
       widgets.variant->setCurrentIndex(idx);
     }
+    widgets.transformer_primary_input->setText(
+        active->transformer_primary_v == 0.0 ? "" : QString::number(active->transformer_primary_v));
+    widgets.transformer_ratio_input->setText(
+        active->transformer_turns_ratio == 0.0 ? ""
+                                               : QString::number(active->transformer_turns_ratio));
+    widgets.transformer_secondary_input->setText(
+        active->transformer_secondary_v == 0.0
+            ? ""
+            : QString::number(active->transformer_secondary_v));
     widgets.vin_input->setText(active->vin_ac_rms == 0.0 ? ""
                                                          : QString::number(active->vin_ac_rms));
     widgets.freq_input->setText(active->mains_hz == 0.0 ? "" : QString::number(active->mains_hz));
@@ -94,7 +223,6 @@ void sync_active_to_form(const Block *active, const std::vector<Block> &blocks,
         active->load_current == 0.0 ? "" : QString::number(active->load_current));
     widgets.cap_input->setText(active->capacitor_uF == 0.0 ? ""
                                                            : QString::number(active->capacitor_uF));
-    widgets.extra_rails_input->setText(QString::fromStdString(active->extra_pos_rails_csv));
     return;
   }
 
@@ -126,12 +254,35 @@ void sync_form_to_active(Block *active, const FormWidgets &widgets) {
   }
 
   if (active->kind == BlockKind::Power) {
-    active->variant = static_cast<BlockVariant>(widgets.variant->currentData().toInt());
-    active->vin_ac_rms = widgets.vin_input->text().toDouble();
+    update_transformer_controls(widgets);
+    active->variant = selected_power_variant(widgets);
+    active->transformer_solve_mode =
+        static_cast<TransformerSolveMode>(widgets.transformer_mode->currentData().toInt());
+    active->transformer_waveform =
+        static_cast<SignalWaveform>(widgets.transformer_waveform->currentData().toInt());
+    active->transformer_voltage_quantity =
+        static_cast<VoltageQuantity>(widgets.transformer_voltage_quantity->currentData().toInt());
+    active->transformer_primary_v = widgets.transformer_primary_input->text().toDouble();
+    active->transformer_turns_ratio = widgets.transformer_ratio_input->text().toDouble();
+    active->transformer_secondary_v = widgets.transformer_secondary_input->text().toDouble();
+
+    const auto transformer = compute_transformer_from_widgets(widgets);
+    active->vin_ac_rms = transformer.secondary_rms;
+    active->transformer_turns_ratio = transformer.turns_ratio;
+
+    const int idx = widgets.variant->findData(static_cast<int>(active->variant));
+    if (idx >= 0) {
+      widgets.variant->setCurrentIndex(idx);
+    }
+    widgets.vin_input->setText(active->vin_ac_rms == 0.0 ? ""
+                                                         : QString::number(active->vin_ac_rms));
+    widgets.transformer_ratio_input->setText(
+        active->transformer_turns_ratio == 0.0 ? ""
+                                               : QString::number(active->transformer_turns_ratio));
+
     active->mains_hz = read_or(widgets.freq_input, 50.0);
     active->load_current = read_or(widgets.current_input, 0.0);
     active->capacitor_uF = read_or(widgets.cap_input, 0.0);
-    active->extra_pos_rails_csv = widgets.extra_rails_input->text().toStdString();
     return;
   }
 

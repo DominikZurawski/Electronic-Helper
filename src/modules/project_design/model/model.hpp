@@ -8,8 +8,10 @@ namespace pep::modules::project_design {
 
 enum class PortType { PowerPos, PowerNeg, Ground, AnalogIn, AnalogOut, Unknown };
 enum class BlockKind { Power, Amplifier, Unknown };
-enum class BlockVariant { PsuSymmetric, PsuUnregulated, AmpModel1b, Unknown };
+enum class BlockVariant { PsuSymmetric, PsuUnregulated, PsuSwitching, AmpModel1b, Unknown };
 enum class SignalWaveform { Sine, Square, Triangle };
+enum class TransformerSolveMode { SecondaryFromRatio, RatioFromSecondary };
+enum class VoltageQuantity { Rms, Peak };
 
 struct FlagRef {
   int x = 0;
@@ -41,15 +43,18 @@ struct Block {
   double load_current = 0.0;
   double capacitor_uF = 0.0;
   double diode_drop = 0.9;
+  double transformer_primary_v = 230.0;
+  double transformer_secondary_v = 12.0;
+  double transformer_turns_ratio = 230.0 / 12.0;
+  TransformerSolveMode transformer_solve_mode = TransformerSolveMode::SecondaryFromRatio;
+  VoltageQuantity transformer_voltage_quantity = VoltageQuantity::Rms;
+  SignalWaveform transformer_waveform = SignalWaveform::Sine;
 
   // Amplifier/signal parameters.
   double signal_amp_v = 1.0;
   double signal_hz = 1000.0;
   double gain = 10.0;
   SignalWaveform signal_waveform = SignalWaveform::Sine;
-
-  // Additional power rails (dynamic, based on user/calculator fields).
-  std::string extra_pos_rails_csv; // e.g. "+5V,+12V"
 };
 
 struct Endpoint {

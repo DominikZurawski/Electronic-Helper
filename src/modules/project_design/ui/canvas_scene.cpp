@@ -13,6 +13,7 @@
 #include <QTimer>
 
 #include <algorithm>
+#include <array>
 #include <optional>
 
 namespace pep::modules::project_design {
@@ -25,6 +26,25 @@ QPointF to_qpointf(const CanvasPoint &point) {
 
 bool is_power_type(PortType type) {
   return type == PortType::PowerPos || type == PortType::PowerNeg || type == PortType::Ground;
+}
+
+std::optional<int> primary_power_block_id_for(const Block &block, const std::vector<Block> &blocks,
+                                              const std::vector<Connection> &connections) {
+  for (const auto &connection : connections) {
+    const bool a_is_this = connection.a.block_id == block.id;
+    const bool b_is_this = connection.b.block_id == block.id;
+    if (!a_is_this && !b_is_this) {
+      continue;
+    }
+
+    const Endpoint other = a_is_this ? connection.b : connection.a;
+    const Block *other_block = find_block(blocks, other.block_id);
+    if (other_block && other_block->kind == BlockKind::Power) {
+      return other_block->id;
+    }
+  }
+
+  return std::nullopt;
 }
 
 std::optional<QPointF> port_center_for(const std::vector<Block> &blocks, int block_id,
@@ -143,10 +163,34 @@ QColor port_fill_color(PortType type, bool selected) {
   return QColor(230, 230, 230);
 }
 
+QColor block_fill_color(const Block &block, const std::vector<Block> &blocks,
+                        const std::vector<Connection> &connections) {
+  if (block.kind == BlockKind::Power) {
+    return QColor(255, 239, 204);
+  }
+
+  static const std::array<QColor, 6> power_palette = {
+      QColor(225, 242, 255), QColor(229, 244, 232), QColor(255, 236, 222),
+      QColor(239, 233, 255), QColor(255, 242, 210), QColor(236, 239, 244),
+  };
+
+  if (const auto power_id = primary_power_block_id_for(block, blocks, connections);
+      power_id.has_value()) {
+    const std::size_t index = static_cast<std::size_t>(*power_id) % power_palette.size();
+    return power_palette[index];
+  }
+
+  return QColor(245, 245, 245);
+}
+
 void draw_block_ports(const Block &block, const std::optional<Endpoint> &pending_connection,
                       BlockItem *item) {
   int pin_index = 0;
   for (const auto &port : ports_for(block)) {
+    if (block.kind != BlockKind::Power && is_power_type(port.type)) {
+      continue;
+    }
+
     const double radius = 6.0;
     const bool is_left = port.type == PortType::AnalogIn ||
                          (port.type == PortType::Ground && block.kind != BlockKind::Power);
@@ -258,21 +302,24 @@ void refresh_canvas_scene(const CanvasSceneState &state) {
             .arg(QString::fromStdString(block.title))
             .arg(power_summary_for_block(block, *state.blocks, *state.connections));
 
-    auto *item = new BlockItem(block.id, text, [state](int block_id, const QPointF &pos) {
-      if (!state.blocks || !state.refreshing_canvas || *state.refreshing_canvas) {
-        return;
-      }
+    auto *item = new BlockItem(
+        block.id, text,
+        [state](int block_id, const QPointF &pos) {
+          if (!state.blocks || !state.refreshing_canvas || *state.refreshing_canvas) {
+            return;
+          }
 
-      Block *block = find_block(*state.blocks, block_id);
-      if (!block) {
-        return;
-      }
-      block->canvas_pos = CanvasPoint{pos.x(), pos.y()};
-      schedule_signal_lines_update(state);
-      if (state.on_block_moved) {
-        state.on_block_moved(block_id, pos);
-      }
-    });
+          Block *block = find_block(*state.blocks, block_id);
+          if (!block) {
+            return;
+          }
+          block->canvas_pos = CanvasPoint{pos.x(), pos.y()};
+          schedule_signal_lines_update(state);
+          if (state.on_block_moved) {
+            state.on_block_moved(block_id, pos);
+          }
+        },
+        block_fill_color(block, *state.blocks, *state.connections));
     item->setPos(to_qpointf(block.canvas_pos));
     state.scene->addItem(item);
 
