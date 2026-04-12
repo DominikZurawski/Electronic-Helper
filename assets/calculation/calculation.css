@@ -224,15 +224,17 @@ body::-webkit-scrollbar-thumb:hover,
 }
 
 .calc-entry-range {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--calc-unit-color);
   font-weight: 600;
+  opacity: 0.75;
 }
 
 .calc-entry-unit {
   color: var(--calc-unit-color);
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .calc-math-row {
