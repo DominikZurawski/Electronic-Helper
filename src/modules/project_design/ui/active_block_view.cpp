@@ -172,7 +172,6 @@ std::vector<PowerStageViewData> build_power_stages(const Block &active) {
       "Napięcie wtórne skuteczne",
       "V_{s,rms}",
       format_fixed(transformer.secondary_rms, 3),
-      secondary_range,
       "V",
       "V_{s,rms} = \\frac{V_{p,rms}}{n}",
       QString("%1 / %2 = %3")
@@ -180,18 +179,19 @@ std::vector<PowerStageViewData> build_power_stages(const Block &active) {
           .arg(transformer.turns_ratio, 0, 'f', 3)
           .arg(transformer.secondary_rms, 0, 'f', 3)
           .toStdString(),
-      "Przekładnia n oznacza stosunek Np:Ns."));
+      "Przekładnia n oznacza stosunek Np:Ns.",
+      secondary_range));
   transformer_stage.section.entries.push_back(make_entry(
       "Napięcie wtórne szczytowe",
       "V_{s,peak}",
       format_fixed(transformer.secondary_peak, 3),
-      secondary_peak_range,
       "V",
       "V_{s,rms} = f(V_{s,peak})",
       transformer_rms_formula_label(active).toStdString(),
       QString("Przebieg %1 wymaga własnej konwersji RMS/peak.")
           .arg(transformer_waveform_label(active))
-          .toStdString()));
+          .toStdString(),
+      secondary_peak_range));
   transformer_stage.section.steps.push_back(make_step(
       "Ustal dane wejściowe",
       "Wybierz, czy podajesz napiecie skuteczne czy szczytowe oraz jaki przebieg analizujesz."));
