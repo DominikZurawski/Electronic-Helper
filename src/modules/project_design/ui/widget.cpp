@@ -216,6 +216,7 @@ struct Widget::Impl {
   QLineEdit *freq_input = nullptr;
   QLineEdit *current_input = nullptr;
   QLineEdit *cap_input = nullptr;
+  QLineEdit *cap_tol_input = nullptr;
   QLineEdit *max_ripple_input = nullptr;
   QComboBox *amp_waveform = nullptr;
   QComboBox *amp_design_mode = nullptr;
@@ -427,6 +428,7 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   auto *freq_input = new QLineEdit(power_props);
   auto *current_input = new QLineEdit(power_props);
   auto *cap_input = new QLineEdit(power_props);
+  auto *cap_tol_input = new QLineEdit(power_props);
   auto *max_ripple_input = new QLineEdit(power_props);
   impl_->transformer_primary_input = transformer_primary_input;
   impl_->transformer_primary_tol_input = transformer_primary_tol_input;
@@ -437,6 +439,7 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   impl_->freq_input = freq_input;
   impl_->current_input = current_input;
   impl_->cap_input = cap_input;
+  impl_->cap_tol_input = cap_tol_input;
   impl_->max_ripple_input = max_ripple_input;
   transformer_primary_input->setPlaceholderText("np. 230");
   transformer_primary_input->setObjectName("transformerPrimaryInput");
@@ -461,6 +464,10 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   current_input->setObjectName("currentInput");
   cap_input->setPlaceholderText("uF");
   cap_input->setObjectName("capacitorInput");
+  cap_tol_input->setPlaceholderText("20");
+  cap_tol_input->setObjectName("capacitorTolInput");
+  cap_tol_input->setMaximumWidth(60);
+  cap_tol_input->setText("20");
   max_ripple_input->setPlaceholderText("Vpp");
   max_ripple_input->setObjectName("maxRippleInput");
   transformer_hint->setWordWrap(true);
@@ -493,6 +500,13 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   transformer_primary_with_quantity_layout->addWidget(transformer_primary_input, 1);
   transformer_primary_with_quantity_layout->addWidget(transformer_primary_tol_input, 0);
   transformer_primary_with_quantity_layout->addWidget(new QLabel("%", power_props), 0);
+  auto *cap_with_tol = new QWidget(power_props);
+  auto *cap_with_tol_layout = new QHBoxLayout(cap_with_tol);
+  cap_with_tol_layout->setContentsMargins(0, 0, 0, 0);
+  cap_with_tol_layout->setSpacing(8);
+  cap_with_tol_layout->addWidget(cap_input, 1);
+  cap_with_tol_layout->addWidget(cap_tol_input, 0);
+  cap_with_tol_layout->addWidget(new QLabel("%", power_props), 0);
   power_form->addRow("Rodzaj zasilacza", power_variant_row);
   power_variant_row->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
   tune_form_layout(power_form);
@@ -609,7 +623,7 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   auto *filter_module = new pep::ui::calculation::CalculationModuleWidget(power_calculator_tabs);
   filter_module->form_layout()->addRow("Prąd obciążenia (A)", current_input);
   filter_module->form_layout()->addRow("Maksymalne tętnienia (Vpp)", max_ripple_input);
-  filter_module->form_layout()->addRow("Pojemność kondensatora (uF)", cap_input);
+  filter_module->form_layout()->addRow("Pojemność kondensatora (uF)", cap_with_tol);
   tune_form_layout(filter_module->form_layout());
   impl_->power_compute_results.push_back(filter_module->result_view());
   power_calculator_tabs->addTab(filter_module, "Filtracja");
@@ -760,7 +774,8 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
         impl_->transformer_ratio_input,
         impl_->transformer_secondary_input, impl_->vin_input, impl_->diode_drop_input,
         impl_->freq_input,
-        impl_->current_input,     impl_->cap_input, impl_->max_ripple_input,
+        impl_->current_input,     impl_->cap_input, impl_->cap_tol_input,
+        impl_->max_ripple_input,
         impl_->amp_waveform,      impl_->amp_design_mode, impl_->amp_power_source,
         impl_->amp_amp_input,     impl_->amp_freq_input, impl_->amp_gain_input,
         impl_->amp_load_input,    impl_->amp_power_input, impl_->amp_headroom_input,
@@ -804,7 +819,8 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
         impl_->transformer_ratio_input,
         impl_->transformer_secondary_input, impl_->vin_input, impl_->diode_drop_input,
         impl_->freq_input,
-        impl_->current_input,     impl_->cap_input, impl_->max_ripple_input,
+        impl_->current_input,     impl_->cap_input, impl_->cap_tol_input,
+        impl_->max_ripple_input,
         impl_->amp_waveform,      impl_->amp_design_mode, impl_->amp_power_source,
         impl_->amp_amp_input,     impl_->amp_freq_input, impl_->amp_gain_input,
         impl_->amp_load_input,    impl_->amp_power_input, impl_->amp_headroom_input,
@@ -1437,6 +1453,7 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
                                           freq_input,
                                           current_input,
                                           cap_input,
+                                          cap_tol_input,
                                           max_ripple_input,
                                           impl_->amp_amp_input,
                                           impl_->amp_freq_input,

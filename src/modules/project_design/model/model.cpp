@@ -96,6 +96,7 @@ Block make_power_block(int id, const std::string &title, BlockVariant variant) {
   b.transformer_voltage_quantity = VoltageQuantity::Rms;
   b.transformer_waveform = SignalWaveform::Sine;
   b.power_design_mode = PowerDesignMode::SupplyForLoad;
+  b.capacitor_tol_pct = 20.0;
   return b;
 }
 

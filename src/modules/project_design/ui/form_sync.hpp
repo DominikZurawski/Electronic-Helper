@@ -30,6 +30,7 @@ struct FormWidgets {
   QLineEdit *freq_input = nullptr;
   QLineEdit *current_input = nullptr;
   QLineEdit *cap_input = nullptr;
+  QLineEdit *cap_tol_input = nullptr;
   QLineEdit *max_ripple_input = nullptr;
   QComboBox *amp_waveform = nullptr;
   QComboBox *amp_design_mode = nullptr;

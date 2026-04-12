@@ -153,6 +153,7 @@ std::vector<PowerStageViewData> build_power_stages(const Block &active) {
   input.mains_hz = active.mains_hz;
   input.load_current = active.load_current;
   input.capacitor_uF = active.capacitor_uF;
+  input.cap_tol_pct = active.capacitor_tol_pct;
   input.diode_drop = active.diode_drop;
   input.rectifier = pep::modules::psu_basic::RectifierType::FullWaveBridge;
 

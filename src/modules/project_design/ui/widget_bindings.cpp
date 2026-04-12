@@ -105,6 +105,7 @@ void bind_widget_interactions(const WidgetBindings &bindings) {
   connect_line_edit(bindings.freq_input, bindings.on_power_input_changed);
   connect_line_edit(bindings.current_input, bindings.on_power_input_changed);
   connect_line_edit(bindings.cap_input, bindings.on_power_input_changed);
+  connect_line_edit(bindings.cap_tol_input, bindings.on_power_input_changed);
   connect_line_edit(bindings.amp_amp_input, bindings.on_amp_amp_changed);
   connect_line_edit(bindings.amp_freq_input, bindings.on_amp_freq_changed);
   connect_line_edit(bindings.amp_gain_input, bindings.on_amp_gain_changed);

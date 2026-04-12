@@ -1,6 +1,7 @@
 #include "model.hpp"
 
 #include <cmath>
+#include <numbers>
 
 namespace pep::modules::psu_basic {
 
@@ -158,7 +159,7 @@ double avg_abs_from_peak(double peak, WaveformShape waveform) {
   case WaveformShape::Triangle:
     return peak * 0.5;
   default:
-    return peak * (2.0 / M_PI);
+    return peak * (2.0 / std::numbers::pi);
   }
 }
 

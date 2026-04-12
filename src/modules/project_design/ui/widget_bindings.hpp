@@ -52,6 +52,7 @@ struct WidgetBindings {
   QLineEdit *freq_input = nullptr;
   QLineEdit *current_input = nullptr;
   QLineEdit *cap_input = nullptr;
+  QLineEdit *cap_tol_input = nullptr;
   QLineEdit *max_ripple_input = nullptr;
   QLineEdit *amp_amp_input = nullptr;
   QLineEdit *amp_freq_input = nullptr;

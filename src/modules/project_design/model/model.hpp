@@ -44,6 +44,7 @@ struct Block {
   double mains_hz = 50.0;
   double load_current = 0.0;
   double capacitor_uF = 0.0;
+  double capacitor_tol_pct = 20.0;
   double max_ripple_vpp = 0.0;
   double diode_drop = 0.7;
   double transformer_primary_v = 230.0;

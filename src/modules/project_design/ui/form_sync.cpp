@@ -43,7 +43,8 @@ bool widgets_ready(const FormWidgets &widgets) {
          widgets.transformer_ratio_input &&
          widgets.transformer_secondary_input && widgets.vin_input && widgets.diode_drop_input &&
          widgets.freq_input &&
-         widgets.current_input && widgets.cap_input && widgets.max_ripple_input &&
+         widgets.current_input && widgets.cap_input && widgets.cap_tol_input &&
+         widgets.max_ripple_input &&
          widgets.amp_waveform && widgets.amp_design_mode && widgets.amp_power_source &&
          widgets.amp_amp_input &&
          widgets.amp_freq_input && widgets.amp_gain_input &&
@@ -234,12 +235,15 @@ void sync_active_to_form(const Block *active, const std::vector<Block> &blocks,
     widgets.diode_drop_input->setText(
         active->diode_drop == 0.0 ? "" : QString::number(active->diode_drop));
     widgets.freq_input->setText(active->mains_hz == 0.0 ? "" : QString::number(active->mains_hz));
-    widgets.current_input->setText(
-        active->load_current == 0.0 ? "" : QString::number(active->load_current));
-    widgets.cap_input->setText(active->capacitor_uF == 0.0 ? ""
-                                                           : QString::number(active->capacitor_uF));
-    widgets.max_ripple_input->setText(
-        active->max_ripple_vpp == 0.0 ? "" : QString::number(active->max_ripple_vpp));
+  widgets.current_input->setText(
+      active->load_current == 0.0 ? "" : QString::number(active->load_current));
+  widgets.cap_input->setText(active->capacitor_uF == 0.0 ? ""
+                                                         : QString::number(active->capacitor_uF));
+  widgets.cap_tol_input->setText(active->capacitor_tol_pct == 0.0
+                                     ? ""
+                                     : QString::number(active->capacitor_tol_pct));
+  widgets.max_ripple_input->setText(
+      active->max_ripple_vpp == 0.0 ? "" : QString::number(active->max_ripple_vpp));
     return;
   }
 
@@ -322,6 +326,7 @@ void sync_form_to_active(Block *active, const FormWidgets &widgets) {
     active->mains_hz = read_or(widgets.freq_input, 50.0);
     active->load_current = read_or(widgets.current_input, 0.0);
     active->capacitor_uF = read_or(widgets.cap_input, 0.0);
+    active->capacitor_tol_pct = read_or(widgets.cap_tol_input, 20.0);
     active->max_ripple_vpp = read_or(widgets.max_ripple_input, 0.0);
     return;
   }
