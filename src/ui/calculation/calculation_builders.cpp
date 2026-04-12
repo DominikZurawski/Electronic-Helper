@@ -8,9 +8,11 @@ namespace pep::ui::calculation {
 
 CalculationEntry make_entry(std::string label, std::string symbol, std::string value,
                             std::string unit, std::string formula_tex,
-                            std::string substitution_tex, std::string explanation) {
+                            std::string substitution_tex, std::string explanation,
+                            std::string value_secondary) {
   return CalculationEntry{std::move(label),       std::move(symbol),      std::move(value),
-                          std::move(unit),        std::move(formula_tex), std::move(substitution_tex),
+                          std::move(value_secondary), std::move(unit),
+                          std::move(formula_tex), std::move(substitution_tex),
                           std::move(explanation)};
 }
 

@@ -169,6 +169,9 @@ CalculationRenderResult render_calculation_document(const CalculationDocument &d
       if (!entry.unit.empty()) {
         html << "<span class='calc-entry-unit'>" << escape_html(entry.unit) << "</span>";
       }
+      if (!entry.value_secondary.empty()) {
+        html << "<span class='calc-entry-range'>" << escape_html(entry.value_secondary) << "</span>";
+      }
       html << "</div>";
       append_math_block(html, "Wzór", entry.formula_tex);
       append_math_block(html, "Podstawienie", entry.substitution_tex);

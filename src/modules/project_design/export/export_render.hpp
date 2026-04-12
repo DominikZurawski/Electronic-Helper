@@ -13,10 +13,10 @@
 namespace pep::modules::project_design {
 
 struct ExportLayoutConfig {
-  int gap_x = 180;
+  int gap_x = 192;
   int gap_y = 160;
-  int pad_x = 60;
-  int pad_y = 60;
+  int pad_x = 64;
+  int pad_y = 64;
 };
 
 struct ExportSheetState {
@@ -27,7 +27,8 @@ struct ExportSheetState {
 };
 
 void initialize_sheet(ExportSheetState &sheet);
-void finalize_sheet(ExportSheetState &sheet, const std::optional<std::string> &tran_directive);
+void finalize_sheet(ExportSheetState &sheet, const std::optional<std::string> &tran_directive,
+                    const std::vector<std::string> &directives);
 
 void append_missing_element_note(AscAssembly &out, ExportSheetState &sheet, int row_cursor_x,
                                  int row_y, int &row_cursor_x_out, int &row_max_h,

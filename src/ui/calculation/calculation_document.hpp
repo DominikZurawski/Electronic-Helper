@@ -11,6 +11,7 @@ struct CalculationEntry {
   std::string label;
   std::string symbol;
   std::string value;
+  std::string value_secondary;
   std::string unit;
   std::string formula_tex;
   std::string substitution_tex;

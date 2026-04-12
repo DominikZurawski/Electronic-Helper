@@ -12,6 +12,8 @@ enum class BlockVariant { PsuSymmetric, PsuUnregulated, PsuSwitching, AmpModel1b
 enum class SignalWaveform { Sine, Square, Triangle };
 enum class TransformerSolveMode { SecondaryFromRatio, RatioFromSecondary };
 enum class VoltageQuantity { Rms, Peak };
+enum class PowerDesignMode { SupplyForLoad, LoadForSupply, AllFields };
+enum class AmpDesignMode { SupplyForAmp, AmpForSupply, AllFields };
 
 struct FlagRef {
   int x = 0;
@@ -42,19 +44,27 @@ struct Block {
   double mains_hz = 50.0;
   double load_current = 0.0;
   double capacitor_uF = 0.0;
-  double diode_drop = 0.9;
+  double max_ripple_vpp = 0.0;
+  double diode_drop = 0.7;
   double transformer_primary_v = 230.0;
+  double transformer_primary_tol_pct = 10.0;
   double transformer_secondary_v = 12.0;
   double transformer_turns_ratio = 230.0 / 12.0;
   TransformerSolveMode transformer_solve_mode = TransformerSolveMode::SecondaryFromRatio;
   VoltageQuantity transformer_voltage_quantity = VoltageQuantity::Rms;
   SignalWaveform transformer_waveform = SignalWaveform::Sine;
+  PowerDesignMode power_design_mode = PowerDesignMode::SupplyForLoad;
 
   // Amplifier/signal parameters.
   double signal_amp_v = 1.0;
   double signal_hz = 1000.0;
   double gain = 10.0;
   SignalWaveform signal_waveform = SignalWaveform::Sine;
+  double load_resistance_ohm = 8.0;
+  double target_power_w = 0.0;
+  double supply_headroom_v = 4.0;
+  AmpDesignMode amp_design_mode = AmpDesignMode::AmpForSupply;
+  int amp_power_source_id = 0;
 };
 
 struct Endpoint {

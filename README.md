@@ -21,7 +21,7 @@ ppe ltspice-import <path>
 
 ## Plan rozwoju
 
-- moduły: zasilacze niestabilizowane, zasilacze symetryczne, anteny, filtry, stabilizatory
+- moduły: zasilacze niesymetryczne, zasilacze symetryczne, anteny, filtry, stabilizatory
 - checklisty projektowe i ostrzeganie o brakach
 - import LTspice: parsing `.asc`/`.cir` i mapowanie na obiekty projektu
 - integracja AI: lokalne podpowiedzi, generowanie checklist

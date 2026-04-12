@@ -40,18 +40,48 @@ static double value_for_phase(double phase, const WaveformParams &p) {
   return 0.0;
 }
 
+static std::pair<double, double> voltage_range_for(const WaveformParams &params) {
+  const int samples = 300;
+  double vmin = value_for_phase(0.0, params);
+  double vmax = vmin;
+
+  for (int i = 1; i <= samples; ++i) {
+    const double t = static_cast<double>(i) / samples;
+    const double phase = t * 4.0 * M_PI;
+    const double v = value_for_phase(phase, params);
+    vmin = std::min(vmin, v);
+    vmax = std::max(vmax, v);
+  }
+
+  if (params.type == WaveformType::HalfWave || params.type == WaveformType::FullWave ||
+      params.type == WaveformType::Filtered) {
+    vmin = std::min(vmin, 0.0);
+  }
+
+  if (qFuzzyCompare(vmin, vmax)) {
+    const double fallback = params.vpeak > 0.0 ? params.vpeak : 1.0;
+    vmin -= fallback * 0.5;
+    vmax += fallback * 0.5;
+  } else {
+    const double padding = std::max((vmax - vmin) * 0.08, 0.1);
+    vmin -= padding;
+    vmax += padding;
+  }
+
+  return {vmin, vmax};
+}
+
+std::pair<double, double> WaveformWidget::visible_voltage_range() const {
+  return voltage_range_for(params_);
+}
+
 void WaveformWidget::paintEvent(QPaintEvent *) {
   QPainter painter(this);
   painter.setRenderHint(QPainter::Antialiasing, true);
 
   painter.fillRect(rect(), palette().base());
 
-  const double amplitude = params_.vpeak > 0.0 ? params_.vpeak : 1.0;
-  const bool bipolar = (params_.type == WaveformType::Sinus) ||
-                       (params_.type == WaveformType::Square) ||
-                       (params_.type == WaveformType::Triangle);
-  const double vmin = bipolar ? -amplitude : 0.0;
-  const double vmax = (params_.type == WaveformType::Filtered) ? params_.vrect : amplitude;
+  const auto [vmin, vmax] = visible_voltage_range();
 
   auto fmt_v = [](double v) { return QString::number(v, 'f', (qAbs(v) < 10.0 ? 2 : 1)) + " V"; };
   auto fmt_t = [](double s) {

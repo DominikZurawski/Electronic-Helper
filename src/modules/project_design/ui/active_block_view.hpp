@@ -18,10 +18,10 @@ struct ActiveBlockWidgets {
   QLabel *validation = nullptr;
   QLabel *ports_label = nullptr;
   pep::ui::calculation::CalculationView *compute_view = nullptr;
-  pep::ui::calculation::CalculationView *transformer_compute_view = nullptr;
-  pep::ui::calculation::CalculationView *rectifier_compute_view = nullptr;
+  std::vector<pep::ui::calculation::CalculationView *> power_compute_views;
   pep::modules::psu_basic::WaveformWidget *waveform_in = nullptr;
   pep::modules::psu_basic::WaveformWidget *waveform_out = nullptr;
+  int active_power_calculator_tab_index = 0;
   QTabWidget *bottom_tabs = nullptr;
   int waveform_tab_index = -1;
 };

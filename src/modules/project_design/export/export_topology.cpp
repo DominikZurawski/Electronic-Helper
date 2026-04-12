@@ -54,11 +54,15 @@ struct EpInfo {
 
 std::string base_name_for_group(const std::vector<EpInfo> &endpoints,
                                 std::vector<std::string> &warnings) {
+  bool has_gnd = false;
   bool has_vcc = false;
   bool has_vee = false;
   bool has_in = false;
   bool has_out = false;
   for (const auto &endpoint : endpoints) {
+    if (endpoint.type == PortType::Ground) {
+      has_gnd = true;
+    }
     if (endpoint.type == PortType::PowerPos) {
       has_vcc = true;
     }
@@ -73,6 +77,13 @@ std::string base_name_for_group(const std::vector<EpInfo> &endpoints,
     }
   }
 
+  if (has_gnd) {
+    if (has_vcc) {
+      warnings.push_back("Sprzeczne typy w jednej sieci (Vcc i GND) — nadaję nazwę automatyczną.");
+      return "NET";
+    }
+    return "0";
+  }
   if (has_vcc && has_vee) {
     warnings.push_back("Sprzeczne typy w jednej sieci (Vcc i Vee) — nadaję nazwę automatyczną.");
     return "NET";
@@ -141,9 +152,6 @@ ExportTopology build_export_topology(const std::vector<Block> &blocks,
 
   for (const auto &block : blocks) {
     for (const auto &port : ports_for(block)) {
-      if (port.type == PortType::Ground) {
-        continue;
-      }
       add_endpoint(block, port);
     }
   }
@@ -168,6 +176,10 @@ ExportTopology build_export_topology(const std::vector<Block> &blocks,
   std::unordered_map<std::string, int> base_counters;
   for (const auto &[root, group_endpoints] : group_to_endpoints) {
     const std::string base = base_name_for_group(group_endpoints, topology.warnings);
+    if (base == "0") {
+      group_to_net.emplace(root, "0");
+      continue;
+    }
     if (group_endpoints.size() == 1) {
       const int block_id = group_endpoints.front().endpoint.block_id;
       group_to_net.emplace(root,

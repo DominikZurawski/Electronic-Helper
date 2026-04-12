@@ -37,13 +37,18 @@ struct SyncGuard {
 
 bool widgets_ready(const FormWidgets &widgets) {
   return widgets.props_stack && widgets.power_family && widgets.power_linear_variant &&
-         widgets.transformer_mode && widgets.transformer_waveform &&
+         widgets.power_design_mode && widgets.transformer_mode && widgets.transformer_waveform &&
          widgets.transformer_voltage_quantity && widgets.variant &&
-         widgets.transformer_primary_input && widgets.transformer_ratio_input &&
-         widgets.transformer_secondary_input && widgets.vin_input && widgets.freq_input &&
-         widgets.current_input && widgets.cap_input &&
-         widgets.amp_waveform && widgets.amp_power_source && widgets.amp_amp_input &&
-         widgets.amp_freq_input && widgets.amp_gain_input;
+         widgets.transformer_primary_input && widgets.transformer_primary_tol_input &&
+         widgets.transformer_ratio_input &&
+         widgets.transformer_secondary_input && widgets.vin_input && widgets.diode_drop_input &&
+         widgets.freq_input &&
+         widgets.current_input && widgets.cap_input && widgets.max_ripple_input &&
+         widgets.amp_waveform && widgets.amp_design_mode && widgets.amp_power_source &&
+         widgets.amp_amp_input &&
+         widgets.amp_freq_input && widgets.amp_gain_input &&
+         widgets.amp_load_input && widgets.amp_power_input && widgets.amp_headroom_input &&
+         widgets.amp_max_ripple_input;
 }
 
 PowerFamily power_family_for(BlockVariant variant) {
@@ -89,6 +94,7 @@ void update_transformer_controls(const FormWidgets &widgets) {
   widgets.transformer_waveform->setEnabled(linear);
   widgets.transformer_voltage_quantity->setEnabled(linear);
   widgets.transformer_primary_input->setEnabled(linear);
+  widgets.transformer_primary_tol_input->setEnabled(linear);
   widgets.transformer_ratio_input->setEnabled(linear && !solve_ratio);
   widgets.transformer_secondary_input->setEnabled(linear && solve_ratio);
   widgets.vin_input->setReadOnly(true);
@@ -207,8 +213,15 @@ void sync_active_to_form(const Block *active, const std::vector<Block> &blocks,
     if (idx >= 0) {
       widgets.variant->setCurrentIndex(idx);
     }
+    const int power_mode_idx =
+        widgets.power_design_mode->findData(static_cast<int>(active->power_design_mode));
+    widgets.power_design_mode->setCurrentIndex(power_mode_idx >= 0 ? power_mode_idx : 0);
     widgets.transformer_primary_input->setText(
         active->transformer_primary_v == 0.0 ? "" : QString::number(active->transformer_primary_v));
+    widgets.transformer_primary_tol_input->setText(
+        active->transformer_primary_tol_pct == 0.0
+            ? ""
+            : QString::number(active->transformer_primary_tol_pct));
     widgets.transformer_ratio_input->setText(
         active->transformer_turns_ratio == 0.0 ? ""
                                                : QString::number(active->transformer_turns_ratio));
@@ -218,18 +231,25 @@ void sync_active_to_form(const Block *active, const std::vector<Block> &blocks,
             : QString::number(active->transformer_secondary_v));
     widgets.vin_input->setText(active->vin_ac_rms == 0.0 ? ""
                                                          : QString::number(active->vin_ac_rms));
+    widgets.diode_drop_input->setText(
+        active->diode_drop == 0.0 ? "" : QString::number(active->diode_drop));
     widgets.freq_input->setText(active->mains_hz == 0.0 ? "" : QString::number(active->mains_hz));
     widgets.current_input->setText(
         active->load_current == 0.0 ? "" : QString::number(active->load_current));
     widgets.cap_input->setText(active->capacitor_uF == 0.0 ? ""
                                                            : QString::number(active->capacitor_uF));
+    widgets.max_ripple_input->setText(
+        active->max_ripple_vpp == 0.0 ? "" : QString::number(active->max_ripple_vpp));
     return;
   }
 
   widgets.props_stack->setCurrentIndex(1);
   refresh_power_source_combo();
 
-  const int selected_psu = selected_psu_for_active(*active, blocks, connections);
+  int selected_psu = active->amp_power_source_id;
+  if (selected_psu == 0) {
+    selected_psu = selected_psu_for_active(*active, blocks, connections);
+  }
   const int power_idx = widgets.amp_power_source->findData(selected_psu);
   {
     const QSignalBlocker blocker(widgets.amp_power_source);
@@ -241,11 +261,25 @@ void sync_active_to_form(const Block *active, const std::vector<Block> &blocks,
   if (waveform_idx >= 0) {
     widgets.amp_waveform->setCurrentIndex(waveform_idx);
   }
+  const int design_idx =
+      widgets.amp_design_mode->findData(static_cast<int>(active->amp_design_mode));
+  widgets.amp_design_mode->setCurrentIndex(design_idx >= 0 ? design_idx : 0);
   widgets.amp_amp_input->setText(
       active->signal_amp_v == 0.0 ? "" : QString::number(active->signal_amp_v));
   widgets.amp_freq_input->setText(active->signal_hz == 0.0 ? ""
                                                            : QString::number(active->signal_hz));
   widgets.amp_gain_input->setText(active->gain == 0.0 ? "" : QString::number(active->gain));
+  widgets.amp_load_input->setText(active->load_resistance_ohm == 0.0
+                                      ? ""
+                                      : QString::number(active->load_resistance_ohm));
+  widgets.amp_power_input->setText(active->target_power_w == 0.0 ? ""
+                                                                 : QString::number(active->target_power_w));
+  widgets.amp_headroom_input->setText(active->supply_headroom_v == 0.0
+                                          ? ""
+                                          : QString::number(active->supply_headroom_v));
+  widgets.amp_max_ripple_input->setText(active->max_ripple_vpp == 0.0
+                                            ? ""
+                                            : QString::number(active->max_ripple_vpp));
 }
 
 void sync_form_to_active(Block *active, const FormWidgets &widgets) {
@@ -256,6 +290,8 @@ void sync_form_to_active(Block *active, const FormWidgets &widgets) {
   if (active->kind == BlockKind::Power) {
     update_transformer_controls(widgets);
     active->variant = selected_power_variant(widgets);
+    active->power_design_mode =
+        static_cast<PowerDesignMode>(widgets.power_design_mode->currentData().toInt());
     active->transformer_solve_mode =
         static_cast<TransformerSolveMode>(widgets.transformer_mode->currentData().toInt());
     active->transformer_waveform =
@@ -263,6 +299,8 @@ void sync_form_to_active(Block *active, const FormWidgets &widgets) {
     active->transformer_voltage_quantity =
         static_cast<VoltageQuantity>(widgets.transformer_voltage_quantity->currentData().toInt());
     active->transformer_primary_v = widgets.transformer_primary_input->text().toDouble();
+    active->transformer_primary_tol_pct =
+        read_or(widgets.transformer_primary_tol_input, 10.0);
     active->transformer_turns_ratio = widgets.transformer_ratio_input->text().toDouble();
     active->transformer_secondary_v = widgets.transformer_secondary_input->text().toDouble();
 
@@ -280,18 +318,27 @@ void sync_form_to_active(Block *active, const FormWidgets &widgets) {
         active->transformer_turns_ratio == 0.0 ? ""
                                                : QString::number(active->transformer_turns_ratio));
 
+    active->diode_drop = read_or(widgets.diode_drop_input, 0.7);
     active->mains_hz = read_or(widgets.freq_input, 50.0);
     active->load_current = read_or(widgets.current_input, 0.0);
     active->capacitor_uF = read_or(widgets.cap_input, 0.0);
+    active->max_ripple_vpp = read_or(widgets.max_ripple_input, 0.0);
     return;
   }
 
   active->variant = BlockVariant::AmpModel1b;
   active->signal_waveform =
       static_cast<SignalWaveform>(widgets.amp_waveform->currentData().toInt());
+  active->amp_design_mode =
+      static_cast<AmpDesignMode>(widgets.amp_design_mode->currentData().toInt());
+  active->amp_power_source_id = widgets.amp_power_source->currentData().toInt();
   active->signal_amp_v = widgets.amp_amp_input->text().toDouble();
   active->signal_hz = read_or(widgets.amp_freq_input, 1000.0);
   active->gain = read_or(widgets.amp_gain_input, 10.0);
+  active->load_resistance_ohm = read_or(widgets.amp_load_input, 8.0);
+  active->target_power_w = read_or(widgets.amp_power_input, 0.0);
+  active->supply_headroom_v = read_or(widgets.amp_headroom_input, 4.0);
+  active->max_ripple_vpp = read_or(widgets.amp_max_ripple_input, 0.0);
 }
 
 } // namespace pep::modules::project_design

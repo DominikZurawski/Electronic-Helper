@@ -11,7 +11,7 @@ struct Input {
   double vin_ac_rms = 0.0;
   double vin_min = 0.0;
   double vin_max = 0.0;
-  double diode_drop = 0.9;
+  double diode_drop = 0.7;
   double diode_tol_pct = 10.0;
   double load_current = 0.0;
   double current_tol_pct = 10.0;
@@ -60,5 +60,7 @@ double rms_to_peak(double rms, WaveformShape waveform);
 double peak_to_rms(double peak, WaveformShape waveform);
 TransformerOutput compute_transformer(const TransformerInput &input);
 Output compute(const Input &input);
+double required_capacitance_uF(double load_current, double ripple_vpp, double ripple_hz);
+double avg_abs_from_peak(double peak, WaveformShape waveform);
 
 } // namespace pep::modules::psu_basic

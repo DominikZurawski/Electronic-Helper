@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include <QWidget>
 
 namespace pep::modules::psu_basic {
@@ -19,6 +21,8 @@ public:
   explicit WaveformWidget(QWidget *parent = nullptr);
 
   void set_params(const WaveformParams &params);
+  const WaveformParams &params() const { return params_; }
+  std::pair<double, double> visible_voltage_range() const;
 
 protected:
   void paintEvent(QPaintEvent *event) override;

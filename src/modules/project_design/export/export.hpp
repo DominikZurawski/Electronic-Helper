@@ -12,6 +12,7 @@ struct Connection;
 struct AscAssembly {
   std::string asc;
   std::vector<std::string> warnings;
+  std::vector<std::string> directives;
 };
 
 AscAssembly export_project_asc(const std::vector<Block> &blocks,

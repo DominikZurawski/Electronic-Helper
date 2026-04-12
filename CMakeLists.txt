@@ -288,6 +288,7 @@ if (PPE_ENABLE_TESTS)
       tests/test_project_design_connection_ops.cpp
       src/modules/project_design/model/model.cpp
       src/modules/project_design/model/connection_ops.cpp
+      src/modules/psu_basic/model/model.cpp
     )
     target_include_directories(ppe_project_design_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include
       ${CMAKE_CURRENT_SOURCE_DIR}

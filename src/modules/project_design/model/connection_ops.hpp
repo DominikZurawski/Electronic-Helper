@@ -21,4 +21,11 @@ void remove_block(std::vector<Block> &blocks, std::vector<Connection> &connectio
 void remap_block_power_connections(const std::vector<Block> &blocks,
                                    std::vector<Connection> &connections, int block_id, int psu_id);
 
+int connected_power_block_id(const std::vector<Block> &blocks,
+                             const std::vector<Connection> &connections, int block_id);
+
+void apply_amp_requirements_to_power(std::vector<Block> &blocks,
+                                     const std::vector<Connection> &connections, int amp_id,
+                                     int preferred_psu_id = 0);
+
 } // namespace pep::modules::project_design

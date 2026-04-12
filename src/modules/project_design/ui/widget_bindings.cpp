@@ -53,6 +53,12 @@ void bind_widget_interactions(const WidgetBindings &bindings) {
                        on_power_linear_variant_changed();
                      });
   }
+  if (bindings.power_design_mode && bindings.on_power_design_mode_changed) {
+    QObject::connect(bindings.power_design_mode, &QComboBox::currentIndexChanged, bindings.owner,
+                     [on_power_design_mode_changed = bindings.on_power_design_mode_changed]() {
+                       on_power_design_mode_changed();
+                     });
+  }
 
   if (bindings.transformer_mode && bindings.on_transformer_mode_changed) {
     QObject::connect(bindings.transformer_mode, &QComboBox::currentIndexChanged, bindings.owner,
@@ -91,20 +97,32 @@ void bind_widget_interactions(const WidgetBindings &bindings) {
                      [handler]() { handler(); });
   };
   connect_line_edit(bindings.transformer_primary_input, bindings.on_power_input_changed);
+  connect_line_edit(bindings.transformer_primary_tol_input, bindings.on_power_input_changed);
   connect_line_edit(bindings.transformer_ratio_input, bindings.on_power_input_changed);
   connect_line_edit(bindings.transformer_secondary_input, bindings.on_power_input_changed);
   connect_line_edit(bindings.vin_input, bindings.on_power_input_changed);
+  connect_line_edit(bindings.diode_drop_input, bindings.on_power_input_changed);
   connect_line_edit(bindings.freq_input, bindings.on_power_input_changed);
   connect_line_edit(bindings.current_input, bindings.on_power_input_changed);
   connect_line_edit(bindings.cap_input, bindings.on_power_input_changed);
   connect_line_edit(bindings.amp_amp_input, bindings.on_amp_amp_changed);
   connect_line_edit(bindings.amp_freq_input, bindings.on_amp_freq_changed);
   connect_line_edit(bindings.amp_gain_input, bindings.on_amp_gain_changed);
+  connect_line_edit(bindings.amp_load_input, bindings.on_amp_specs_changed);
+  connect_line_edit(bindings.amp_power_input, bindings.on_amp_specs_changed);
+  connect_line_edit(bindings.amp_headroom_input, bindings.on_amp_specs_changed);
+  connect_line_edit(bindings.amp_max_ripple_input, bindings.on_amp_specs_changed);
 
   if (bindings.amp_power_source && bindings.on_amp_power_source_changed) {
     QObject::connect(bindings.amp_power_source, &QComboBox::currentIndexChanged, bindings.owner,
                      [on_amp_power_source_changed = bindings.on_amp_power_source_changed]() {
                        on_amp_power_source_changed();
+                     });
+  }
+  if (bindings.amp_design_mode && bindings.on_amp_design_mode_changed) {
+    QObject::connect(bindings.amp_design_mode, &QComboBox::currentIndexChanged, bindings.owner,
+                     [on_amp_design_mode_changed = bindings.on_amp_design_mode_changed]() {
+                       on_amp_design_mode_changed();
                      });
   }
   if (bindings.amp_waveform && bindings.on_amp_waveform_changed) {

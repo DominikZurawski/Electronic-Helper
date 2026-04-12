@@ -139,4 +139,27 @@ Output compute(const Input &input) {
   return out;
 }
 
+double required_capacitance_uF(double load_current, double ripple_vpp, double ripple_hz) {
+  if (load_current <= 0.0 || ripple_vpp <= 0.0 || ripple_hz <= 0.0) {
+    return 0.0;
+  }
+
+  const double capacitance_f = load_current / (ripple_hz * ripple_vpp);
+  return capacitance_f * 1e6;
+}
+
+double avg_abs_from_peak(double peak, WaveformShape waveform) {
+  if (peak <= 0.0) {
+    return 0.0;
+  }
+  switch (waveform) {
+  case WaveformShape::Square:
+    return peak;
+  case WaveformShape::Triangle:
+    return peak * 0.5;
+  default:
+    return peak * (2.0 / M_PI);
+  }
+}
+
 } // namespace pep::modules::psu_basic

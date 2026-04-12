@@ -8,7 +8,8 @@ namespace pep::ui::calculation {
 
 CalculationEntry make_entry(std::string label, std::string symbol, std::string value,
                             std::string unit, std::string formula_tex = {},
-                            std::string substitution_tex = {}, std::string explanation = {});
+                            std::string substitution_tex = {}, std::string explanation = {},
+                            std::string value_secondary = {});
 
 CalculationNote make_info_note(std::string title, std::string body);
 CalculationNote make_warning_note(std::string title, std::string body);

@@ -6,10 +6,14 @@
 #include <QEvent>
 #include <QWidget>
 
+#include <optional>
 #include <vector>
 
 class QLabel;
 class QTextBrowser;
+#if defined(PPE_HAS_QT_WEBENGINE)
+class QWebEngineView;
+#endif
 
 namespace pep::ui::calculation {
 
@@ -24,6 +28,11 @@ public:
 private:
   QLabel *status_label_ = nullptr;
   QTextBrowser *fallback_view_ = nullptr;
+#if defined(PPE_HAS_QT_WEBENGINE)
+  QWebEngineView *web_view_ = nullptr;
+  std::optional<double> pending_scroll_;
+  int render_token_ = 0;
+#endif
   std::vector<CalculationValidationIssue> validation_issues_;
   CalculationDocument document_;
   bool has_document_ = false;

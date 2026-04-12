@@ -218,14 +218,21 @@ body::-webkit-scrollbar-thumb:hover,
 }
 
 .calc-entry-value {
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 800;
   letter-spacing: -0.02em;
 }
 
+.calc-entry-range {
+  font-size: 13px;
+  color: var(--calc-unit-color);
+  font-weight: 600;
+}
+
 .calc-entry-unit {
   color: var(--calc-unit-color);
-  font-size: 14px;
+  font-size: 18px;
+  font-weight: 700;
 }
 
 .calc-math-row {

@@ -7,8 +7,8 @@ namespace {
 class PsuBasicModule : public Module {
 public:
   ModuleInfo info() const override {
-    return {"psu-basic", "Zasilacz niestabilizowany",
-            "Prosty kalkulator zasilacza niestabilizowanego"};
+    return {"psu-basic", "Zasilacz niesymetryczny",
+            "Prosty kalkulator zasilacza niesymetrycznego"};
   }
 
   int run(const std::vector<std::string> &) override { return 0; }

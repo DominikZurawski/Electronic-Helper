@@ -8,6 +8,7 @@
 #include <QLabel>
 #include <QPalette>
 #include <QSizePolicy>
+#include <QScrollBar>
 #include <QTextBrowser>
 #include <QTextDocument>
 #include <QUrl>
@@ -87,6 +88,16 @@ CalculationView::CalculationView(QWidget *parent) : QWidget(parent) {
   web_view->setContextMenuPolicy(Qt::NoContextMenu);
   web_view->page()->setBackgroundColor(palette().color(QPalette::Window));
   web_view->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  web_view_ = web_view;
+  QObject::connect(web_view, &QWebEngineView::loadFinished, this, [this](bool) {
+    if (!web_view_ || !pending_scroll_.has_value()) {
+      return;
+    }
+    const double scroll = *pending_scroll_;
+    pending_scroll_.reset();
+    web_view_->page()->runJavaScript(
+        QString("window.scrollTo(0, %1);").arg(scroll, 0, 'f', 0));
+  });
   layout->addWidget(web_view);
 #else
   auto *text_browser = new QTextBrowser(this);
@@ -174,12 +185,40 @@ void CalculationView::update_validation_status() {
 }
 
 void CalculationView::rerender() {
+#if defined(PPE_HAS_QT_WEBENGINE)
+  if (web_view_) {
+    const int token = ++render_token_;
+    web_view_->page()->runJavaScript(QStringLiteral("window.scrollY"),
+                                     [this, token](const QVariant &value) {
+                                       if (token != render_token_) {
+                                         return;
+                                       }
+                                       const double scroll = value.isValid() ? value.toDouble() : 0.0;
+                                       pending_scroll_ = scroll;
+                                       const auto rendered = render_calculation_document(
+                                           document_, theme_for_palette(palette()),
+                                           active_section_index_);
+                                       validation_issues_ = rendered.validation_issues;
+                                       setToolTip(build_validation_tooltip(rendered));
+                                       update_validation_status();
+                                       set_html(to_qstring(rendered.html));
+                                     });
+    return;
+  }
+#endif
+  int scroll_pos = 0;
+  if (fallback_view_ && fallback_view_->verticalScrollBar()) {
+    scroll_pos = fallback_view_->verticalScrollBar()->value();
+  }
   const auto rendered = render_calculation_document(document_, theme_for_palette(palette()),
                                                     active_section_index_);
   validation_issues_ = rendered.validation_issues;
   setToolTip(build_validation_tooltip(rendered));
   update_validation_status();
   set_html(to_qstring(rendered.html));
+  if (fallback_view_ && fallback_view_->verticalScrollBar()) {
+    fallback_view_->verticalScrollBar()->setValue(scroll_pos);
+  }
 }
 
 } // namespace pep::ui::calculation

@@ -115,7 +115,7 @@ void export_active_block(QWidget *parent, std::optional<int> active_block_id,
   std::vector<Block> single_blocks = {*block};
   std::vector<Connection> single_connections;
   for (const auto &connection : connections) {
-    if (connection.a.block_id == *active_block_id || connection.b.block_id == *active_block_id) {
+    if (connection.a.block_id == *active_block_id && connection.b.block_id == *active_block_id) {
       single_connections.push_back(connection);
     }
   }

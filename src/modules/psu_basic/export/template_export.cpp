@@ -30,7 +30,7 @@ std::string format_number(double v, int precision = 10) {
 } // namespace
 
 std::string built_in_psu_basic_asc_template() {
-  // W tej chwili nie shipujemy już wbudowanego szablonu dla "PSU niestabilizowany".
+  // W tej chwili nie shipujemy już wbudowanego szablonu dla "PSU niesymetryczny".
   // Szablony są rozdzielone na elementy (np. zasilanie symetryczne i wzmacniacz) w module
   // "Projektowanie układu".
   return "";
@@ -38,6 +38,8 @@ std::string built_in_psu_basic_asc_template() {
 
 TemplateExportResult export_schematic_from_asc_template(double vin_ac_rms, double mains_hz,
                                                         double load_current, double capacitor_uF,
+                                                        double vin_tol_pct,
+                                                        const std::string &step_param_name,
                                                         const std::string &asc_template) {
   TemplateExportResult out;
   if (asc_template.empty()) {
@@ -57,8 +59,16 @@ TemplateExportResult export_schematic_from_asc_template(double vin_ac_rms, doubl
 
   std::unordered_map<std::string, std::string> inst_values;
 
+  const bool use_step = (vin_tol_pct > 0.0 && !step_param_name.empty());
   if (vrms > 0.0) {
-    inst_values.emplace("V1", "SINE(0 " + format_number(vpk, 6) + " " + format_number(hz, 3) + ")");
+    if (use_step) {
+      inst_values.emplace(
+          "V1", "SINE(0 {" + format_number(vpk, 6) + "*" + step_param_name + "} " +
+                     format_number(hz, 3) + ")");
+    } else {
+      inst_values.emplace("V1",
+                          "SINE(0 " + format_number(vpk, 6) + " " + format_number(hz, 3) + ")");
+    }
   } else {
     out.warnings.push_back("Brak Uwe (VAC) — nie nadpisuję V1.");
   }
@@ -80,6 +90,13 @@ TemplateExportResult export_schematic_from_asc_template(double vin_ac_rms, doubl
 
   auto patched = pep::ltspice_patch_asc_values(asc_template, inst_values);
   out.asc = std::move(patched.asc);
+  if (use_step) {
+    const double k_down = 1.0 - vin_tol_pct / 100.0;
+    const double k_up = 1.0 + vin_tol_pct / 100.0;
+    out.directives.push_back(".param " + step_param_name + "=1");
+    out.directives.push_back(".step param " + step_param_name + " list " +
+                             format_number(k_down, 4) + " 1 " + format_number(k_up, 4));
+  }
   out.warnings.insert(out.warnings.end(), patched.warnings.begin(), patched.warnings.end());
   return out;
 }

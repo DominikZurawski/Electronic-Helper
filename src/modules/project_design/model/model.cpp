@@ -86,13 +86,16 @@ Block make_power_block(int id, const std::string &title, BlockVariant variant) {
   b.canvas_pos = CanvasPoint{0.0, 0.0};
   b.vin_ac_rms = 12.0;
   b.mains_hz = 50.0;
+  b.diode_drop = 0.7;
   b.signal_waveform = SignalWaveform::Sine;
   b.transformer_primary_v = 230.0;
+  b.transformer_primary_tol_pct = 10.0;
   b.transformer_secondary_v = 12.0;
   b.transformer_turns_ratio = 230.0 / 12.0;
   b.transformer_solve_mode = TransformerSolveMode::SecondaryFromRatio;
   b.transformer_voltage_quantity = VoltageQuantity::Rms;
   b.transformer_waveform = SignalWaveform::Sine;
+  b.power_design_mode = PowerDesignMode::SupplyForLoad;
   return b;
 }
 
@@ -108,6 +111,12 @@ Block make_amp_model1b_block(int id, const std::string &title) {
   b.signal_amp_v = 1.0;
   b.signal_hz = 1000.0;
   b.gain = 10.0;
+  b.load_resistance_ohm = 8.0;
+  b.target_power_w = 0.0;
+  b.supply_headroom_v = 4.0;
+  b.max_ripple_vpp = 2.0;
+  b.amp_design_mode = AmpDesignMode::AmpForSupply;
+  b.amp_power_source_id = 0;
   return b;
 }
 
@@ -122,8 +131,16 @@ std::vector<PortDef> ports_for(const Block &b) {
       };
     }
 
-    // Unregulated and switching PSUs currently have no exported template, but still participate
-    // in typed connections.
+    if (b.variant == BlockVariant::PsuUnregulated) {
+      return {
+          {std::string("vcc"), "Vcc", PortType::PowerPos, {FlagRef{1152, 112}}},
+          {std::string("vee"), "Vee", PortType::PowerNeg, {FlagRef{1152, 400}}},
+          {std::string("gnd"), "0", PortType::Ground, {}},
+      };
+    }
+
+    // Switching PSU currently has no exported template, but still participates in typed
+    // connections.
     return {
         {std::string("vcc"), "Vcc", PortType::PowerPos, {}},
         {std::string("vee"), "Vee", PortType::PowerNeg, {}},

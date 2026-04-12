@@ -42,8 +42,62 @@ void test_export_project_warns_for_unsupported_power_variant() {
   auto block = pd::make_power_block(1, "Zasilanie #1", pd::BlockVariant::PsuUnregulated);
   const auto result = pd::export_project_asc({block}, {}, std::nullopt);
 
-  assert(contains_warning(result.warnings, "Brak szablonu LTspice dla wariantu: psu_unregulated"));
-  assert(contains(result.asc, "PPE: brak schematu dla wariantu \"psu_unregulated\""));
+  assert(!contains_warning(result.warnings, "Brak szablonu LTspice dla wariantu: psu_unregulated"));
+  assert(!contains(result.asc, "PPE: brak schematu dla wariantu \"psu_unregulated\""));
+  assert(contains(result.asc, "SYMATTR InstName V1_B1"));
+  assert(contains(result.asc, "SYMATTR InstName C1_B1"));
+  assert(contains(result.asc, "SYMATTR InstName Rload_B1"));
+  assert(contains(result.asc, "WIRE "));
+  assert(contains(result.asc, "Vcc_B1"));
+  assert(contains(result.asc, "Vee_B1"));
+}
+
+void test_export_project_omits_dummy_load_when_real_consumer_is_connected() {
+  const auto power = pd::make_power_block(1, "PSU #1", pd::BlockVariant::PsuUnregulated);
+  const auto amp = pd::make_amp_model1b_block(2, "Amp #2");
+  const std::vector<pd::Connection> connections = {
+      {endpoint(1, "vcc"), endpoint(2, "vcc")},
+      {endpoint(1, "gnd"), endpoint(2, "gnd")},
+  };
+
+  const auto result = pd::export_project_asc({power, amp}, connections, std::nullopt);
+
+  assert(!contains(result.asc, "Rload_B1"));
+  assert(contains(result.asc, "Vcc"));
+  assert(!contains_warning(result.warnings, "Nie znaleziono elementu w .asc: Rload"));
+}
+
+void test_export_project_keeps_disconnected_nonsymmetric_supply_when_other_supply_drives_amp() {
+  const auto power_a = pd::make_power_block(1, "PSU #1", pd::BlockVariant::PsuUnregulated);
+  const auto power_b = pd::make_power_block(2, "PSU #2", pd::BlockVariant::PsuUnregulated);
+  const auto amp = pd::make_amp_model1b_block(3, "Amp #3");
+  const std::vector<pd::Connection> connections = {
+      {endpoint(2, "vcc"), endpoint(3, "vcc")},
+      {endpoint(2, "gnd"), endpoint(3, "gnd")},
+  };
+
+  const auto result = pd::export_project_asc({power_a, power_b, amp}, connections, std::nullopt);
+
+  assert(contains(result.asc, "SYMATTR InstName V1_B1"));
+  assert(contains(result.asc, "SYMATTR InstName C1_B1"));
+  assert(contains(result.asc, "SYMATTR InstName Rload_B1"));
+  assert(contains(result.asc, "SYMATTR InstName V1_B2"));
+  assert(contains(result.asc, "SYMATTR InstName C1_B2"));
+  assert(!contains(result.asc, "Rload_B2"));
+  assert(contains(result.asc, "SYMATTR InstName U1_B3"));
+}
+
+void test_export_topology_ignores_dangling_connections_to_non_exported_blocks() {
+  const auto power = pd::make_power_block(1, "PSU #1", pd::BlockVariant::PsuUnregulated);
+  const std::vector<pd::Connection> dangling = {
+      {endpoint(1, "vcc"), endpoint(2, "vcc")},
+      {endpoint(1, "gnd"), endpoint(2, "gnd")},
+  };
+
+  const auto topology = pd::build_export_topology({power}, dangling);
+
+  assert(topology.net_for_endpoint(endpoint(1, "vcc")) == "Vcc_B1");
+  assert(topology.net_for_endpoint(endpoint(1, "gnd")) == "0");
 }
 
 void test_export_project_warns_for_conflicting_power_net_types() {
@@ -57,6 +111,20 @@ void test_export_project_warns_for_conflicting_power_net_types() {
 
   assert(contains_warning(
       result.warnings, "Sprzeczne typy w jednej sieci (Vcc i Vee) — nadaję nazwę automatyczną."));
+}
+
+void test_export_topology_maps_negative_rail_to_ground_when_connected_to_nonsymmetric_supply() {
+  const auto power = pd::make_power_block(1, "PSU #1", pd::BlockVariant::PsuUnregulated);
+  const auto amp = pd::make_amp_model1b_block(2, "Amp #2");
+  const std::vector<pd::Connection> connections = {
+      {endpoint(1, "vcc"), endpoint(2, "vcc")},
+      {endpoint(1, "vee"), endpoint(2, "vee")},
+      {endpoint(1, "gnd"), endpoint(2, "gnd")},
+  };
+
+  const auto topology = pd::build_export_topology({power, amp}, connections);
+
+  assert(topology.net_for_endpoint(endpoint(2, "vee")) == "Vee");
 }
 
 void test_export_topology_orders_power_before_amplifier_in_component() {
@@ -212,7 +280,11 @@ void test_asc_ops_patch_flags_updates_matching_coordinates_and_warns_for_missing
 int main() {
   test_export_project_adds_header_and_tran_directive();
   test_export_project_warns_for_unsupported_power_variant();
+  test_export_project_omits_dummy_load_when_real_consumer_is_connected();
+  test_export_project_keeps_disconnected_nonsymmetric_supply_when_other_supply_drives_amp();
+  test_export_topology_ignores_dangling_connections_to_non_exported_blocks();
   test_export_project_warns_for_conflicting_power_net_types();
+  test_export_topology_maps_negative_rail_to_ground_when_connected_to_nonsymmetric_supply();
   test_export_topology_orders_power_before_amplifier_in_component();
   test_export_topology_assigns_unique_names_to_disconnected_power_nets();
   test_export_render_builds_square_wave_values();

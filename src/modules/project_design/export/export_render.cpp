@@ -18,13 +18,32 @@ void initialize_sheet(ExportSheetState &sheet) {
   sheet.lines.push_back("SHEET 1 3200 1800");
 }
 
-void finalize_sheet(ExportSheetState &sheet, const std::optional<std::string> &tran_directive) {
+void finalize_sheet(ExportSheetState &sheet, const std::optional<std::string> &tran_directive,
+                    const std::vector<std::string> &directives) {
   const int sheet_w = std::max(1416, sheet.global_max_x + 400);
   const int sheet_h = std::max(1140, sheet.global_max_y + 400);
   sheet.lines[1] = "SHEET 1 " + std::to_string(sheet_w) + " " + std::to_string(sheet_h);
 
   if (tran_directive.has_value() && !tran_directive->empty()) {
     sheet.lines.push_back("TEXT 40 40 Left 2 !" + *tran_directive);
+  }
+
+  if (!directives.empty()) {
+    int y = sheet_h - 140;
+    if (y < 120) {
+      y = 120;
+    }
+    for (const auto &directive : directives) {
+      if (directive.empty()) {
+        continue;
+      }
+      if (sheet.seen_directives.find(directive) != sheet.seen_directives.end()) {
+        continue;
+      }
+      sheet.seen_directives.insert(directive);
+      sheet.lines.push_back("TEXT 40 " + std::to_string(y) + " Left 2 !" + directive);
+      y += 16;
+    }
   }
 }
 

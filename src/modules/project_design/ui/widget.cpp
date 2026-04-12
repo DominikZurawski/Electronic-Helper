@@ -42,6 +42,7 @@
 #include <QPen>
 #include <QPushButton>
 #include <QScrollArea>
+#include <QSignalBlocker>
 #include <QSettings>
 #include <QSizePolicy>
 #include <QSplitter>
@@ -121,8 +122,13 @@ void tune_form_layout(QFormLayout *layout) {
   for (int row = 0; row < layout->rowCount(); ++row) {
     if (auto *item = layout->itemAt(row, QFormLayout::LabelRole)) {
       if (auto *widget = item->widget()) {
-        widget->setMinimumWidth(kFormLabelMinWidth);
-        widget->setMaximumWidth(kFormLabelMinWidth);
+        if (widget->objectName() == "compactLabel") {
+          widget->setMinimumWidth(0);
+          widget->setMaximumWidth(160);
+        } else {
+          widget->setMinimumWidth(kFormLabelMinWidth);
+          widget->setMaximumWidth(kFormLabelMinWidth);
+        }
         widget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
         if (auto *label = qobject_cast<QLabel *>(widget)) {
           label->setWordWrap(true);
@@ -192,29 +198,41 @@ struct Widget::Impl {
   QLabel *transformer_ratio_label = nullptr;
   QLabel *transformer_secondary_label = nullptr;
   QLabel *transformer_hint = nullptr;
+  QLabel *transformer_secondary_note = nullptr;
   QStackedWidget *props_stack = nullptr;
   QComboBox *power_family = nullptr;
   QComboBox *power_linear_variant = nullptr;
+  QComboBox *power_design_mode = nullptr;
   QComboBox *transformer_mode = nullptr;
   QComboBox *transformer_waveform = nullptr;
   QComboBox *transformer_voltage_quantity = nullptr;
   QComboBox *variant = nullptr;
   QLineEdit *transformer_primary_input = nullptr;
+  QLineEdit *transformer_primary_tol_input = nullptr;
   QLineEdit *transformer_ratio_input = nullptr;
   QLineEdit *transformer_secondary_input = nullptr;
   QLineEdit *vin_input = nullptr;
+  QLineEdit *diode_drop_input = nullptr;
   QLineEdit *freq_input = nullptr;
   QLineEdit *current_input = nullptr;
   QLineEdit *cap_input = nullptr;
+  QLineEdit *max_ripple_input = nullptr;
   QComboBox *amp_waveform = nullptr;
+  QComboBox *amp_design_mode = nullptr;
   QComboBox *amp_power_source = nullptr;
   QLineEdit *amp_amp_input = nullptr;
   QLineEdit *amp_freq_input = nullptr;
   QLineEdit *amp_gain_input = nullptr;
+  QLineEdit *amp_load_input = nullptr;
+  QLineEdit *amp_power_input = nullptr;
+  QLineEdit *amp_headroom_input = nullptr;
+  QLineEdit *amp_max_ripple_input = nullptr;
+  QWidget *amp_signal_group = nullptr;
+  QWidget *amp_power_group = nullptr;
   QStackedWidget *calculator_input_stack = nullptr;
   QTabWidget *power_calculator_tabs = nullptr;
-  pep::ui::calculation::CalculationView *transformer_compute_result = nullptr;
-  pep::ui::calculation::CalculationView *rectifier_compute_result = nullptr;
+  int active_power_calculator_tab_index = 0;
+  std::vector<pep::ui::calculation::CalculationView *> power_compute_results;
   pep::ui::calculation::CalculationView *compute_result = nullptr;
   QLabel *calculator_placeholder = nullptr;
   QLabel *validation = nullptr;
@@ -230,11 +248,17 @@ struct Widget::Impl {
   std::function<void()> sync_active_to_form;
   std::function<void()> sync_form_to_active;
   std::function<void()> recompute_and_validate;
+  std::function<void()> apply_amp_requirements_to_power;
   std::function<void()> update_transformer_labels;
+  std::function<void()> update_power_mode_visibility;
+  std::function<void()> update_amp_mode_visibility;
   std::function<void()> update_calculator_panels;
   std::function<void()> update_props_stack_height;
   std::function<void(int)> set_active;
   VoltageQuantity last_transformer_voltage_quantity = VoltageQuantity::Rms;
+  bool syncing_filter_fields = false;
+  enum class FilterInput { None, Cap, Ripple };
+  FilterInput last_filter_input = FilterInput::None;
 };
 
 Widget::Widget(QWidget *parent) : QWidget(parent) {
@@ -271,7 +295,7 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   auto *add_element_menu = new QMenu(btn_add_element);
   auto *action_add_power = add_element_menu->addAction("Zasilacz liniowy");
   auto *action_add_switching = add_element_menu->addAction("Zasilacz impulsowy");
-  auto *action_add_amp = add_element_menu->addAction("Wzmacniacz 1(B)");
+  auto *action_add_amp = add_element_menu->addAction("Wzmacniacz klasy B (audio)");
   btn_add_element->setMenu(add_element_menu);
   auto *btn_remove_selected = new QPushButton("Usuń zaznaczony", canvas_toolbar);
   auto *btn_auto_layout = new QPushButton("Auto-rozmieszczenie", canvas_toolbar);
@@ -288,6 +312,8 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   auto *waveform_out = new pep::modules::psu_basic::WaveformWidget(waveforms_box);
   impl_->waveform_in = waveform_in;
   impl_->waveform_out = waveform_out;
+  waveform_in->setObjectName("waveformInput");
+  waveform_out->setObjectName("waveformOutput");
   waveform_in->setMinimumHeight(160);
   waveform_out->setMinimumHeight(160);
   waveforms_layout->addWidget(w_in_label);
@@ -345,17 +371,21 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   auto *transformer_ratio_label = new QLabel(power_props);
   auto *transformer_secondary_label = new QLabel(power_props);
   auto *transformer_hint = new QLabel(power_props);
+  auto *transformer_secondary_note = new QLabel(power_props);
   auto *power_family = new QComboBox(power_props);
   auto *power_linear_variant = new QComboBox(power_props);
+  auto *power_design_mode = new QComboBox(power_props);
   auto *transformer_mode = new QComboBox(power_props);
   auto *transformer_waveform = new QComboBox(power_props);
   auto *transformer_voltage_quantity = new QComboBox(power_props);
   auto *variant = new QComboBox(power_props);
   impl_->power_family = power_family;
   impl_->power_linear_variant = power_linear_variant;
+  impl_->power_design_mode = power_design_mode;
   impl_->transformer_ratio_label = transformer_ratio_label;
   impl_->transformer_secondary_label = transformer_secondary_label;
   impl_->transformer_hint = transformer_hint;
+  impl_->transformer_secondary_note = transformer_secondary_note;
   impl_->transformer_mode = transformer_mode;
   impl_->transformer_waveform = transformer_waveform;
   impl_->transformer_voltage_quantity = transformer_voltage_quantity;
@@ -363,8 +393,14 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   power_family->addItem("Liniowy", 0);
   power_family->addItem("Impulsowy", 1);
   power_linear_variant->addItem("Symetryczny", static_cast<int>(BlockVariant::PsuSymmetric));
-  power_linear_variant->addItem("Niestabilizowany (brak schematu)",
+  power_linear_variant->addItem("Niesymetryczny",
                                 static_cast<int>(BlockVariant::PsuUnregulated));
+  power_design_mode->addItem("Zasilacz do obciążenia",
+                             static_cast<int>(PowerDesignMode::SupplyForLoad));
+  power_design_mode->addItem("Obciążenie do zasilacza",
+                             static_cast<int>(PowerDesignMode::LoadForSupply));
+  power_design_mode->setVisible(false);
+  power_design_mode->setEnabled(false);
   transformer_mode->addItem("Napięcie wtórne z przekładni",
                             static_cast<int>(TransformerSolveMode::SecondaryFromRatio));
   transformer_mode->addItem("Przekładnia z wymaganego napięcia",
@@ -376,40 +412,65 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   transformer_voltage_quantity->addItem("Szczytowe (peak)",
                                         static_cast<int>(VoltageQuantity::Peak));
   variant->addItem("Zasilacz symetryczny", static_cast<int>(BlockVariant::PsuSymmetric));
-  variant->addItem("Zasilacz niestabilizowany (brak schematu)",
+  variant->addItem("Zasilacz niesymetryczny",
                    static_cast<int>(BlockVariant::PsuUnregulated));
   variant->addItem("Zasilacz impulsowy (brak schematu)",
                    static_cast<int>(BlockVariant::PsuSwitching));
   variant->setVisible(false);
 
   auto *transformer_primary_input = new QLineEdit(power_props);
+  auto *transformer_primary_tol_input = new QLineEdit(power_props);
   auto *transformer_ratio_input = new QLineEdit(power_props);
   auto *transformer_secondary_input = new QLineEdit(power_props);
   auto *vin_input = new QLineEdit(power_props);
+  auto *diode_drop_input = new QLineEdit(power_props);
   auto *freq_input = new QLineEdit(power_props);
   auto *current_input = new QLineEdit(power_props);
   auto *cap_input = new QLineEdit(power_props);
+  auto *max_ripple_input = new QLineEdit(power_props);
   impl_->transformer_primary_input = transformer_primary_input;
+  impl_->transformer_primary_tol_input = transformer_primary_tol_input;
   impl_->transformer_ratio_input = transformer_ratio_input;
   impl_->transformer_secondary_input = transformer_secondary_input;
   impl_->vin_input = vin_input;
+  impl_->diode_drop_input = diode_drop_input;
   impl_->freq_input = freq_input;
   impl_->current_input = current_input;
   impl_->cap_input = cap_input;
+  impl_->max_ripple_input = max_ripple_input;
   transformer_primary_input->setPlaceholderText("np. 230");
   transformer_primary_input->setObjectName("transformerPrimaryInput");
+  transformer_primary_tol_input->setPlaceholderText("10");
+  transformer_primary_tol_input->setObjectName("transformerPrimaryTolInput");
+  transformer_primary_tol_input->setMaximumWidth(60);
+  transformer_primary_tol_input->setText("10");
+  transformer_mode->setObjectName("transformerMode");
+  transformer_waveform->setObjectName("transformerWaveform");
   transformer_voltage_quantity->setObjectName("transformerVoltageQuantity");
   transformer_ratio_input->setPlaceholderText("Np:Ns, np. 19.17");
+  transformer_ratio_input->setObjectName("transformerRatioInput");
   transformer_secondary_input->setPlaceholderText("np. 12 RMS");
+  transformer_secondary_input->setObjectName("transformerSecondaryInput");
   vin_input->setPlaceholderText("VAC RMS");
   vin_input->setReadOnly(true);
+  diode_drop_input->setPlaceholderText("V");
+  diode_drop_input->setObjectName("diodeDropInput");
   freq_input->setPlaceholderText("50 / 60");
+  freq_input->setObjectName("mainsFrequencyInput");
   current_input->setPlaceholderText("A");
+  current_input->setObjectName("currentInput");
   cap_input->setPlaceholderText("uF");
+  cap_input->setObjectName("capacitorInput");
+  max_ripple_input->setPlaceholderText("Vpp");
+  max_ripple_input->setObjectName("maxRippleInput");
   transformer_hint->setWordWrap(true);
   transformer_hint->setObjectName("transformerHint");
   transformer_hint->setStyleSheet(
       "QLabel#transformerHint { color: palette(window-text); font-size: 12px; font-style: italic; }");
+  transformer_secondary_note->setWordWrap(true);
+  transformer_secondary_note->setObjectName("transformerSecondaryNote");
+  transformer_secondary_note->setStyleSheet(
+      "QLabel#transformerSecondaryNote { color: palette(window-text); font-size: 11px; font-style: italic; }");
   auto *power_variant_row = new QWidget(power_props);
   auto *power_variant_row_layout = new QHBoxLayout(power_variant_row);
   power_variant_row_layout->setContentsMargins(0, 0, 0, 0);
@@ -422,6 +483,7 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   transformer_secondary_with_hint_layout->setSpacing(4);
   transformer_secondary_with_hint_layout->addWidget(transformer_secondary_input);
   transformer_secondary_with_hint_layout->addWidget(transformer_hint);
+  transformer_secondary_with_hint_layout->addWidget(transformer_secondary_note);
   auto *transformer_primary_with_quantity = new QWidget(power_props);
   auto *transformer_primary_with_quantity_layout =
       new QHBoxLayout(transformer_primary_with_quantity);
@@ -429,37 +491,86 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   transformer_primary_with_quantity_layout->setSpacing(8);
   transformer_primary_with_quantity_layout->addWidget(transformer_voltage_quantity, 0);
   transformer_primary_with_quantity_layout->addWidget(transformer_primary_input, 1);
+  transformer_primary_with_quantity_layout->addWidget(transformer_primary_tol_input, 0);
+  transformer_primary_with_quantity_layout->addWidget(new QLabel("%", power_props), 0);
   power_form->addRow("Rodzaj zasilacza", power_variant_row);
+  power_variant_row->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
   tune_form_layout(power_form);
 
   auto *amp_props = new QWidget(props_stack);
   amp_props->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
-  auto *amp_form = new QFormLayout(amp_props);
-  tune_form_layout(amp_form);
-  auto *amp_model = new QLabel("Model 1(B)", amp_props);
+  auto *amp_root = new QVBoxLayout(amp_props);
+  amp_root->setContentsMargins(0, 0, 0, 0);
+  amp_root->setSpacing(12);
+  auto *amp_header = new QWidget(amp_props);
+  auto *amp_header_form = new QFormLayout(amp_header);
+  tune_form_layout(amp_header_form);
+  auto *amp_model = new QLabel("Wzmacniacz klasy B (audio)", amp_props);
+  auto *amp_design_mode = new QComboBox(amp_props);
   auto *amp_power_source = new QComboBox(amp_props);
   auto *amp_waveform = new QComboBox(amp_props);
   amp_waveform->addItem("Sinus", static_cast<int>(SignalWaveform::Sine));
   amp_waveform->addItem("Prostokąt", static_cast<int>(SignalWaveform::Square));
   amp_waveform->addItem("Trójkąt", static_cast<int>(SignalWaveform::Triangle));
+  amp_design_mode->addItem("Projektowanie zasilacza do wzmacniacza",
+                           static_cast<int>(AmpDesignMode::SupplyForAmp));
+  amp_design_mode->addItem("Wzmacniacz", static_cast<int>(AmpDesignMode::AmpForSupply));
   auto *amp_amp_input = new QLineEdit(amp_props);
   auto *amp_freq_input = new QLineEdit(amp_props);
   auto *amp_gain_input = new QLineEdit(amp_props);
+  auto *amp_load_input = new QLineEdit(amp_props);
+  auto *amp_power_input = new QLineEdit(amp_props);
+  auto *amp_headroom_input = new QLineEdit(amp_props);
+  auto *amp_max_ripple_input = new QLineEdit(amp_props);
   amp_amp_input->setPlaceholderText("V (amplituda)");
   amp_freq_input->setPlaceholderText("Hz");
   amp_gain_input->setPlaceholderText("np. 10");
+  amp_load_input->setPlaceholderText("Ohm");
+  amp_power_input->setPlaceholderText("W");
+  amp_headroom_input->setPlaceholderText("V");
+  amp_max_ripple_input->setPlaceholderText("Vpp");
+  amp_load_input->setObjectName("ampLoadInput");
+  amp_power_input->setObjectName("ampPowerInput");
+  amp_headroom_input->setObjectName("ampHeadroomInput");
+  amp_max_ripple_input->setObjectName("ampMaxRippleInput");
   impl_->amp_waveform = amp_waveform;
+  impl_->amp_design_mode = amp_design_mode;
   impl_->amp_power_source = amp_power_source;
   impl_->amp_amp_input = amp_amp_input;
   impl_->amp_freq_input = amp_freq_input;
   impl_->amp_gain_input = amp_gain_input;
-  amp_form->addRow("Model wzmacniacza", amp_model);
-  amp_form->addRow("Źródło zasilania", amp_power_source);
-  amp_form->addRow("Rodzaj przebiegu wejściowego", amp_waveform);
-  amp_form->addRow("Amplituda wejściowa (V)", amp_amp_input);
-  amp_form->addRow("Częstotliwość sygnału (Hz)", amp_freq_input);
-  amp_form->addRow("Wzmocnienie napięciowe (V/V)", amp_gain_input);
-  tune_form_layout(amp_form);
+  impl_->amp_load_input = amp_load_input;
+  impl_->amp_power_input = amp_power_input;
+  impl_->amp_headroom_input = amp_headroom_input;
+  impl_->amp_max_ripple_input = amp_max_ripple_input;
+  amp_header_form->addRow("Model wzmacniacza", amp_model);
+  amp_header_form->addRow("Tryb projektu", amp_design_mode);
+  amp_header_form->addRow("Źródło zasilania", amp_power_source);
+  amp_header_form->addRow("Rodzaj przebiegu wejściowego", amp_waveform);
+  amp_root->addWidget(amp_header);
+
+  auto *amp_columns = new QWidget(amp_props);
+  auto *amp_columns_layout = new QHBoxLayout(amp_columns);
+  amp_columns_layout->setContentsMargins(0, 0, 0, 0);
+  amp_columns_layout->setSpacing(12);
+  auto *amp_signal_group = new QGroupBox("Parametry sygnału", amp_columns);
+  auto *amp_signal_form = new QFormLayout(amp_signal_group);
+  tune_form_layout(amp_signal_form);
+  amp_signal_form->addRow("Amplituda wejściowa (V)", amp_amp_input);
+  amp_signal_form->addRow("Częstotliwość sygnału (Hz)", amp_freq_input);
+  amp_signal_form->addRow("Wzmocnienie napięciowe (V/V)", amp_gain_input);
+  auto *amp_power_group = new QGroupBox("Obciążenie i zasilanie", amp_columns);
+  auto *amp_power_form = new QFormLayout(amp_power_group);
+  tune_form_layout(amp_power_form);
+  amp_power_form->addRow("Obciążenie (Ohm)", amp_load_input);
+  amp_power_form->addRow("Moc na obciążeniu (W)", amp_power_input);
+  amp_power_form->addRow("Zapas napięcia zasilania (V)", amp_headroom_input);
+  amp_power_form->addRow("Maksymalne tętnienia (Vpp)", amp_max_ripple_input);
+  amp_columns_layout->addWidget(amp_signal_group, 1);
+  amp_columns_layout->addWidget(amp_power_group, 1);
+  amp_root->addWidget(amp_columns);
+  impl_->amp_signal_group = amp_signal_group;
+  impl_->amp_power_group = amp_power_group;
 
   props_stack->addWidget(power_props); // index 0
   props_stack->addWidget(amp_props);   // index 1
@@ -470,6 +581,7 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
 
   auto *power_calculator_tabs = new QTabWidget(left);
   impl_->power_calculator_tabs = power_calculator_tabs;
+  power_calculator_tabs->setObjectName("powerCalculatorTabs");
   power_calculator_tabs->setDocumentMode(true);
   power_calculator_tabs->setElideMode(Qt::ElideNone);
   power_calculator_tabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -483,17 +595,34 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   transformer_module->form_layout()->addRow(transformer_ratio_label, transformer_ratio_input);
   transformer_module->form_layout()->addRow(transformer_secondary_label, transformer_secondary_with_hint);
   tune_form_layout(transformer_module->form_layout());
-  impl_->transformer_compute_result = transformer_module->result_view();
+  impl_->power_compute_results.push_back(transformer_module->result_view());
   power_calculator_tabs->addTab(transformer_module, "Transformator");
 
   auto *rectifier_module = new pep::ui::calculation::CalculationModuleWidget(power_calculator_tabs);
   rectifier_module->form_layout()->addRow("Wtórne do prostownika (VAC RMS)", vin_input);
+  rectifier_module->form_layout()->addRow("Spadek na jednej diodzie (V)", diode_drop_input);
   rectifier_module->form_layout()->addRow("Częstotliwość sieci (Hz)", freq_input);
-  rectifier_module->form_layout()->addRow("Prąd obciążenia (A)", current_input);
-  rectifier_module->form_layout()->addRow("Pojemność kondensatora (uF)", cap_input);
   tune_form_layout(rectifier_module->form_layout());
-  impl_->rectifier_compute_result = rectifier_module->result_view();
-  power_calculator_tabs->addTab(rectifier_module, "Prostownik i filtracja");
+  impl_->power_compute_results.push_back(rectifier_module->result_view());
+  power_calculator_tabs->addTab(rectifier_module, "Prostownik");
+
+  auto *filter_module = new pep::ui::calculation::CalculationModuleWidget(power_calculator_tabs);
+  filter_module->form_layout()->addRow("Prąd obciążenia (A)", current_input);
+  filter_module->form_layout()->addRow("Maksymalne tętnienia (Vpp)", max_ripple_input);
+  filter_module->form_layout()->addRow("Pojemność kondensatora (uF)", cap_input);
+  tune_form_layout(filter_module->form_layout());
+  impl_->power_compute_results.push_back(filter_module->result_view());
+  power_calculator_tabs->addTab(filter_module, "Filtracja");
+
+  auto *load_module = new pep::ui::calculation::CalculationModuleWidget(power_calculator_tabs);
+  auto *load_info = new QLabel(load_module);
+  load_info->setWordWrap(true);
+  load_info->setText(
+      "Ten moduł pokazuje moc i obciążenie po filtracji. Prąd pobieramy z zakładki Filtracja.");
+  load_module->form_layout()->addRow(load_info);
+  tune_form_layout(load_module->form_layout());
+  impl_->power_compute_results.push_back(load_module->result_view());
+  power_calculator_tabs->addTab(load_module, "Obciążenie");
 
   calculator_input_stack->addWidget(power_calculator_tabs);
 
@@ -625,18 +754,34 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   auto sync_active_to_form = [this, active_block, refresh_power_source_combo]() {
     const FormWidgets widgets{
         impl_->props_stack,       impl_->power_family,   impl_->power_linear_variant,
-        impl_->transformer_mode,  impl_->transformer_waveform,
+        impl_->power_design_mode, impl_->transformer_mode,  impl_->transformer_waveform,
         impl_->transformer_voltage_quantity, impl_->variant,
-        impl_->transformer_primary_input, impl_->transformer_ratio_input,
-        impl_->transformer_secondary_input, impl_->vin_input, impl_->freq_input,
-        impl_->current_input,     impl_->cap_input,
-        impl_->amp_waveform,      impl_->amp_power_source,
-        impl_->amp_amp_input,     impl_->amp_freq_input, impl_->amp_gain_input};
+        impl_->transformer_primary_input, impl_->transformer_primary_tol_input,
+        impl_->transformer_ratio_input,
+        impl_->transformer_secondary_input, impl_->vin_input, impl_->diode_drop_input,
+        impl_->freq_input,
+        impl_->current_input,     impl_->cap_input, impl_->max_ripple_input,
+        impl_->amp_waveform,      impl_->amp_design_mode, impl_->amp_power_source,
+        impl_->amp_amp_input,     impl_->amp_freq_input, impl_->amp_gain_input,
+        impl_->amp_load_input,    impl_->amp_power_input, impl_->amp_headroom_input,
+        impl_->amp_max_ripple_input};
     pep::modules::project_design::sync_active_to_form(
         active_block(), impl_->blocks, impl_->connections, widgets, &impl_->syncing_active_to_form,
         refresh_power_source_combo);
+    const Block *active = active_block();
+    if (active && active->kind == BlockKind::Amplifier &&
+        active->amp_design_mode == AmpDesignMode::SupplyForAmp &&
+        impl_->apply_amp_requirements_to_power) {
+      impl_->apply_amp_requirements_to_power();
+    }
     if (impl_->update_transformer_labels) {
       impl_->update_transformer_labels();
+    }
+    if (impl_->update_power_mode_visibility) {
+      impl_->update_power_mode_visibility();
+    }
+    if (impl_->update_amp_mode_visibility) {
+      impl_->update_amp_mode_visibility();
     }
     if (impl_->transformer_voltage_quantity) {
       impl_->last_transformer_voltage_quantity =
@@ -653,37 +798,88 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   auto sync_form_to_active = [this, active_block]() {
     const FormWidgets widgets{
         impl_->props_stack,       impl_->power_family,   impl_->power_linear_variant,
-        impl_->transformer_mode,  impl_->transformer_waveform,
+        impl_->power_design_mode, impl_->transformer_mode,  impl_->transformer_waveform,
         impl_->transformer_voltage_quantity, impl_->variant,
-        impl_->transformer_primary_input, impl_->transformer_ratio_input,
-        impl_->transformer_secondary_input, impl_->vin_input, impl_->freq_input,
-        impl_->current_input,     impl_->cap_input,
-        impl_->amp_waveform,      impl_->amp_power_source,
-        impl_->amp_amp_input,     impl_->amp_freq_input, impl_->amp_gain_input};
+        impl_->transformer_primary_input, impl_->transformer_primary_tol_input,
+        impl_->transformer_ratio_input,
+        impl_->transformer_secondary_input, impl_->vin_input, impl_->diode_drop_input,
+        impl_->freq_input,
+        impl_->current_input,     impl_->cap_input, impl_->max_ripple_input,
+        impl_->amp_waveform,      impl_->amp_design_mode, impl_->amp_power_source,
+        impl_->amp_amp_input,     impl_->amp_freq_input, impl_->amp_gain_input,
+        impl_->amp_load_input,    impl_->amp_power_input, impl_->amp_headroom_input,
+        impl_->amp_max_ripple_input};
     pep::modules::project_design::sync_form_to_active(active_block(), widgets);
   };
 
   auto recompute_and_validate = [this, active_block]() {
     const ActiveBlockWidgets widgets{
         impl_->active_title,          impl_->validation,
-        impl_->ports_label,           impl_->compute_result,
-        impl_->transformer_compute_result, impl_->rectifier_compute_result,
+        impl_->ports_label,           impl_->compute_result, impl_->power_compute_results,
         impl_->waveform_in,           impl_->waveform_out,
+        impl_->active_power_calculator_tab_index,
         impl_->bottom_tabs,           impl_->waveform_tab_index};
+    const Block *active = active_block();
+    if (active && active->kind == BlockKind::Power) {
+      for (const auto &block : impl_->blocks) {
+        if (block.kind != BlockKind::Amplifier ||
+            block.amp_design_mode != AmpDesignMode::SupplyForAmp) {
+          continue;
+        }
+        int psu_id = block.amp_power_source_id;
+        if (psu_id == 0) {
+          psu_id = pep::modules::project_design::connected_power_block_id(impl_->blocks,
+                                                                          impl_->connections,
+                                                                          block.id);
+        }
+        if (psu_id != active->id) {
+          continue;
+        }
+        pep::modules::project_design::apply_amp_requirements_to_power(
+            impl_->blocks, impl_->connections, block.id, psu_id);
+      }
+    }
+    if (active && active->kind == BlockKind::Amplifier &&
+        active->amp_design_mode == AmpDesignMode::SupplyForAmp &&
+        impl_->apply_amp_requirements_to_power) {
+      impl_->apply_amp_requirements_to_power();
+    }
     pep::modules::project_design::recompute_and_validate(active_block(), impl_->blocks,
                                                          impl_->connections, widgets);
   };
+  impl_->recompute_and_validate = recompute_and_validate;
 
-  auto set_active = [this, sync_active_to_form, recompute_and_validate](int id) {
+  auto set_active = [this, active_block, sync_active_to_form, recompute_and_validate](int id) {
     impl_->active_block_id = id;
+    Block *active = active_block();
+    if (active && active->kind == BlockKind::Power) {
+      for (const auto &block : impl_->blocks) {
+        if (block.kind != BlockKind::Amplifier ||
+            block.amp_design_mode != AmpDesignMode::SupplyForAmp) {
+          continue;
+        }
+        int psu_id = block.amp_power_source_id;
+        if (psu_id == 0) {
+          psu_id = pep::modules::project_design::connected_power_block_id(impl_->blocks,
+                                                                          impl_->connections,
+                                                                          block.id);
+        }
+        if (psu_id != id) {
+          continue;
+        }
+        pep::modules::project_design::apply_amp_requirements_to_power(
+            impl_->blocks, impl_->connections, block.id, psu_id);
+      }
+    }
     sync_active_to_form();
     recompute_and_validate();
   };
 
   auto update_transformer_labels = [this]() {
     if (!impl_->transformer_ratio_label || !impl_->transformer_secondary_label ||
-        !impl_->transformer_hint || !impl_->power_family || !impl_->power_linear_variant ||
-        !impl_->transformer_mode || !impl_->transformer_voltage_quantity) {
+        !impl_->transformer_hint || !impl_->transformer_secondary_note ||
+        !impl_->power_family || !impl_->power_linear_variant || !impl_->transformer_mode ||
+        !impl_->transformer_voltage_quantity) {
       return;
     }
 
@@ -710,8 +906,57 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
         show_hint
             ? "Transformator 2x12 V oznacza dwa oddzielne uzwojenia po 12 V. W tym polu wpisz 12 V."
             : "");
+
+    const bool show_note = linear && solve_ratio;
+    impl_->transformer_secondary_note->setVisible(show_note);
+    impl_->transformer_secondary_note->setText(
+        show_note
+            ? "Vdc ≈ Vrms·1.414 − 2·Vd − ΔVpp/2 (po mostku i filtracji)."
+            : "");
   };
   impl_->update_transformer_labels = update_transformer_labels;
+
+  auto update_power_mode_visibility = [this]() {
+    if (!impl_->power_design_mode || !impl_->power_calculator_tabs) {
+      return;
+    }
+    auto *tabs = impl_->power_calculator_tabs;
+    auto *bar = tabs->tabBar();
+    const auto set_tab = [&](int index, bool visible) {
+      if (index < 0 || index >= tabs->count()) {
+        return;
+      }
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+      if (bar) {
+        bar->setTabVisible(index, visible);
+      }
+#else
+      tabs->setTabEnabled(index, visible);
+#endif
+    };
+    for (int i = 0; i < tabs->count(); ++i) {
+      set_tab(i, true);
+    }
+  };
+  impl_->update_power_mode_visibility = update_power_mode_visibility;
+
+  auto update_amp_mode_visibility = [this]() {
+    if (!impl_->amp_design_mode || !impl_->amp_signal_group || !impl_->amp_power_group) {
+      return;
+    }
+    const auto mode =
+        static_cast<AmpDesignMode>(impl_->amp_design_mode->currentData().toInt());
+    const bool show_signal = mode == AmpDesignMode::AmpForSupply ||
+                             mode == AmpDesignMode::AllFields;
+    const bool show_power = mode == AmpDesignMode::SupplyForAmp ||
+                            mode == AmpDesignMode::AllFields;
+    impl_->amp_signal_group->setVisible(show_signal);
+    impl_->amp_power_group->setVisible(show_power);
+    if (impl_->update_props_stack_height) {
+      impl_->update_props_stack_height();
+    }
+  };
+  impl_->update_amp_mode_visibility = update_amp_mode_visibility;
 
   auto update_calculator_panels = [this, active_block]() {
     if (!impl_->calculator_input_stack || !impl_->power_calculator_tabs || !impl_->compute_result ||
@@ -735,8 +980,13 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
     impl_->calculator_input_stack->setCurrentIndex(linear ? 0 : 1);
     impl_->power_calculator_tabs->setVisible(linear);
     if (linear) {
+      impl_->active_power_calculator_tab_index = impl_->power_calculator_tabs->currentIndex();
       impl_->compute_result->set_active_section_index(impl_->power_calculator_tabs->currentIndex());
+      if (impl_->update_power_mode_visibility) {
+        impl_->update_power_mode_visibility();
+      }
     } else {
+      impl_->active_power_calculator_tab_index = 0;
       impl_->calculator_placeholder->setText(
           "Zasilacz impulsowy dostanie własne moduły kalkulatora. Nie pokazujemy tutaj wejść liniowego transformatora ani prostownika.");
       impl_->compute_result->set_active_section_index(0);
@@ -802,7 +1052,7 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   };
   auto add_amp_block = [this, add_block]() {
     const int id = impl_->next_block_id++;
-    add_block(make_amp_model1b_block(id, QString("Wzmacniacz 1(B) #%1").arg(id).toStdString()));
+    add_block(make_amp_model1b_block(id, QString("Wzmacniacz klasy B #%1").arg(id).toStdString()));
   };
 
   auto delete_selected_block = [this, refresh_connections_ui, refresh_connection_controls,
@@ -850,6 +1100,25 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
         refresh_connections_ui, recompute_and_validate, refresh_canvas);
   };
 
+  const auto amp_to_power_mode = [](AmpDesignMode mode) {
+    if (mode == AmpDesignMode::AmpForSupply) {
+      return PowerDesignMode::LoadForSupply;
+    }
+    if (mode == AmpDesignMode::AllFields) {
+      return PowerDesignMode::AllFields;
+    }
+    return PowerDesignMode::SupplyForLoad;
+  };
+  const auto power_to_amp_mode = [](PowerDesignMode mode) {
+    if (mode == PowerDesignMode::LoadForSupply) {
+      return AmpDesignMode::AmpForSupply;
+    }
+    if (mode == PowerDesignMode::AllFields) {
+      return AmpDesignMode::AllFields;
+    }
+    return AmpDesignMode::SupplyForAmp;
+  };
+
   auto handle_variant_changed = [=]() {
     sync_form_to_active();
     update_transformer_labels();
@@ -871,6 +1140,26 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
 
   auto handle_power_linear_variant_changed = [=]() {
     handle_variant_changed();
+  };
+  auto handle_power_design_mode_changed = [=, this]() {
+    sync_form_to_active();
+    const auto mode = power_to_amp_mode(active_block()->power_design_mode);
+    for (auto &block : impl_->blocks) {
+      if (block.kind == BlockKind::Amplifier) {
+        block.amp_design_mode = mode;
+      }
+    }
+    if (impl_->amp_design_mode) {
+      const int idx = impl_->amp_design_mode->findData(static_cast<int>(mode));
+      if (idx >= 0) {
+        const QSignalBlocker blocker(*impl_->amp_design_mode);
+        impl_->amp_design_mode->setCurrentIndex(idx);
+      }
+    }
+    if (impl_->update_power_mode_visibility) {
+      impl_->update_power_mode_visibility();
+    }
+    recompute_and_validate();
   };
 
   auto handle_transformer_mode_changed = [=]() {
@@ -915,10 +1204,108 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
     recompute_and_validate();
   };
 
-  auto handle_power_input_changed = [=]() {
+  auto handle_power_input_changed = [=, this]() {
+    if (!impl_->syncing_filter_fields) {
+      Block *active = active_block();
+      if (active && active->kind == BlockKind::Power) {
+        const double load_current = impl_->current_input
+                                        ? impl_->current_input->text().toDouble()
+                                        : 0.0;
+        const double mains_hz =
+            impl_->freq_input ? impl_->freq_input->text().toDouble() : 0.0;
+        const double ripple_hz = mains_hz > 0.0 ? mains_hz * 2.0 : 0.0;
+
+        const auto update_from_ripple = [&]() {
+          if (!impl_->max_ripple_input || !impl_->cap_input) {
+            return;
+          }
+          const double ripple_vpp = impl_->max_ripple_input->text().toDouble();
+          if (load_current <= 0.0 || ripple_hz <= 0.0 || ripple_vpp <= 0.0) {
+            return;
+          }
+          const double required_cap =
+              pep::modules::psu_basic::required_capacitance_uF(load_current, ripple_vpp, ripple_hz);
+          if (required_cap <= 0.0) {
+            return;
+          }
+          const QSignalBlocker blocker(*impl_->cap_input);
+          impl_->syncing_filter_fields = true;
+          impl_->cap_input->setText(QString::number(required_cap, 'f', 1));
+          impl_->syncing_filter_fields = false;
+        };
+
+        const auto update_from_cap = [&]() {
+          if (!impl_->max_ripple_input || !impl_->cap_input) {
+            return;
+          }
+          const double cap_uF = impl_->cap_input->text().toDouble();
+          if (load_current <= 0.0 || ripple_hz <= 0.0 || cap_uF <= 0.0) {
+            return;
+          }
+          const double ripple_vpp =
+              load_current / (ripple_hz * cap_uF * 1e-6);
+          if (ripple_vpp <= 0.0) {
+            return;
+          }
+          const QSignalBlocker blocker(*impl_->max_ripple_input);
+          impl_->syncing_filter_fields = true;
+          impl_->max_ripple_input->setText(QString::number(ripple_vpp, 'f', 3));
+          impl_->syncing_filter_fields = false;
+        };
+
+        if (impl_->last_filter_input == Impl::FilterInput::Ripple) {
+          update_from_ripple();
+        } else if (impl_->last_filter_input == Impl::FilterInput::Cap) {
+          update_from_cap();
+        }
+      }
+    }
     sync_form_to_active();
     recompute_and_validate();
   };
+
+  QObject::connect(impl_->cap_input, &QLineEdit::textChanged, this, [=, this]() {
+    if (!impl_->syncing_filter_fields) {
+      impl_->last_filter_input = Impl::FilterInput::Cap;
+      handle_power_input_changed();
+    }
+  });
+  QObject::connect(impl_->max_ripple_input, &QLineEdit::textChanged, this, [=, this]() {
+    if (!impl_->syncing_filter_fields) {
+      impl_->last_filter_input = Impl::FilterInput::Ripple;
+      handle_power_input_changed();
+    }
+  });
+
+  auto apply_amp_requirements_to_power = [=, this]() {
+    Block *active = active_block();
+    if (!active || active->kind != BlockKind::Amplifier) {
+      return;
+    }
+
+    int psu_id = 0;
+    if (active->amp_power_source_id != 0) {
+      psu_id = active->amp_power_source_id;
+    } else if (impl_->amp_power_source) {
+      psu_id = impl_->amp_power_source->currentData().toInt();
+    }
+    if (psu_id == 0) {
+      psu_id = pep::modules::project_design::connected_power_block_id(impl_->blocks,
+                                                                      impl_->connections,
+                                                                      active->id);
+      if (psu_id != 0 && impl_->amp_power_source) {
+        const int idx = impl_->amp_power_source->findData(psu_id);
+        if (idx >= 0) {
+          const QSignalBlocker blocker(*impl_->amp_power_source);
+          impl_->amp_power_source->setCurrentIndex(idx);
+        }
+      }
+    }
+
+    pep::modules::project_design::apply_amp_requirements_to_power(
+        impl_->blocks, impl_->connections, active->id, psu_id);
+  };
+  impl_->apply_amp_requirements_to_power = apply_amp_requirements_to_power;
 
   auto handle_amp_power_source_changed = [=, this]() {
     if (impl_->refreshing_canvas) {
@@ -932,22 +1319,46 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
       return;
     }
 
+    sync_form_to_active();
     const int psu_id = impl_->amp_power_source->currentData().toInt();
     pep::modules::project_design::remap_block_power_connections(impl_->blocks, impl_->connections,
                                                                 active->id, psu_id);
+    apply_amp_requirements_to_power();
 
     refresh_connections_ui();
     refresh_connection_controls();
     recompute_and_validate();
     refresh_canvas();
   };
-
+  auto handle_amp_design_mode_changed = [=, this]() {
+    sync_form_to_active();
+    const auto mode = amp_to_power_mode(active_block()->amp_design_mode);
+    for (auto &block : impl_->blocks) {
+      if (block.kind == BlockKind::Power) {
+        block.power_design_mode = mode;
+      }
+    }
+    if (impl_->power_design_mode) {
+      const int idx = impl_->power_design_mode->findData(static_cast<int>(mode));
+      if (idx >= 0) {
+        const QSignalBlocker blocker(*impl_->power_design_mode);
+        impl_->power_design_mode->setCurrentIndex(idx);
+      }
+    }
+    if (impl_->update_amp_mode_visibility) {
+      impl_->update_amp_mode_visibility();
+    }
+    apply_amp_requirements_to_power();
+    recompute_and_validate();
+  };
   auto handle_amp_waveform_changed = [=, this]() {
     sync_form_to_active();
+    apply_amp_requirements_to_power();
     recompute_and_validate();
   };
   auto handle_amp_amp_changed = [=, this]() {
     sync_form_to_active();
+    apply_amp_requirements_to_power();
     recompute_and_validate();
   };
   auto handle_amp_freq_changed = [=, this]() {
@@ -956,6 +1367,12 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   };
   auto handle_amp_gain_changed = [=, this]() {
     sync_form_to_active();
+    apply_amp_requirements_to_power();
+    recompute_and_validate();
+  };
+  auto handle_amp_specs_changed = [=, this]() {
+    sync_form_to_active();
+    apply_amp_requirements_to_power();
     recompute_and_validate();
   };
 
@@ -999,26 +1416,35 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
                                           export_project,
                                           power_family,
                                           power_linear_variant,
+                                          power_design_mode,
                                           transformer_mode,
                                           transformer_waveform,
                                           transformer_voltage_quantity,
                                           variant,
                                           impl_->amp_waveform,
+                                          impl_->amp_design_mode,
                                           impl_->amp_power_source,
                                           conn_from_block,
                                           conn_from_port,
                                           conn_to_block,
                                           conn_to_port,
                                           transformer_primary_input,
+                                          transformer_primary_tol_input,
                                           transformer_ratio_input,
                                           transformer_secondary_input,
                                           vin_input,
+                                          diode_drop_input,
                                           freq_input,
                                           current_input,
                                           cap_input,
+                                          max_ripple_input,
                                           impl_->amp_amp_input,
                                           impl_->amp_freq_input,
                                           impl_->amp_gain_input,
+                                          impl_->amp_load_input,
+                                          impl_->amp_power_input,
+                                          impl_->amp_headroom_input,
+                                          impl_->amp_max_ripple_input,
                                           add_power_block,
                                           add_amp_block,
                                           delete_selected_block,
@@ -1027,6 +1453,7 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
                                           handle_scene_selection,
                                           handle_power_family_changed,
                                           handle_power_linear_variant_changed,
+                                          handle_power_design_mode_changed,
                                           handle_transformer_mode_changed,
                                           handle_transformer_waveform_changed,
                                           handle_transformer_voltage_quantity_changed,
@@ -1034,9 +1461,11 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
                                           handle_power_input_changed,
                                           handle_amp_power_source_changed,
                                           handle_amp_waveform_changed,
+                                          handle_amp_design_mode_changed,
                                           handle_amp_amp_changed,
                                           handle_amp_freq_changed,
                                           handle_amp_gain_changed,
+                                          handle_amp_specs_changed,
                                           refresh_ports_combo,
                                           handle_add_connection,
                                           handle_remove_connection,
@@ -1045,8 +1474,12 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
 
   QObject::connect(power_calculator_tabs, &QTabWidget::currentChanged, this,
                    [this](int index) {
+                     impl_->active_power_calculator_tab_index = index;
                      if (impl_->compute_result) {
                        impl_->compute_result->set_active_section_index(index);
+                     }
+                     if (impl_->recompute_and_validate) {
+                       impl_->recompute_and_validate();
                      }
                    });
   QObject::connect(props_stack, &QStackedWidget::currentChanged, this, [this](int) {
@@ -1062,6 +1495,9 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   refresh_canvas();
   sync_active_to_form();
   update_transformer_labels();
+  if (impl_->update_amp_mode_visibility) {
+    impl_->update_amp_mode_visibility();
+  }
   update_calculator_panels();
   update_props_stack_height();
   recompute_and_validate();
