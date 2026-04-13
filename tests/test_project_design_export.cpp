@@ -226,6 +226,30 @@ void test_export_project_warns_for_unknown_element_kind() {
   assert(contains(result.asc, "PPE: brak schematu dla elementu \"Nieznany blok\""));
 }
 
+void test_export_project_adds_k1_for_symmetric_supply() {
+  const auto power = pd::make_power_block(1, "PSU #1", pd::BlockVariant::PsuSymmetric);
+  const auto result = pd::export_project_asc({power}, {}, std::nullopt);
+
+  assert(contains(result.asc, "K1_B1 L1_B1 L2_B1 L3_B1 1"));
+}
+
+void test_export_project_adds_k1_for_nonsymmetric_supply() {
+  const auto power = pd::make_power_block(1, "PSU #1", pd::BlockVariant::PsuUnregulated);
+  const auto result = pd::export_project_asc({power}, {}, std::nullopt);
+
+  assert(contains(result.asc, "K1_B1 L1_B1 L2_B1 1"));
+  assert(!contains_warning(result.warnings, "Nie znaleziono elementu w .asc: C2"));
+}
+
+void test_export_project_adds_amplifier_gain_directive() {
+  auto amp = pd::make_amp_model1b_block(1, "Amp #1");
+  amp.gain = 10.0;
+  const auto result = pd::export_project_asc({amp}, {}, std::nullopt);
+
+  assert(contains(result.asc, ".param AV_B1=10"));
+  assert(contains(result.asc, "BGAIN_B1 OUT_B1 0 V=V(IN_B1)*AV_B1"));
+}
+
 void test_asc_ops_strip_header_and_shift_coords() {
   const std::string asc = "Version 4.1\n"
                           "SHEET 1 880 680\n"
@@ -292,6 +316,9 @@ int main() {
   test_export_render_builds_sine_wave_values();
   test_export_render_warns_for_missing_amplifier_input_values();
   test_export_project_warns_for_unknown_element_kind();
+  test_export_project_adds_k1_for_symmetric_supply();
+  test_export_project_adds_k1_for_nonsymmetric_supply();
+  test_export_project_adds_amplifier_gain_directive();
   test_asc_ops_strip_header_and_shift_coords();
   test_asc_ops_uniquify_instnames_and_flag_nets();
   test_asc_ops_patch_flags_updates_matching_coordinates_and_warns_for_missing();

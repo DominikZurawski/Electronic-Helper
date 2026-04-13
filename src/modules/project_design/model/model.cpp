@@ -126,8 +126,8 @@ std::vector<PortDef> ports_for(const Block &b) {
     if (b.variant == BlockVariant::PsuSymmetric) {
       // Port flags based on provided template (assets/ltspice/power.asc).
       return {
-          {std::string("vcc"), "Vcc", PortType::PowerPos, {FlagRef{672, -352}}},
-          {std::string("vee"), "Vee", PortType::PowerNeg, {FlagRef{672, -64}}},
+          {std::string("vcc"), "Vcc", PortType::PowerPos, {FlagRef{1200, 112}}},
+          {std::string("vee"), "Vee", PortType::PowerNeg, {FlagRef{1200, 400}}},
           {std::string("gnd"), "0", PortType::Ground, {}},
       };
     }

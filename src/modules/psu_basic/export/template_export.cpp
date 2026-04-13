@@ -40,6 +40,8 @@ TemplateExportResult export_schematic_from_asc_template(double vin_ac_rms, doubl
                                                         double load_current, double capacitor_uF,
                                                         double vin_tol_pct,
                                                         const std::string &step_param_name,
+                                                        double cap_tol_pct,
+                                                        const std::string &cap_step_param_name,
                                                         const std::string &asc_template) {
   TemplateExportResult out;
   if (asc_template.empty()) {
@@ -55,9 +57,19 @@ TemplateExportResult export_schematic_from_asc_template(double vin_ac_rms, doubl
   std::string cap_suffix = pep::ltspice_detect_value_suffix(asc_template, "C1");
   // LTspice typically accepts "u". We force ASCII "u" to avoid locale/encoding artifacts (µ/�).
   cap_suffix = "u";
-  const std::string cap_value = (cap_uF > 0.0 ? (format_number(cap_uF, 6) + cap_suffix) : "");
+  const bool use_cap_step = (cap_tol_pct > 0.0 && !cap_step_param_name.empty());
+  const std::string cap_value_base =
+      (cap_uF > 0.0 ? (format_number(cap_uF, 6) + cap_suffix) : "");
+  const std::string cap_value =
+      (cap_uF > 0.0
+           ? (use_cap_step
+                  ? ("{" + cap_value_base + "*" + cap_step_param_name + "}")
+                  : cap_value_base)
+           : "");
 
   std::unordered_map<std::string, std::string> inst_values;
+  const bool has_rload = asc_template.find("InstName Rload") != std::string::npos;
+  const bool has_rl = asc_template.find("InstName RL") != std::string::npos;
 
   const bool use_step = (vin_tol_pct > 0.0 && !step_param_name.empty());
   if (vrms > 0.0) {
@@ -73,18 +85,28 @@ TemplateExportResult export_schematic_from_asc_template(double vin_ac_rms, doubl
     out.warnings.push_back("Brak Uwe (VAC) — nie nadpisuję V1.");
   }
 
+  const bool has_c1 = asc_template.find("InstName C1") != std::string::npos;
+  const bool has_c2 = asc_template.find("InstName C2") != std::string::npos;
   if (!cap_value.empty()) {
-    inst_values.emplace("C1", cap_value);
-    inst_values.emplace("C2", cap_value); // jeśli istnieje w szablonie
-  } else {
+    if (has_c1) {
+      inst_values.emplace("C1", cap_value);
+    }
+    if (has_c2) {
+      inst_values.emplace("C2", cap_value); // jeśli istnieje w szablonie
+    }
+  } else if (has_c1 || has_c2) {
     out.warnings.push_back("Brak C (uF) — nie nadpisuję C1/C2.");
   }
 
   if (load_current > 0.0 && vrms > 0.0) {
     const double rload = vrms / load_current;
-    inst_values.emplace("Rload", format_number(rload, 6));
-    inst_values.emplace("RL", format_number(rload, 6));
-  } else if (load_current <= 0.0) {
+    if (has_rload) {
+      inst_values.emplace("Rload", format_number(rload, 6));
+    }
+    if (has_rl) {
+      inst_values.emplace("RL", format_number(rload, 6));
+    }
+  } else if (load_current <= 0.0 && (has_rload || has_rl)) {
     out.warnings.push_back("Brak I obciążenia (A) — nie nadpisuję Rload/RL.");
   }
 
@@ -95,6 +117,13 @@ TemplateExportResult export_schematic_from_asc_template(double vin_ac_rms, doubl
     const double k_up = 1.0 + vin_tol_pct / 100.0;
     out.directives.push_back(".param " + step_param_name + "=1");
     out.directives.push_back(".step param " + step_param_name + " list " +
+                             format_number(k_down, 4) + " 1 " + format_number(k_up, 4));
+  }
+  if (use_cap_step) {
+    const double k_down = 1.0 - cap_tol_pct / 100.0;
+    const double k_up = 1.0 + cap_tol_pct / 100.0;
+    out.directives.push_back(".param " + cap_step_param_name + "=1");
+    out.directives.push_back(".step param " + cap_step_param_name + " list " +
                              format_number(k_down, 4) + " 1 " + format_number(k_up, 4));
   }
   out.warnings.insert(out.warnings.end(), patched.warnings.begin(), patched.warnings.end());

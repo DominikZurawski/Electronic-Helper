@@ -312,7 +312,7 @@ void apply_amp_requirements_to_power(std::vector<Block> &blocks,
   const bool has_target = amp->load_resistance_ohm > 0.0 && amp->target_power_w > 0.0;
   const bool has_waveform_power =
       amp->load_resistance_ohm > 0.0 && amp->signal_amp_v > 0.0 && amp->gain > 0.0;
-  if (has_target || has_waveform_power) {
+  if ((has_target || has_waveform_power) && amp->amp_design_mode == AmpDesignMode::SupplyForAmp) {
     const double vout_peak = amp->signal_amp_v * amp->gain;
     const double v_rms_need =
         has_target ? std::sqrt(amp->target_power_w * amp->load_resistance_ohm)

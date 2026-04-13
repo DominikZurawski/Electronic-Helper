@@ -12,6 +12,8 @@
 
 #include "pep/ltspice_template.hpp"
 
+#include <iomanip>
+#include <locale>
 #include <optional>
 #include <sstream>
 #include <string>
@@ -39,12 +41,36 @@ bool power_block_has_non_power_load(const Block &block, const std::vector<Block>
   return false;
 }
 
+bool template_has_load_resistor(const std::string &asc_template) {
+  return asc_template.find("InstName Rload") != std::string::npos ||
+         asc_template.find("InstName RL") != std::string::npos;
+}
+
+bool template_has_inst(const std::string &asc_template, const std::string &name) {
+  return asc_template.find("InstName " + name) != std::string::npos;
+}
+
 void erase_matching_warning(std::vector<std::string> &warnings, const std::string &pattern) {
   warnings.erase(std::remove_if(warnings.begin(), warnings.end(),
                                 [&](const std::string &warning) {
                                   return warning.find(pattern) != std::string::npos;
                                 }),
                  warnings.end());
+}
+
+std::string format_number(double v, int precision = 6) {
+  std::ostringstream out;
+  out.imbue(std::locale::classic());
+  out.setf(std::ios::fixed);
+  out << std::setprecision(precision) << v;
+  std::string s = out.str();
+  while (s.size() > 1 && s.find('.') != std::string::npos && s.back() == '0') {
+    s.pop_back();
+  }
+  if (!s.empty() && s.back() == '.') {
+    s.pop_back();
+  }
+  return s;
 }
 
 } // namespace
@@ -59,6 +85,7 @@ AscAssembly export_project_asc(const std::vector<Block> &blocks,
   initialize_sheet(sheet);
   const ExportLayoutConfig layout;
   bool step_added = false;
+  bool cap_step_added = false;
 
   int row_y = 0;
 
@@ -76,10 +103,22 @@ AscAssembly export_project_asc(const std::vector<Block> &blocks,
         std::string tpl;
         if (b.variant == BlockVariant::PsuSymmetric) {
           tpl = load_psu_symmetric_template(template_label);
+          if (power_block_has_non_power_load(b, blocks, connections)) {
+            tpl = remove_component_by_instname(tpl, "Rload");
+            tpl = remove_component_by_instname(tpl, "RL");
+            tpl = remove_wire_segment(tpl, 1152, 208, 1152, 112);
+            tpl = remove_wire_segment(tpl, 1152, 400, 1152, 288);
+          }
         } else if (b.variant == BlockVariant::PsuUnregulated) {
           const bool has_real_load = power_block_has_non_power_load(b, blocks, connections);
-          tpl = has_real_load ? load_psu_unregulated_no_load_template(template_label)
-                              : load_psu_unregulated_template(template_label);
+          tpl = load_psu_unregulated_template(template_label);
+          if (has_real_load) {
+            tpl = remove_component_by_instname(tpl, "Rload");
+            tpl = remove_component_by_instname(tpl, "RL");
+            tpl = remove_wire_segment(tpl, 1248, 176, 1248, 112);
+            tpl = remove_wire_segment(tpl, 1248, 400, 1248, 256);
+            tpl = remove_wire_segment(tpl, 1152, 400, 1248, 400);
+          }
         } else {
           append_missing_element_note(
               out, sheet, row_cursor_x, row_y, row_cursor_x, row_max_h, layout,
@@ -100,25 +139,55 @@ AscAssembly export_project_asc(const std::vector<Block> &blocks,
           step_param = "KM_B" + std::to_string(b.id);
           step_added = true;
         }
+        std::string cap_step_param;
+        if (!cap_step_added && b.capacitor_tol_pct > 0.0) {
+          cap_step_param = "KC_B" + std::to_string(b.id);
+          cap_step_added = true;
+        }
+        const double mains_rms = (b.transformer_primary_v > 0.0 ? b.transformer_primary_v
+                                                               : b.vin_ac_rms);
         auto patched_values = pep::modules::psu_basic::export_schematic_from_asc_template(
-            b.vin_ac_rms, b.mains_hz, b.load_current, b.capacitor_uF,
-            b.transformer_primary_tol_pct, step_param, tpl);
-        if (b.variant == BlockVariant::PsuUnregulated &&
-            power_block_has_non_power_load(b, blocks, connections)) {
+            mains_rms, b.mains_hz, b.load_current, b.capacitor_uF,
+            b.transformer_primary_tol_pct, step_param,
+            b.capacitor_tol_pct, cap_step_param, tpl);
+        if (!template_has_load_resistor(tpl)) {
           erase_matching_warning(patched_values.warnings, "Nie znaleziono elementu w .asc: Rload");
           erase_matching_warning(patched_values.warnings, "Nie znaleziono elementu w .asc: RL");
-          erase_matching_warning(patched_values.warnings, "Nie znaleziono pola Value dla elementu: Rload");
-          erase_matching_warning(patched_values.warnings, "Nie znaleziono pola Value dla elementu: RL");
+          erase_matching_warning(patched_values.warnings,
+                                 "Nie znaleziono pola Value dla elementu: Rload");
+          erase_matching_warning(patched_values.warnings,
+                                 "Nie znaleziono pola Value dla elementu: RL");
+        } else if (b.variant == BlockVariant::PsuUnregulated &&
+                   power_block_has_non_power_load(b, blocks, connections)) {
+          erase_matching_warning(patched_values.warnings, "Nie znaleziono elementu w .asc: Rload");
+          erase_matching_warning(patched_values.warnings, "Nie znaleziono elementu w .asc: RL");
+          erase_matching_warning(patched_values.warnings,
+                                 "Nie znaleziono pola Value dla elementu: Rload");
+          erase_matching_warning(patched_values.warnings,
+                                 "Nie znaleziono pola Value dla elementu: RL");
         }
         out.warnings.insert(out.warnings.end(), patched_values.warnings.begin(),
                             patched_values.warnings.end());
-        if (!patched_values.directives.empty()) {
-          out.directives.insert(out.directives.end(), patched_values.directives.begin(),
-                                patched_values.directives.end());
+        std::string asc_with_directives = patched_values.asc;
+        std::vector<std::string> local_directives = patched_values.directives;
+        const std::string k1_token = "K1";
+        if (asc_with_directives.find(k1_token) == std::string::npos &&
+            asc_with_directives.find("k1") == std::string::npos) {
+          const std::string suffix = "_B" + std::to_string(b.id);
+          const bool has_l3 = template_has_inst(tpl, "L3");
+          if (has_l3) {
+            local_directives.push_back("K1" + suffix + " L1" + suffix + " L2" + suffix + " L3" +
+                                       suffix + " 1");
+          } else {
+            local_directives.push_back("K1" + suffix + " L1" + suffix + " L2" + suffix + " 1");
+          }
+        }
+        if (!local_directives.empty()) {
+          asc_with_directives = append_directives_below(asc_with_directives, local_directives);
         }
 
         append_export_fragment(out, sheet, dx, dy, row_cursor_x, row_max_h, layout,
-                               patched_values.asc, build_block_flag_nets(b, topology),
+                               asc_with_directives, build_block_flag_nets(b, topology),
                                "_B" + std::to_string(b.id));
         continue;
       }
@@ -138,8 +207,19 @@ AscAssembly export_project_asc(const std::vector<Block> &blocks,
         out.warnings.insert(out.warnings.end(), patched_values.warnings.begin(),
                             patched_values.warnings.end());
 
+        std::string amp_with_directives = patched_values.asc;
+        if (b.gain > 0.0) {
+          std::vector<std::string> amp_directives;
+          const std::string suffix = "_B" + std::to_string(b.id);
+          amp_directives.push_back(".param AV" + suffix + "=" + format_number(b.gain, 6));
+          amp_directives.push_back("BGAIN" + suffix + " OUT" + suffix +
+                                   " 0 V=V(IN" + suffix + ")*AV" + suffix);
+          amp_directives.push_back(".options reltol=0.01 gmin=1e-9");
+          amp_with_directives = append_directives_below(amp_with_directives, amp_directives);
+        }
+
         append_export_fragment(out, sheet, dx, dy, row_cursor_x, row_max_h, layout,
-                               patched_values.asc, build_block_flag_nets(b, topology),
+                               amp_with_directives, build_block_flag_nets(b, topology),
                                "_B" + std::to_string(b.id));
         continue;
       }

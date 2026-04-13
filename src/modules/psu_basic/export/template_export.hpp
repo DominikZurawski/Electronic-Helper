@@ -15,6 +15,8 @@ TemplateExportResult export_schematic_from_asc_template(double vin_ac_rms, doubl
                                                         double load_current, double capacitor_uF,
                                                         double vin_tol_pct,
                                                         const std::string &step_param_name,
+                                                        double cap_tol_pct,
+                                                        const std::string &cap_step_param_name,
                                                         const std::string &asc_template);
 
 // Exact built-in template (same content as the bundled resource), used only as a fallback

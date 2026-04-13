@@ -228,6 +228,9 @@ struct Widget::Impl {
   QLineEdit *amp_power_input = nullptr;
   QLineEdit *amp_headroom_input = nullptr;
   QLineEdit *amp_max_ripple_input = nullptr;
+  QLabel *amp_power_label = nullptr;
+  QLabel *amp_headroom_label = nullptr;
+  QLabel *amp_max_ripple_label = nullptr;
   QWidget *amp_signal_group = nullptr;
   QWidget *amp_power_group = nullptr;
   QStackedWidget *calculator_input_stack = nullptr;
@@ -576,15 +579,21 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   auto *amp_power_group = new QGroupBox("Obciążenie i zasilanie", amp_columns);
   auto *amp_power_form = new QFormLayout(amp_power_group);
   tune_form_layout(amp_power_form);
+  auto *amp_power_label = new QLabel("Moc na obciążeniu (W)", amp_power_group);
+  auto *amp_headroom_label = new QLabel("Zapas napięcia zasilania (V)", amp_power_group);
+  auto *amp_max_ripple_label = new QLabel("Maksymalne tętnienia (Vpp)", amp_power_group);
   amp_power_form->addRow("Obciążenie (Ohm)", amp_load_input);
-  amp_power_form->addRow("Moc na obciążeniu (W)", amp_power_input);
-  amp_power_form->addRow("Zapas napięcia zasilania (V)", amp_headroom_input);
-  amp_power_form->addRow("Maksymalne tętnienia (Vpp)", amp_max_ripple_input);
+  amp_power_form->addRow(amp_power_label, amp_power_input);
+  amp_power_form->addRow(amp_headroom_label, amp_headroom_input);
+  amp_power_form->addRow(amp_max_ripple_label, amp_max_ripple_input);
   amp_columns_layout->addWidget(amp_signal_group, 1);
   amp_columns_layout->addWidget(amp_power_group, 1);
   amp_root->addWidget(amp_columns);
   impl_->amp_signal_group = amp_signal_group;
   impl_->amp_power_group = amp_power_group;
+  impl_->amp_power_label = amp_power_label;
+  impl_->amp_headroom_label = amp_headroom_label;
+  impl_->amp_max_ripple_label = amp_max_ripple_label;
 
   props_stack->addWidget(power_props); // index 0
   props_stack->addWidget(amp_props);   // index 1
@@ -957,17 +966,27 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   impl_->update_power_mode_visibility = update_power_mode_visibility;
 
   auto update_amp_mode_visibility = [this]() {
-    if (!impl_->amp_design_mode || !impl_->amp_signal_group || !impl_->amp_power_group) {
+    if (!impl_->amp_design_mode || !impl_->amp_signal_group || !impl_->amp_power_group ||
+        !impl_->amp_power_label || !impl_->amp_headroom_label || !impl_->amp_max_ripple_label ||
+        !impl_->amp_power_input || !impl_->amp_headroom_input || !impl_->amp_max_ripple_input) {
       return;
     }
     const auto mode =
         static_cast<AmpDesignMode>(impl_->amp_design_mode->currentData().toInt());
-    const bool show_signal = mode == AmpDesignMode::AmpForSupply ||
+    const bool show_power_input = mode == AmpDesignMode::SupplyForAmp ||
+                                  mode == AmpDesignMode::AllFields;
+    const bool show_headroom = mode == AmpDesignMode::SupplyForAmp ||
+                               mode == AmpDesignMode::AllFields;
+    const bool show_ripple = mode == AmpDesignMode::SupplyForAmp ||
                              mode == AmpDesignMode::AllFields;
-    const bool show_power = mode == AmpDesignMode::SupplyForAmp ||
-                            mode == AmpDesignMode::AllFields;
-    impl_->amp_signal_group->setVisible(show_signal);
-    impl_->amp_power_group->setVisible(show_power);
+    impl_->amp_signal_group->setVisible(true);
+    impl_->amp_power_group->setVisible(true);
+    impl_->amp_power_label->setVisible(show_power_input);
+    impl_->amp_power_input->setVisible(show_power_input);
+    impl_->amp_headroom_label->setVisible(show_headroom);
+    impl_->amp_headroom_input->setVisible(show_headroom);
+    impl_->amp_max_ripple_label->setVisible(show_ripple);
+    impl_->amp_max_ripple_input->setVisible(show_ripple);
     if (impl_->update_props_stack_height) {
       impl_->update_props_stack_height();
     }

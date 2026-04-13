@@ -273,6 +273,135 @@ std::string uniquify_flag_nets(const std::string &asc, const std::string &suffix
   return out.str();
 }
 
+std::string remove_component_by_instname(const std::string &asc, const std::string &instname) {
+  if (instname.empty()) {
+    return asc;
+  }
+
+  std::istringstream in(asc);
+  std::ostringstream out;
+  std::string line;
+  bool first = true;
+
+  std::vector<std::string> block_lines;
+  bool in_symbol = false;
+  bool drop_block = false;
+
+  auto flush_block = [&]() {
+    if (!drop_block) {
+      for (const auto &bline : block_lines) {
+        if (!first) {
+          out << "\n";
+        }
+        out << bline;
+        first = false;
+      }
+    }
+    block_lines.clear();
+    drop_block = false;
+    in_symbol = false;
+  };
+
+  while (std::getline(in, line)) {
+    if (line.rfind("SYMBOL ", 0) == 0) {
+      if (in_symbol) {
+        flush_block();
+      }
+      in_symbol = true;
+      drop_block = false;
+      block_lines.clear();
+      block_lines.push_back(line);
+      continue;
+    }
+
+    if (in_symbol) {
+      block_lines.push_back(line);
+      if (line.rfind("SYMATTR InstName ", 0) == 0) {
+        const std::string name = line.substr(std::string("SYMATTR InstName ").size());
+        if (name == instname) {
+          drop_block = true;
+        }
+      }
+      continue;
+    }
+
+    if (!first) {
+      out << "\n";
+    }
+    out << line;
+    first = false;
+  }
+
+  if (in_symbol) {
+    flush_block();
+  }
+
+  return out.str();
+}
+
+std::string append_directives_below(const std::string &asc,
+                                    const std::vector<std::string> &directives) {
+  if (directives.empty()) {
+    return asc;
+  }
+
+  const auto bounds = asc_bounds(asc, true);
+  int x = 40;
+  int y = 40;
+  if (bounds.valid()) {
+    x = bounds.min_x + 40;
+    y = bounds.max_y + 40;
+  }
+
+  std::ostringstream out;
+  out << asc;
+  for (const auto &directive : directives) {
+    if (directive.empty()) {
+      continue;
+    }
+    out << "\nTEXT " << x << " " << y << " Left 2 !" << directive;
+    y += 16;
+  }
+  return out.str();
+}
+
+std::string remove_wire_segment(const std::string &asc, int x1, int y1, int x2, int y2) {
+  std::istringstream in(asc);
+  std::ostringstream out;
+  std::string line;
+  bool first = true;
+
+  const auto matches = [&](int ax, int ay, int bx, int by) {
+    return (ax == x1 && ay == y1 && bx == x2 && by == y2) ||
+           (ax == x2 && ay == y2 && bx == x1 && by == y1);
+  };
+
+  while (std::getline(in, line)) {
+    std::istringstream iss(line);
+    std::string head;
+    iss >> head;
+    if (head == "WIRE") {
+      int ax = 0;
+      int ay = 0;
+      int bx = 0;
+      int by = 0;
+      if (iss >> ax >> ay >> bx >> by) {
+        if (matches(ax, ay, bx, by)) {
+          continue;
+        }
+      }
+    }
+
+    if (!first) {
+      out << "\n";
+    }
+    out << line;
+    first = false;
+  }
+
+  return out.str();
+}
+
 pep::LtspiceAscPatchResult patch_flags(const std::string &asc,
                                        const std::unordered_map<long long, std::string> &xy_to_net,
                                        std::vector<std::string> &warnings) {
