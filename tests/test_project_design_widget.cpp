@@ -446,6 +446,59 @@ void test_power_variant_is_preserved_per_block_after_switching_active_selection(
          static_cast<int>(pep::modules::project_design::BlockVariant::PsuUnregulated));
 }
 
+void test_amp_supply_mode_shows_disturbance_inputs_and_amp_mode_hides_them() {
+  int argc = 0;
+  char **argv = nullptr;
+  qputenv("QT_QPA_PLATFORM", "offscreen");
+  QApplication app(argc, argv);
+
+  pep::modules::project_design::Widget widget;
+  widget.resize(1200, 900);
+  widget.show();
+  app.processEvents();
+
+  auto *add_button = find_button(widget, "Dodaj element");
+  assert(add_button != nullptr);
+  assert(add_button->menu() != nullptr);
+  const auto actions = add_button->menu()->actions();
+  assert(actions.size() >= 3);
+  actions[2]->trigger();
+  app.processEvents();
+
+  auto *design_mode =
+      find_combo_with_items(widget, {"Projektowanie zasilacza do wzmacniacza", "Wzmacniacz"});
+  auto *psrr_input = find_line_edit_by_object_name(widget, "ampPsrrInput");
+  auto *disturbance_input =
+      find_line_edit_by_object_name(widget, "ampDisturbanceRejectionInput");
+  auto *disturbance_freq_input =
+      find_line_edit_by_object_name(widget, "ampDisturbanceFreqInput");
+  auto *cap_esr_input = find_line_edit_by_object_name(widget, "ampCapEsrInput");
+  auto *transformer_res_input =
+      find_line_edit_by_object_name(widget, "ampTransformerResInput");
+  assert(design_mode != nullptr);
+  assert(psrr_input != nullptr);
+  assert(disturbance_input != nullptr);
+  assert(disturbance_freq_input != nullptr);
+  assert(cap_esr_input != nullptr);
+  assert(transformer_res_input != nullptr);
+
+  design_mode->setCurrentIndex(0);
+  app.processEvents();
+  assert(psrr_input->isVisible());
+  assert(disturbance_input->isVisible());
+  assert(disturbance_freq_input->isVisible());
+  assert(cap_esr_input->isVisible());
+  assert(transformer_res_input->isVisible());
+
+  design_mode->setCurrentIndex(1);
+  app.processEvents();
+  assert(!psrr_input->isVisible());
+  assert(!disturbance_input->isVisible());
+  assert(!disturbance_freq_input->isVisible());
+  assert(!cap_esr_input->isVisible());
+  assert(!transformer_res_input->isVisible());
+}
+
 void test_calculation_panel_is_visible_and_has_space() {
   int argc = 0;
   char **argv = nullptr;
@@ -589,6 +642,7 @@ int main() {
   test_rectifier_diode_drop_defaults_to_0_7_and_updates_calculation();
   test_filtration_can_compute_required_capacitance_from_max_ripple();
   test_power_variant_is_preserved_per_block_after_switching_active_selection();
+  test_amp_supply_mode_shows_disturbance_inputs_and_amp_mode_hides_them();
   test_calculation_panel_is_visible_and_has_space();
   test_transformer_waveforms_show_primary_and_secondary_signals();
   test_power_waveforms_follow_active_calculator_tab();

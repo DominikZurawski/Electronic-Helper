@@ -115,6 +115,11 @@ Block make_amp_model1b_block(int id, const std::string &title) {
   b.load_resistance_ohm = 8.0;
   b.target_power_w = 0.0;
   b.supply_headroom_v = 4.0;
+  b.psrr_db = 80.0;
+  b.supply_disturbance_rejection_db = 100.0;
+  b.supply_disturbance_freq_hz = 100.0;
+  b.capacitor_esr_ohm = 0.08;
+  b.transformer_secondary_res_ohm = 0.30;
   b.max_ripple_vpp = 2.0;
   b.amp_design_mode = AmpDesignMode::AmpForSupply;
   b.amp_power_source_id = 0;

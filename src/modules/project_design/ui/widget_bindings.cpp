@@ -112,6 +112,11 @@ void bind_widget_interactions(const WidgetBindings &bindings) {
   connect_line_edit(bindings.amp_load_input, bindings.on_amp_specs_changed);
   connect_line_edit(bindings.amp_power_input, bindings.on_amp_specs_changed);
   connect_line_edit(bindings.amp_headroom_input, bindings.on_amp_specs_changed);
+  connect_line_edit(bindings.amp_psrr_input, bindings.on_amp_specs_changed);
+  connect_line_edit(bindings.amp_disturbance_rejection_input, bindings.on_amp_specs_changed);
+  connect_line_edit(bindings.amp_disturbance_freq_input, bindings.on_amp_specs_changed);
+  connect_line_edit(bindings.amp_cap_esr_input, bindings.on_amp_specs_changed);
+  connect_line_edit(bindings.amp_transformer_res_input, bindings.on_amp_specs_changed);
   connect_line_edit(bindings.amp_max_ripple_input, bindings.on_amp_specs_changed);
 
   if (bindings.amp_power_source && bindings.on_amp_power_source_changed) {

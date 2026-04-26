@@ -127,6 +127,20 @@ void test_triangle_peak_conversion_uses_sqrt3_factor() {
   assert(approx(psu::rms_to_peak(rms, psu::WaveformShape::Triangle), 9.0, 1e-9));
 }
 
+void test_charge_pulse_estimate_reflects_series_resistance_limit() {
+  const auto low_loss = psu::estimate_charge_pulse(1.0, 1.0, 23.0, 50.0,
+                                                   psu::RectifierType::FullWaveBridge, 0.08, 0.30);
+  const auto high_loss = psu::estimate_charge_pulse(1.0, 1.0, 23.0, 50.0,
+                                                    psu::RectifierType::FullWaveBridge, 0.5, 1.5);
+
+  assert(low_loss.recharge_interval_s > 0.009 && low_loss.recharge_interval_s < 0.011);
+  assert(low_loss.conduction_time_s > 0.0008 && low_loss.conduction_time_s < 0.0011);
+  assert(low_loss.ideal_peak_current_a > 10.0);
+  assert(low_loss.resistance_limited_peak_current_a > high_loss.resistance_limited_peak_current_a);
+  assert(low_loss.estimated_peak_current_a > high_loss.estimated_peak_current_a);
+  assert(low_loss.secondary_rms_current_a > 0.0);
+}
+
 } // namespace
 
 int main() {
@@ -137,5 +151,6 @@ int main() {
   test_transformer_secondary_is_computed_from_ratio_for_sine_rms_input();
   test_transformer_ratio_is_computed_from_requested_secondary_peak();
   test_triangle_peak_conversion_uses_sqrt3_factor();
+  test_charge_pulse_estimate_reflects_series_resistance_limit();
   return 0;
 }

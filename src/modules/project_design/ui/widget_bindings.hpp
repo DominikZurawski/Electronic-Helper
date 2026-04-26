@@ -60,6 +60,11 @@ struct WidgetBindings {
   QLineEdit *amp_load_input = nullptr;
   QLineEdit *amp_power_input = nullptr;
   QLineEdit *amp_headroom_input = nullptr;
+  QLineEdit *amp_psrr_input = nullptr;
+  QLineEdit *amp_disturbance_rejection_input = nullptr;
+  QLineEdit *amp_disturbance_freq_input = nullptr;
+  QLineEdit *amp_cap_esr_input = nullptr;
+  QLineEdit *amp_transformer_res_input = nullptr;
   QLineEdit *amp_max_ripple_input = nullptr;
 
   std::function<void()> on_add_power;

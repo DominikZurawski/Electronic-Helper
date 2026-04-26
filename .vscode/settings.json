@@ -5,5 +5,7 @@
   "cmake.defaultBuildPreset": "debug",
   "cmake.defaultTestPreset": "debug",
   "cmake.buildTarget": "ppe_gui",
-  "cmake.launchTarget": "ppe_gui"
+  "cmake.launchTarget": "ppe_gui",
+  "chatgpt.commentCodeLensEnabled": false,
+  "chatgpt.openOnStartup": false
 }

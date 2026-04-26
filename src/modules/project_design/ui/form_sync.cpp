@@ -49,6 +49,9 @@ bool widgets_ready(const FormWidgets &widgets) {
          widgets.amp_amp_input &&
          widgets.amp_freq_input && widgets.amp_gain_input &&
          widgets.amp_load_input && widgets.amp_power_input && widgets.amp_headroom_input &&
+         widgets.amp_psrr_input && widgets.amp_disturbance_rejection_input &&
+         widgets.amp_disturbance_freq_input && widgets.amp_cap_esr_input &&
+         widgets.amp_transformer_res_input &&
          widgets.amp_max_ripple_input;
 }
 
@@ -281,6 +284,21 @@ void sync_active_to_form(const Block *active, const std::vector<Block> &blocks,
   widgets.amp_headroom_input->setText(active->supply_headroom_v == 0.0
                                           ? ""
                                           : QString::number(active->supply_headroom_v));
+  widgets.amp_psrr_input->setText(active->psrr_db == 0.0 ? ""
+                                                         : QString::number(active->psrr_db));
+  widgets.amp_disturbance_rejection_input->setText(
+      active->supply_disturbance_rejection_db == 0.0
+          ? ""
+          : QString::number(active->supply_disturbance_rejection_db));
+  widgets.amp_disturbance_freq_input->setText(active->supply_disturbance_freq_hz == 0.0
+                                                  ? ""
+                                                  : QString::number(active->supply_disturbance_freq_hz));
+  widgets.amp_cap_esr_input->setText(active->capacitor_esr_ohm == 0.0
+                                         ? ""
+                                         : QString::number(active->capacitor_esr_ohm));
+  widgets.amp_transformer_res_input->setText(active->transformer_secondary_res_ohm == 0.0
+                                                 ? ""
+                                                 : QString::number(active->transformer_secondary_res_ohm));
   widgets.amp_max_ripple_input->setText(active->max_ripple_vpp == 0.0
                                             ? ""
                                             : QString::number(active->max_ripple_vpp));
@@ -343,6 +361,12 @@ void sync_form_to_active(Block *active, const FormWidgets &widgets) {
   active->load_resistance_ohm = read_or(widgets.amp_load_input, 8.0);
   active->target_power_w = read_or(widgets.amp_power_input, 0.0);
   active->supply_headroom_v = read_or(widgets.amp_headroom_input, 4.0);
+  active->psrr_db = read_or(widgets.amp_psrr_input, 80.0);
+  active->supply_disturbance_rejection_db =
+      read_or(widgets.amp_disturbance_rejection_input, 100.0);
+  active->supply_disturbance_freq_hz = read_or(widgets.amp_disturbance_freq_input, 100.0);
+  active->capacitor_esr_ohm = read_or(widgets.amp_cap_esr_input, 0.08);
+  active->transformer_secondary_res_ohm = read_or(widgets.amp_transformer_res_input, 0.30);
   active->max_ripple_vpp = read_or(widgets.amp_max_ripple_input, 0.0);
 }
 

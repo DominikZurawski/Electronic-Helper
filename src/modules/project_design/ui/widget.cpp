@@ -50,6 +50,7 @@
 #include <QTabBar>
 #include <QTabWidget>
 #include <QTimer>
+#include <QToolTip>
 #include <QVBoxLayout>
 #include <QWheelEvent>
 
@@ -99,6 +100,20 @@ double convert_transformer_voltage_value(double value, VoltageQuantity from, Vol
 }
 
 void set_form_row_visible(QWidget *label, QWidget *field, bool visible) {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+  if (label && label->parentWidget()) {
+    if (auto *form = qobject_cast<QFormLayout *>(label->parentWidget()->layout())) {
+      form->setRowVisible(label, visible);
+      return;
+    }
+  }
+  if (field && field->parentWidget()) {
+    if (auto *form = qobject_cast<QFormLayout *>(field->parentWidget()->layout())) {
+      form->setRowVisible(field, visible);
+      return;
+    }
+  }
+#endif
   if (label) {
     label->setVisible(visible);
   }
@@ -227,10 +242,21 @@ struct Widget::Impl {
   QLineEdit *amp_load_input = nullptr;
   QLineEdit *amp_power_input = nullptr;
   QLineEdit *amp_headroom_input = nullptr;
+  QLineEdit *amp_psrr_input = nullptr;
+  QLineEdit *amp_disturbance_rejection_input = nullptr;
+  QLineEdit *amp_disturbance_freq_input = nullptr;
+  QLineEdit *amp_cap_esr_input = nullptr;
+  QLineEdit *amp_transformer_res_input = nullptr;
   QLineEdit *amp_max_ripple_input = nullptr;
   QLabel *amp_power_label = nullptr;
   QLabel *amp_headroom_label = nullptr;
+  QLabel *amp_psrr_label = nullptr;
+  QLabel *amp_disturbance_rejection_label = nullptr;
+  QLabel *amp_disturbance_freq_label = nullptr;
+  QLabel *amp_cap_esr_label = nullptr;
+  QLabel *amp_transformer_res_label = nullptr;
   QLabel *amp_max_ripple_label = nullptr;
+  QTabWidget *left_mode_tabs = nullptr;
   QWidget *amp_signal_group = nullptr;
   QWidget *amp_power_group = nullptr;
   QStackedWidget *calculator_input_stack = nullptr;
@@ -538,6 +564,11 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   auto *amp_load_input = new QLineEdit(amp_props);
   auto *amp_power_input = new QLineEdit(amp_props);
   auto *amp_headroom_input = new QLineEdit(amp_props);
+  auto *amp_psrr_input = new QLineEdit(amp_props);
+  auto *amp_disturbance_rejection_input = new QLineEdit(amp_props);
+  auto *amp_disturbance_freq_input = new QLineEdit(amp_props);
+  auto *amp_cap_esr_input = new QLineEdit(amp_props);
+  auto *amp_transformer_res_input = new QLineEdit(amp_props);
   auto *amp_max_ripple_input = new QLineEdit(amp_props);
   amp_amp_input->setPlaceholderText("V (amplituda)");
   amp_freq_input->setPlaceholderText("Hz");
@@ -545,10 +576,20 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   amp_load_input->setPlaceholderText("Ohm");
   amp_power_input->setPlaceholderText("W");
   amp_headroom_input->setPlaceholderText("V");
+  amp_psrr_input->setPlaceholderText("dB");
+  amp_disturbance_rejection_input->setPlaceholderText("dB");
+  amp_disturbance_freq_input->setPlaceholderText("Hz");
+  amp_cap_esr_input->setPlaceholderText("Ohm");
+  amp_transformer_res_input->setPlaceholderText("Ohm");
   amp_max_ripple_input->setPlaceholderText("Vpp");
   amp_load_input->setObjectName("ampLoadInput");
   amp_power_input->setObjectName("ampPowerInput");
   amp_headroom_input->setObjectName("ampHeadroomInput");
+  amp_psrr_input->setObjectName("ampPsrrInput");
+  amp_disturbance_rejection_input->setObjectName("ampDisturbanceRejectionInput");
+  amp_disturbance_freq_input->setObjectName("ampDisturbanceFreqInput");
+  amp_cap_esr_input->setObjectName("ampCapEsrInput");
+  amp_transformer_res_input->setObjectName("ampTransformerResInput");
   amp_max_ripple_input->setObjectName("ampMaxRippleInput");
   impl_->amp_waveform = amp_waveform;
   impl_->amp_design_mode = amp_design_mode;
@@ -559,6 +600,11 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   impl_->amp_load_input = amp_load_input;
   impl_->amp_power_input = amp_power_input;
   impl_->amp_headroom_input = amp_headroom_input;
+  impl_->amp_psrr_input = amp_psrr_input;
+  impl_->amp_disturbance_rejection_input = amp_disturbance_rejection_input;
+  impl_->amp_disturbance_freq_input = amp_disturbance_freq_input;
+  impl_->amp_cap_esr_input = amp_cap_esr_input;
+  impl_->amp_transformer_res_input = amp_transformer_res_input;
   impl_->amp_max_ripple_input = amp_max_ripple_input;
   amp_header_form->addRow("Model wzmacniacza", amp_model);
   amp_header_form->addRow("Tryb projektu", amp_design_mode);
@@ -581,10 +627,24 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   tune_form_layout(amp_power_form);
   auto *amp_power_label = new QLabel("Moc na obciążeniu (W)", amp_power_group);
   auto *amp_headroom_label = new QLabel("Zapas napięcia zasilania (V)", amp_power_group);
+  auto *amp_psrr_label = new QLabel("PSRR (dB)", amp_power_group);
+  auto *amp_disturbance_rejection_label =
+      new QLabel("Dopuszczalny poziom zakłócenia względem sygnału (dB poniżej sygnału)",
+                 amp_power_group);
+  auto *amp_disturbance_freq_label =
+      new QLabel("Częstotliwość zakłócenia zasilania (Hz)", amp_power_group);
+  auto *amp_cap_esr_label = new QLabel("ESR kondensatora filtrującego (Ohm)", amp_power_group);
+  auto *amp_transformer_res_label =
+      new QLabel("Rezystancja uzwojenia wtórnego transformatora (Ohm)", amp_power_group);
   auto *amp_max_ripple_label = new QLabel("Maksymalne tętnienia (Vpp)", amp_power_group);
   amp_power_form->addRow("Obciążenie (Ohm)", amp_load_input);
   amp_power_form->addRow(amp_power_label, amp_power_input);
   amp_power_form->addRow(amp_headroom_label, amp_headroom_input);
+  amp_power_form->addRow(amp_psrr_label, amp_psrr_input);
+  amp_power_form->addRow(amp_disturbance_rejection_label, amp_disturbance_rejection_input);
+  amp_power_form->addRow(amp_disturbance_freq_label, amp_disturbance_freq_input);
+  amp_power_form->addRow(amp_cap_esr_label, amp_cap_esr_input);
+  amp_power_form->addRow(amp_transformer_res_label, amp_transformer_res_input);
   amp_power_form->addRow(amp_max_ripple_label, amp_max_ripple_input);
   amp_columns_layout->addWidget(amp_signal_group, 1);
   amp_columns_layout->addWidget(amp_power_group, 1);
@@ -593,6 +653,11 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   impl_->amp_power_group = amp_power_group;
   impl_->amp_power_label = amp_power_label;
   impl_->amp_headroom_label = amp_headroom_label;
+  impl_->amp_psrr_label = amp_psrr_label;
+  impl_->amp_disturbance_rejection_label = amp_disturbance_rejection_label;
+  impl_->amp_disturbance_freq_label = amp_disturbance_freq_label;
+  impl_->amp_cap_esr_label = amp_cap_esr_label;
+  impl_->amp_transformer_res_label = amp_transformer_res_label;
   impl_->amp_max_ripple_label = amp_max_ripple_label;
 
   props_stack->addWidget(power_props); // index 0
@@ -668,15 +733,39 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   auto *export_active = new QPushButton("Eksport aktywnego elementu do LtSpice (.asc)", right);
   auto *export_project = new QPushButton("Eksport całego układu do LtSpice (.asc)", right);
 
+  auto *left_mode_tabs = new QTabWidget(left);
+  impl_->left_mode_tabs = left_mode_tabs;
+  left_mode_tabs->setObjectName("projectDesignLeftModeTabs");
+  left_mode_tabs->setDocumentMode(true);
+  left_mode_tabs->setElideMode(Qt::ElideNone);
+  apply_lightweight_tabs_style(left_mode_tabs);
+
+  auto *data_page = new QWidget(left_mode_tabs);
+  auto *data_layout = new QVBoxLayout(data_page);
+  data_layout->setContentsMargins(0, 0, 0, 0);
+  data_layout->setSpacing(10);
+  data_layout->setAlignment(Qt::AlignTop);
+  data_layout->addWidget(props_stack);
+  data_layout->addWidget(calculator_input_stack);
+  data_layout->addStretch(1);
+
+  auto *calculator_page = new QWidget(left_mode_tabs);
+  auto *calculator_layout = new QVBoxLayout(calculator_page);
+  calculator_layout->setContentsMargins(0, 0, 0, 0);
+  calculator_layout->setSpacing(10);
+  calculator_layout->setAlignment(Qt::AlignTop);
+  calculator_layout->addWidget(compute_result, 1);
+
+  left_mode_tabs->addTab(data_page, "Dane");
+  left_mode_tabs->addTab(calculator_page, "Kalkulatory");
+
   auto *left_content = new QWidget(left);
   auto *left_content_layout = new QVBoxLayout(left_content);
   left_content_layout->setContentsMargins(kLeftPanelHorizontalPadding, 0,
                                           kLeftPanelHorizontalPadding, 0);
   left_content_layout->setSpacing(10);
   left_content_layout->setAlignment(Qt::AlignTop);
-  left_content_layout->addWidget(props_stack);
-  left_content_layout->addWidget(calculator_input_stack);
-  left_content_layout->addWidget(compute_result, 1);
+  left_content_layout->addWidget(left_mode_tabs, 1);
 
   auto *left_scroll = new QScrollArea(left);
   left_scroll->setWidgetResizable(true);
@@ -710,22 +799,21 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
   bottom_tabs->addTab(info_tab, "Aktywny element");
   bottom_tabs->addTab(export_tab, "Eksport");
 
-  auto *graph_help =
-      new QLabel("Schemat blokowy (aby połączyć porty, kliknij najpierw pierwszy port, a potem "
-                 "drugi; Ctrl+scroll = zoom; Ctrl+0 reset). "
-                 "Blok zasilania jest widoczny na schemacie, ale nie jest łączony liniami. "
-                 "Zasilanie wzmacniaczy wybiera się z listy, więc ich piny zasilania są ukryte.",
-                 right);
-  graph_help->setWordWrap(true);
-  right_layout->addWidget(graph_help);
-
-  auto *graph_legend = new QLabel("Legenda: porty sygnałowe są zielone, żółty oznacza wybrany "
-                                  "port do połączenia. Linie zielone oznaczają poprawne "
-                                  "połączenie, a czerwone niezgodne typy portów. Bloki z tym "
-                                  "samym zasilaniem mają zbliżony kolor tła.",
-                                  right);
-  graph_legend->setWordWrap(true);
-  right_layout->addWidget(graph_legend);
+  const auto graph_help_text = QStringLiteral(
+      "Schemat blokowy: aby połączyć porty, kliknij najpierw pierwszy port, a potem drugi; "
+      "Ctrl+scroll = zoom; Ctrl+0 = reset.<br><br>"
+      "Blok zasilania jest widoczny na schemacie, ale nie jest łączony liniami. Zasilanie "
+      "wzmacniaczy wybiera się z listy, więc ich piny zasilania są ukryte.<br><br>"
+      "Legenda: porty sygnałowe są zielone, żółty oznacza wybrany port do połączenia. Linie "
+      "zielone oznaczają poprawne połączenie, a czerwone niezgodne typy portów. Bloki z tym "
+      "samym zasilaniem mają zbliżony kolor tła.");
+  auto *graph_help_button = new QPushButton("Pomoc", right);
+  graph_help_button->setToolTip("Pokaż wskazówki do schematu");
+  connect(graph_help_button, &QPushButton::clicked, this, [graph_help_button, graph_help_text]() {
+    QToolTip::showText(graph_help_button->mapToGlobal(QPoint(0, graph_help_button->height())),
+                       graph_help_text, graph_help_button);
+  });
+  right_layout->addWidget(graph_help_button, 0, Qt::AlignLeft);
   right_layout->addWidget(canvas_toolbar);
   right_layout->addWidget(view);
   right_layout->addWidget(bottom_tabs);
@@ -788,6 +876,9 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
         impl_->amp_waveform,      impl_->amp_design_mode, impl_->amp_power_source,
         impl_->amp_amp_input,     impl_->amp_freq_input, impl_->amp_gain_input,
         impl_->amp_load_input,    impl_->amp_power_input, impl_->amp_headroom_input,
+        impl_->amp_psrr_input,    impl_->amp_disturbance_rejection_input,
+        impl_->amp_disturbance_freq_input,
+        impl_->amp_cap_esr_input, impl_->amp_transformer_res_input,
         impl_->amp_max_ripple_input};
     pep::modules::project_design::sync_active_to_form(
         active_block(), impl_->blocks, impl_->connections, widgets, &impl_->syncing_active_to_form,
@@ -833,6 +924,9 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
         impl_->amp_waveform,      impl_->amp_design_mode, impl_->amp_power_source,
         impl_->amp_amp_input,     impl_->amp_freq_input, impl_->amp_gain_input,
         impl_->amp_load_input,    impl_->amp_power_input, impl_->amp_headroom_input,
+        impl_->amp_psrr_input,    impl_->amp_disturbance_rejection_input,
+        impl_->amp_disturbance_freq_input,
+        impl_->amp_cap_esr_input, impl_->amp_transformer_res_input,
         impl_->amp_max_ripple_input};
     pep::modules::project_design::sync_form_to_active(active_block(), widgets);
   };
@@ -967,8 +1061,14 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
 
   auto update_amp_mode_visibility = [this]() {
     if (!impl_->amp_design_mode || !impl_->amp_signal_group || !impl_->amp_power_group ||
-        !impl_->amp_power_label || !impl_->amp_headroom_label || !impl_->amp_max_ripple_label ||
-        !impl_->amp_power_input || !impl_->amp_headroom_input || !impl_->amp_max_ripple_input) {
+        !impl_->amp_power_label || !impl_->amp_headroom_label || !impl_->amp_psrr_label ||
+        !impl_->amp_disturbance_rejection_label || !impl_->amp_disturbance_freq_label ||
+        !impl_->amp_cap_esr_label || !impl_->amp_transformer_res_label ||
+        !impl_->amp_max_ripple_label ||
+        !impl_->amp_power_input || !impl_->amp_headroom_input || !impl_->amp_psrr_input ||
+        !impl_->amp_disturbance_rejection_input || !impl_->amp_disturbance_freq_input ||
+        !impl_->amp_cap_esr_input || !impl_->amp_transformer_res_input ||
+        !impl_->amp_max_ripple_input) {
       return;
     }
     const auto mode =
@@ -977,16 +1077,30 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
                                   mode == AmpDesignMode::AllFields;
     const bool show_headroom = mode == AmpDesignMode::SupplyForAmp ||
                                mode == AmpDesignMode::AllFields;
+    const bool show_psrr = mode == AmpDesignMode::SupplyForAmp ||
+                           mode == AmpDesignMode::AllFields;
+    const bool show_disturbance_rejection = mode == AmpDesignMode::SupplyForAmp ||
+                                            mode == AmpDesignMode::AllFields;
+    const bool show_disturbance_freq = mode == AmpDesignMode::SupplyForAmp ||
+                                       mode == AmpDesignMode::AllFields;
+    const bool show_loss_resistances = mode == AmpDesignMode::SupplyForAmp ||
+                                       mode == AmpDesignMode::AllFields;
     const bool show_ripple = mode == AmpDesignMode::SupplyForAmp ||
                              mode == AmpDesignMode::AllFields;
     impl_->amp_signal_group->setVisible(true);
     impl_->amp_power_group->setVisible(true);
-    impl_->amp_power_label->setVisible(show_power_input);
-    impl_->amp_power_input->setVisible(show_power_input);
-    impl_->amp_headroom_label->setVisible(show_headroom);
-    impl_->amp_headroom_input->setVisible(show_headroom);
-    impl_->amp_max_ripple_label->setVisible(show_ripple);
-    impl_->amp_max_ripple_input->setVisible(show_ripple);
+    set_form_row_visible(impl_->amp_power_label, impl_->amp_power_input, show_power_input);
+    set_form_row_visible(impl_->amp_headroom_label, impl_->amp_headroom_input, show_headroom);
+    set_form_row_visible(impl_->amp_psrr_label, impl_->amp_psrr_input, show_psrr);
+    set_form_row_visible(impl_->amp_disturbance_rejection_label,
+                         impl_->amp_disturbance_rejection_input, show_disturbance_rejection);
+    set_form_row_visible(impl_->amp_disturbance_freq_label, impl_->amp_disturbance_freq_input,
+                         show_disturbance_freq);
+    set_form_row_visible(impl_->amp_cap_esr_label, impl_->amp_cap_esr_input,
+                         show_loss_resistances);
+    set_form_row_visible(impl_->amp_transformer_res_label, impl_->amp_transformer_res_input,
+                         show_loss_resistances);
+    set_form_row_visible(impl_->amp_max_ripple_label, impl_->amp_max_ripple_input, show_ripple);
     if (impl_->update_props_stack_height) {
       impl_->update_props_stack_height();
     }
@@ -1006,14 +1120,24 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
       impl_->calculator_input_stack->setVisible(false);
       impl_->compute_result->setVisible(true);
       impl_->calculator_input_stack->setCurrentIndex(1);
+      for (auto *view : impl_->power_compute_results) {
+        if (view) {
+          view->setVisible(true);
+        }
+      }
       return;
     }
 
     const bool linear = active->variant != BlockVariant::PsuSwitching;
     impl_->calculator_input_stack->setVisible(true);
-    impl_->compute_result->setVisible(false);
+    impl_->compute_result->setVisible(true);
     impl_->calculator_input_stack->setCurrentIndex(linear ? 0 : 1);
     impl_->power_calculator_tabs->setVisible(linear);
+    for (auto *view : impl_->power_compute_results) {
+      if (view) {
+        view->setVisible(false);
+      }
+    }
     if (linear) {
       impl_->active_power_calculator_tab_index = impl_->power_calculator_tabs->currentIndex();
       impl_->compute_result->set_active_section_index(impl_->power_calculator_tabs->currentIndex());
@@ -1480,6 +1604,11 @@ Widget::Widget(QWidget *parent) : QWidget(parent) {
                                           impl_->amp_load_input,
                                           impl_->amp_power_input,
                                           impl_->amp_headroom_input,
+                                          impl_->amp_psrr_input,
+                                          impl_->amp_disturbance_rejection_input,
+                                          impl_->amp_disturbance_freq_input,
+                                          impl_->amp_cap_esr_input,
+                                          impl_->amp_transformer_res_input,
                                           impl_->amp_max_ripple_input,
                                           add_power_block,
                                           add_amp_block,

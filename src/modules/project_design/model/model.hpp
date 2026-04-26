@@ -64,6 +64,11 @@ struct Block {
   double load_resistance_ohm = 8.0;
   double target_power_w = 0.0;
   double supply_headroom_v = 4.0;
+  double psrr_db = 80.0;
+  double supply_disturbance_rejection_db = 100.0;
+  double supply_disturbance_freq_hz = 100.0;
+  double capacitor_esr_ohm = 0.08;
+  double transformer_secondary_res_ohm = 0.30;
   AmpDesignMode amp_design_mode = AmpDesignMode::AmpForSupply;
   int amp_power_source_id = 0;
 };

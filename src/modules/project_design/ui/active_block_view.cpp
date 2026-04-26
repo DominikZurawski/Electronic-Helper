@@ -14,6 +14,7 @@
 #include <QTabWidget>
 
 #include <algorithm>
+#include <cmath>
 #include <vector>
 
 namespace pep::modules::project_design {
@@ -107,6 +108,30 @@ CalculationDocument make_module_document(CalculationSection section) {
   CalculationDocument document;
   document.sections.push_back(std::move(section));
   return document;
+}
+
+struct ScaledVoltageDisplay {
+  std::string value;
+  std::string unit;
+};
+
+struct DurationDisplay {
+  std::string value;
+  std::string unit;
+};
+
+ScaledVoltageDisplay format_scaled_voltage(double volts, int precision = 3) {
+  if (std::abs(volts) < 1.0) {
+    return {format_fixed(volts * 1000.0, precision), "mV"};
+  }
+  return {format_fixed(volts, precision), "V"};
+}
+
+DurationDisplay format_duration(double seconds, int precision = 3) {
+  if (std::abs(seconds) < 1e-3) {
+    return {format_fixed(seconds * 1e6, precision), "us"};
+  }
+  return {format_fixed(seconds * 1e3, precision), "ms"};
 }
 
 struct PowerStageViewData {
@@ -492,6 +517,12 @@ void update_amplifier_view(const Block &active, const ActiveBlockWidgets &widget
   const double load_r = active.load_resistance_ohm;
   const double target_power = active.target_power_w;
   const double headroom = active.supply_headroom_v;
+  const double psrr_db = active.psrr_db;
+  const double disturbance_rejection_db = active.supply_disturbance_rejection_db;
+  const double disturbance_freq_hz = active.supply_disturbance_freq_hz;
+  const double capacitor_esr_ohm = std::max(0.0, active.capacitor_esr_ohm);
+  const double transformer_secondary_res_ohm =
+      std::max(0.0, active.transformer_secondary_res_ohm);
   const auto shape = waveform_shape_for(active);
   const double vout_peak = amp * gain;
   const double vout_rms = pep::modules::psu_basic::peak_to_rms(vout_peak, shape);
@@ -499,6 +530,11 @@ void update_amplifier_view(const Block &active, const ActiveBlockWidgets &widget
   const double i_rms = (load_r > 0.0) ? vout_rms / load_r : 0.0;
   const double i_avg_abs = (load_r > 0.0) ? vout_avg_abs / load_r : 0.0;
   const double p_load = (load_r > 0.0) ? (vout_rms * vout_rms / load_r) : 0.0;
+  const double supply_v_est = (vout_peak + std::max(0.0, headroom) > 0.0)
+                                  ? (vout_peak + std::max(0.0, headroom))
+                                  : 0.0;
+  const double supply_current_est =
+      (p_load > 0.0 && supply_v_est > 0.0) ? (p_load / supply_v_est) : 0.0;
 
   if (widgets.compute_view) {
     CalculationDocument document;
@@ -618,6 +654,225 @@ void update_amplifier_view(const Block &active, const ActiveBlockWidgets &widget
     }
 
     document.sections.push_back(power_section);
+
+    if (vout_peak > 0.0 && psrr_db > 0.0 && disturbance_rejection_db > 0.0) {
+      const double disturbance_ratio = std::pow(10.0, disturbance_rejection_db / 20.0);
+      const double psrr_ratio = std::pow(10.0, psrr_db / 20.0);
+      const double allowed_output_disturbance_v = vout_peak / disturbance_ratio;
+      const double allowed_supply_ripple_v = allowed_output_disturbance_v * psrr_ratio;
+      const auto output_disturbance_display = format_scaled_voltage(allowed_output_disturbance_v, 3);
+      const auto supply_ripple_display = format_scaled_voltage(allowed_supply_ripple_v, 3);
+
+      CalculationSection ripple_section =
+          make_section("Dopuszczalne tętnienia i PSRR");
+      ripple_section.entries.push_back(make_entry(
+          "Napięcie odniesienia na obciążeniu",
+          "V_{load,ref}",
+          format_fixed(vout_peak, 3),
+          "V",
+          "V_{load,ref} = V_{in} \\cdot A_v",
+          QString("%1 \\cdot %2 = %3")
+              .arg(amp, 0, 'f', 3)
+              .arg(gain, 0, 'f', 2)
+              .arg(vout_peak, 0, 'f', 3)
+              .toStdString(),
+          "Przyjmujemy amplitudę sygnału wyjściowego jako poziom odniesienia."));
+      ripple_section.entries.push_back(make_entry(
+          "Współczynnik PSRR",
+          "k_{PSRR}",
+          format_fixed(psrr_ratio, 0),
+          "",
+          "k_{PSRR} = 10^{PSRR/20}",
+          QString("10^{%1/20} = %2")
+              .arg(psrr_db, 0, 'f', 1)
+              .arg(psrr_ratio, 0, 'f', 0)
+              .toStdString(),
+          "PSRR opisuje, jak mocno tętnienia zasilania są tłumione na wyjściu."));
+      ripple_section.entries.push_back(make_entry(
+          "Współczynnik dopuszczalnego poziomu zakłócenia",
+          "k_{dist}",
+          format_fixed(disturbance_ratio, 0),
+          "",
+          "k_{dist} = 10^{D/20}",
+          QString("10^{%1/20} = %2")
+              .arg(disturbance_rejection_db, 0, 'f', 1)
+              .arg(disturbance_ratio, 0, 'f', 0)
+              .toStdString(),
+          "To relacja między sygnałem użytecznym a dopuszczalnym zakłóceniem pochodzącym z zasilania."));
+      ripple_section.entries.push_back(make_entry(
+          "Dopuszczalna składowa zakłócenia na wyjściu",
+          "\\Delta V_{out,max}",
+          output_disturbance_display.value,
+          output_disturbance_display.unit,
+          "\\Delta V_{out,max} = \\frac{V_{load,ref}}{k_{dist}}",
+          QString("%1 / %2 = %3")
+              .arg(vout_peak, 0, 'f', 3)
+              .arg(disturbance_ratio, 0, 'f', 0)
+              .arg(allowed_output_disturbance_v, 0, 'f', 6)
+              .toStdString(),
+          "Tak mały poziom zakłócenia powinien pozostać na wyjściu wzmacniacza."));
+      ripple_section.entries.push_back(make_entry(
+          "Dopuszczalne tętnienia zasilania",
+          "\\Delta V_{cc,max}",
+          supply_ripple_display.value,
+          supply_ripple_display.unit,
+          "\\Delta V_{cc,max} = \\Delta V_{out,max} \\cdot k_{PSRR}",
+          QString("%1 \\cdot %2 = %3")
+              .arg(allowed_output_disturbance_v, 0, 'f', 6)
+              .arg(psrr_ratio, 0, 'f', 0)
+              .arg(allowed_supply_ripple_v, 0, 'f', 6)
+              .toStdString(),
+          "To maksymalny poziom tętnień na szynie zasilania wynikający z PSRR."));
+      ripple_section.notes.push_back(make_info_note(
+          "Uwaga praktyczna",
+          std::string("W praktyce ten wynik warto traktować jako punkt startowy. Rzeczywisty "
+                      "PSRR zwykle zależy od częstotliwości. Wpisz częstotliwość zakłócenia, "
+                      "dla której odczytujesz PSRR z katalogu: ")
+              + QString::number(disturbance_freq_hz, 'f', 1).toStdString() + " Hz."));
+      if (active.max_ripple_vpp > 0.0) {
+        ripple_section.checklist_items.push_back(make_checklist_item(
+            "Czy wpisany limit tętnień zasilania mieści się w dopuszczalnym PSRR?",
+            active.max_ripple_vpp <= allowed_supply_ripple_v));
+      }
+      document.sections.push_back(ripple_section);
+    }
+
+    if (supply_current_est > 0.0 && active.max_ripple_vpp > 0.0 && supply_v_est > 0.0) {
+      const double supply_peak_est = supply_v_est + active.max_ripple_vpp;
+      const auto pulse = pep::modules::psu_basic::estimate_charge_pulse(
+          supply_current_est, active.max_ripple_vpp, supply_peak_est, active.mains_hz,
+          pep::modules::psu_basic::RectifierType::FullWaveBridge, capacitor_esr_ohm,
+          transformer_secondary_res_ohm);
+      const auto recharge_interval = format_duration(pulse.recharge_interval_s, 3);
+      const auto conduction_time = format_duration(pulse.conduction_time_s, 3);
+
+      CalculationSection charge_section =
+          make_section("Ładowanie kondensatora i prąd prostownika");
+      charge_section.entries.push_back(make_entry(
+          "Szacowany średni prąd zasilacza",
+          "I_{load,dc}",
+          format_fixed(supply_current_est, 3),
+          "A",
+          "I_{load,dc} \\approx P_{load} / V_{dc,min}",
+          QString("%1 / %2 = %3")
+              .arg(p_load, 0, 'f', 3)
+              .arg(supply_v_est, 0, 'f', 3)
+              .arg(supply_current_est, 0, 'f', 3)
+              .toStdString(),
+          "To uproszczone oszacowanie prądu pobieranego z zasilacza przez wzmacniacz."));
+      charge_section.entries.push_back(make_entry(
+          "Odstęp między impulsami ładowania",
+          "T_d",
+          recharge_interval.value,
+          recharge_interval.unit,
+          "T_d = 1 / f_{ripple}",
+          QString("1 / %1 = %2 s")
+              .arg(active.mains_hz * 2.0, 0, 'f', 1)
+              .arg(pulse.recharge_interval_s, 0, 'f', 6)
+              .toStdString(),
+          "Dla mostka Graetza kondensator jest doładowywany dwa razy na okres sieci."));
+      charge_section.entries.push_back(make_entry(
+          "Szacowany czas doładowania kondensatora",
+          "T_c",
+          conduction_time.value,
+          conduction_time.unit,
+          "T_c \\approx \\frac{1}{2 \\pi f} \\sqrt{\\frac{2 \\Delta V}{V_{peak}}}",
+          QString("1/(2*pi*%1) * sqrt(2*%2/%3) = %4 s")
+              .arg(active.mains_hz, 0, 'f', 1)
+              .arg(active.max_ripple_vpp, 0, 'f', 3)
+              .arg(supply_peak_est, 0, 'f', 3)
+              .arg(pulse.conduction_time_s, 0, 'f', 6)
+              .toStdString(),
+          "To przybliżenie małosygnałowe: krótkie przewodzenie w pobliżu szczytu sinusoidy."));
+      charge_section.entries.push_back(make_entry(
+          "Idealny szczyt prądu prostownika",
+          "I_{peak,ideal}",
+          format_fixed(pulse.ideal_peak_current_a, 2),
+          "A",
+          "I_{peak,ideal} \\approx 2 I_{load,dc} \\cdot T_d / T_c",
+          QString("2 * %1 * %2 / %3 = %4")
+              .arg(supply_current_est, 0, 'f', 3)
+              .arg(pulse.recharge_interval_s, 0, 'f', 6)
+              .arg(pulse.conduction_time_s, 0, 'f', 6)
+              .arg(pulse.ideal_peak_current_a, 0, 'f', 3)
+              .toStdString(),
+          "Ten wynik wynika z bilansu ładunku bez uwzględnienia rezystancji strat."));
+      charge_section.entries.push_back(make_entry(
+          "Suma rezystancji strat",
+          "R_{sum}",
+          format_fixed(pulse.series_resistance_ohm, 3),
+          "Ohm",
+          "R_{sum} = ESR + R_{sec}",
+          QString("%1 + %2 = %3")
+              .arg(capacitor_esr_ohm, 0, 'f', 3)
+              .arg(transformer_secondary_res_ohm, 0, 'f', 3)
+              .arg(pulse.series_resistance_ohm, 0, 'f', 3)
+              .toStdString(),
+          "To uproszczony model strat ograniczających impuls ładowania."));
+      charge_section.entries.push_back(make_entry(
+          "Szczyt prądu ograniczony rezystancją",
+          "I_{peak,R}",
+          format_fixed(pulse.resistance_limited_peak_current_a, 2),
+          "A",
+          "I_{peak,R} \\approx \\Delta V / R_{sum}",
+          QString("%1 / %2 = %3")
+              .arg(active.max_ripple_vpp, 0, 'f', 3)
+              .arg(std::max(pulse.series_resistance_ohm, 1e-9), 0, 'f', 3)
+              .arg(pulse.resistance_limited_peak_current_a, 0, 'f', 3)
+              .toStdString(),
+          "Mniejsze ESR i mniejsza rezystancja uzwojenia zwykle podnoszą pik prądu."));
+      charge_section.entries.push_back(make_entry(
+          "Szacowany szczyt prądu prostownika",
+          "I_{peak,est}",
+          format_fixed(pulse.estimated_peak_current_a, 2),
+          "A",
+          "I_{peak,est} \\approx min(I_{peak,ideal}, I_{peak,R})",
+          QString("min(%1, %2) = %3")
+              .arg(pulse.ideal_peak_current_a, 0, 'f', 3)
+              .arg(pulse.resistance_limited_peak_current_a, 0, 'f', 3)
+              .arg(pulse.estimated_peak_current_a, 0, 'f', 3)
+              .toStdString(),
+          "Jeśli ograniczenie rezystancyjne jest silne, realny impuls będzie niższy i szerszy."));
+      charge_section.entries.push_back(make_entry(
+          "Szacowany prąd skuteczny uzwojenia wtórnego",
+          "I_{sec,rms}",
+          format_fixed(pulse.secondary_rms_current_a, 2),
+          "A",
+          "I_{sec,rms} \\approx I_{peak,est} \\sqrt{T_c / (3 T_d)}",
+          QString("%1 * sqrt(%2 / (3 * %3)) = %4")
+              .arg(pulse.estimated_peak_current_a, 0, 'f', 3)
+              .arg(pulse.conduction_time_s, 0, 'f', 6)
+              .arg(pulse.recharge_interval_s, 0, 'f', 6)
+              .arg(pulse.secondary_rms_current_a, 0, 'f', 3)
+              .toStdString(),
+          "Krótki, wysoki impuls może dać większy RMS niż sugeruje sam prąd średni obciążenia."));
+      charge_section.notes.push_back(make_info_note(
+          "Co to jest ESR?",
+          "ESR to zastępcza rezystancja szeregowa kondensatora. Modeluje straty wewnętrzne i "
+          "powoduje dodatkowy spadek napięcia oraz grzanie przy prądach tętnień."));
+      charge_section.notes.push_back(make_info_note(
+          "Dlaczego prąd skuteczny wtórnego bywa większy od średniego prądu obciążenia?",
+          "Bo transformator i diody nie przewodzą stale. Kondensator doładowuje się krótkimi "
+          "impulsami o dużej amplitudzie, a RMS mocno rośnie od wysokich pików."));
+      charge_section.notes.push_back(make_info_note(
+          "Jak symulować straty w LTspice?",
+          "Kondensator: ustaw parametr Rser albo dodaj osobny rezystor szeregowy. "
+          "Uzwojenie transformatora lub indukcyjność: ustaw Rser uzwojenia albo dodaj rezystor "
+          "w szereg z odpowiednim uzwojeniem."));
+      charge_section.notes.push_back(make_warning_note(
+          "Ograniczenia modelu",
+          "To model edukacyjny oparty na krótkim impulsie trójkątnym i przybliżeniu wokół "
+          "szczytu sinusoidy. Nie uwzględnia rozproszenia transformatora, odzysku diod ani "
+          "nasycenia rdzenia."));
+      charge_section.checklist_items.push_back(make_checklist_item(
+          "Czy ESR i rezystancja uzwojenia nie są sztucznie zbyt małe względem planowanego transformatora?",
+          pulse.series_resistance_ohm > 0.0));
+      charge_section.checklist_items.push_back(make_checklist_item(
+          "Czy szacowany prąd skuteczny wtórnego nie jest dużo większy od średniego prądu zasilacza?",
+          pulse.secondary_rms_current_a <= supply_current_est * 2.0));
+      document.sections.push_back(charge_section);
+    }
+
     widgets.compute_view->set_document(document);
   }
 

@@ -163,4 +163,41 @@ double avg_abs_from_peak(double peak, WaveformShape waveform) {
   }
 }
 
+ChargePulseEstimate estimate_charge_pulse(double load_current, double ripple_vpp, double vpeak,
+                                          double mains_hz, RectifierType rectifier,
+                                          double capacitor_esr_ohm,
+                                          double transformer_secondary_res_ohm) {
+  ChargePulseEstimate out;
+  if (load_current <= 0.0 || ripple_vpp <= 0.0 || vpeak <= 0.0 || mains_hz <= 0.0) {
+    return out;
+  }
+
+  const double ripple_factor = (rectifier == RectifierType::FullWaveBridge) ? 2.0 : 1.0;
+  out.recharge_interval_s = 1.0 / (mains_hz * ripple_factor);
+
+  const double omega = 2.0 * std::numbers::pi * mains_hz;
+  const double ratio = std::max(0.0, (2.0 * ripple_vpp) / vpeak);
+  out.conduction_time_s = std::sqrt(ratio) / omega;
+  if (out.conduction_time_s > 0.0) {
+    out.ideal_peak_current_a = 2.0 * load_current * out.recharge_interval_s / out.conduction_time_s;
+  }
+
+  out.series_resistance_ohm =
+      std::max(0.0, capacitor_esr_ohm) + std::max(0.0, transformer_secondary_res_ohm);
+  if (out.series_resistance_ohm > 0.0) {
+    out.resistance_limited_peak_current_a = ripple_vpp / out.series_resistance_ohm;
+  } else {
+    out.resistance_limited_peak_current_a = out.ideal_peak_current_a;
+  }
+
+  out.estimated_peak_current_a =
+      std::min(out.ideal_peak_current_a, out.resistance_limited_peak_current_a);
+  if (out.estimated_peak_current_a > 0.0 && out.conduction_time_s > 0.0 &&
+      out.recharge_interval_s > 0.0) {
+    out.secondary_rms_current_a =
+        out.estimated_peak_current_a * std::sqrt(out.conduction_time_s / (3.0 * out.recharge_interval_s));
+  }
+  return out;
+}
+
 } // namespace pep::modules::psu_basic

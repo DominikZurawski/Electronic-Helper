@@ -56,11 +56,25 @@ struct Output {
   double vmin_max = 0.0;
 };
 
+struct ChargePulseEstimate {
+  double recharge_interval_s = 0.0;
+  double conduction_time_s = 0.0;
+  double ideal_peak_current_a = 0.0;
+  double resistance_limited_peak_current_a = 0.0;
+  double estimated_peak_current_a = 0.0;
+  double secondary_rms_current_a = 0.0;
+  double series_resistance_ohm = 0.0;
+};
+
 double rms_to_peak(double rms, WaveformShape waveform);
 double peak_to_rms(double peak, WaveformShape waveform);
 TransformerOutput compute_transformer(const TransformerInput &input);
 Output compute(const Input &input);
 double required_capacitance_uF(double load_current, double ripple_vpp, double ripple_hz);
 double avg_abs_from_peak(double peak, WaveformShape waveform);
+ChargePulseEstimate estimate_charge_pulse(double load_current, double ripple_vpp, double vpeak,
+                                          double mains_hz, RectifierType rectifier,
+                                          double capacitor_esr_ohm,
+                                          double transformer_secondary_res_ohm);
 
 } // namespace pep::modules::psu_basic
