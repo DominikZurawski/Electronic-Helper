@@ -14,7 +14,10 @@ PortType port_type_of(const std::vector<Block> &blocks, int block_idx, const std
 }
 
 bool is_power_type(PortType type) {
-  return type == PortType::PowerPos || type == PortType::PowerNeg || type == PortType::Ground;
+  return type == PortType::PowerPos || type == PortType::PowerNeg ||
+         type == PortType::PowerInPos || type == PortType::PowerInNeg ||
+         type == PortType::PowerOutPos || type == PortType::PowerOutNeg ||
+         type == PortType::Ground;
 }
 
 } // namespace
@@ -80,8 +83,8 @@ ordered_components_from_blocks(const std::vector<Block> &blocks,
     const PortType tb = port_type_of(blocks, b, connection.b.port_id);
 
     if (is_power_type(ta) && is_power_type(tb)) {
-      const bool a_psu = blocks[a].kind == BlockKind::Power;
-      const bool b_psu = blocks[b].kind == BlockKind::Power;
+      const bool a_psu = blocks[a].kind == BlockKind::Power || blocks[a].kind == BlockKind::Regulator;
+      const bool b_psu = blocks[b].kind == BlockKind::Power || blocks[b].kind == BlockKind::Regulator;
       if (a_psu && !b_psu) {
         add_fwd(a, b);
       } else if (b_psu && !a_psu) {
@@ -147,7 +150,7 @@ ordered_components_from_blocks(const std::vector<Block> &blocks,
 
     std::vector<int> starts;
     for (const int idx : indices) {
-      if (blocks[idx].kind == BlockKind::Power) {
+      if (blocks[idx].kind == BlockKind::Power || blocks[idx].kind == BlockKind::Regulator) {
         starts.push_back(idx);
       }
     }

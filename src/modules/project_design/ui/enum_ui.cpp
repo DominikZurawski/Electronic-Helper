@@ -10,6 +10,10 @@ QString port_type_label(PortType type) {
     return "Power +";
   case PortType::PowerNeg:
     return "Power -";
+  case PortType::PowerInPos:
+    return "Power IN";
+  case PortType::PowerOutPos:
+    return "Power OUT";
   case PortType::Ground:
     return "GND";
   case PortType::AnalogIn:

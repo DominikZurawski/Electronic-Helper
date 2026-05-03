@@ -9,12 +9,22 @@ bool ports_compatible(PortType a, PortType b) {
   if (a == PortType::Unknown || b == PortType::Unknown) {
     return true;
   }
+  const auto positive = [](PortType type) {
+    return type == PortType::PowerPos || type == PortType::PowerInPos ||
+           type == PortType::PowerOutPos;
+  };
+  const auto negative = [](PortType type) {
+    return type == PortType::PowerNeg || type == PortType::PowerInNeg ||
+           type == PortType::PowerOutNeg;
+  };
   if (a == PortType::Ground || b == PortType::Ground) {
     return a == b;
   }
-  if ((a == PortType::PowerPos || a == PortType::PowerNeg) ||
-      (b == PortType::PowerPos || b == PortType::PowerNeg)) {
-    return a == b;
+  if (positive(a) || positive(b)) {
+    return positive(a) && positive(b);
+  }
+  if (negative(a) || negative(b)) {
+    return negative(a) && negative(b);
   }
   if (a == PortType::AnalogOut) {
     return b == PortType::AnalogIn;
@@ -33,6 +43,12 @@ const char *block_variant_id(BlockVariant variant) {
     return "psu_unregulated";
   case BlockVariant::PsuSwitching:
     return "psu_switching";
+  case BlockVariant::RegZener:
+    return "reg_zener";
+  case BlockVariant::RegZenerBjt:
+    return "reg_zener_bjt";
+  case BlockVariant::RegIntegrated:
+    return "reg_integrated";
   case BlockVariant::AmpModel1b:
     return "model1b";
   default:
@@ -49,6 +65,15 @@ BlockVariant block_variant_from_id(std::string_view variant_id) {
   }
   if (variant_id == "psu_switching") {
     return BlockVariant::PsuSwitching;
+  }
+  if (variant_id == "reg_zener") {
+    return BlockVariant::RegZener;
+  }
+  if (variant_id == "reg_zener_bjt") {
+    return BlockVariant::RegZenerBjt;
+  }
+  if (variant_id == "reg_integrated") {
+    return BlockVariant::RegIntegrated;
   }
   if (variant_id == "model1b") {
     return BlockVariant::AmpModel1b;
@@ -100,6 +125,23 @@ Block make_power_block(int id, const std::string &title, BlockVariant variant) {
   return b;
 }
 
+Block make_regulator_block(int id, const std::string &title, BlockVariant variant) {
+  Block b;
+  b.id = id;
+  b.kind = BlockKind::Regulator;
+  b.variant = variant;
+  b.title = title;
+  b.canvas_pos = CanvasPoint{0.0, 0.0};
+  b.regulator_supply_rail = SupplyRail::Vcc;
+  b.regulator_input_min_v = 6.0;
+  b.regulator_output_v = 5.0;
+  b.regulator_output_current_a = 0.02;
+  b.regulator_zener_current_a = 0.005;
+  b.regulator_dropout_v = 2.0;
+  b.regulator_series_res_ohm = 50.0;
+  return b;
+}
+
 Block make_amp_model1b_block(int id, const std::string &title) {
   Block b;
   b.id = id;
@@ -122,7 +164,8 @@ Block make_amp_model1b_block(int id, const std::string &title) {
   b.transformer_secondary_res_ohm = 0.30;
   b.max_ripple_vpp = 2.0;
   b.amp_design_mode = AmpDesignMode::AmpForSupply;
-  b.amp_power_source_id = 0;
+  b.amp_power_pos_source_id = 0;
+  b.amp_power_neg_source_id = 0;
   return b;
 }
 
@@ -150,6 +193,23 @@ std::vector<PortDef> ports_for(const Block &b) {
     return {
         {std::string("vcc"), "Vcc", PortType::PowerPos, {}},
         {std::string("vee"), "Vee", PortType::PowerNeg, {}},
+        {std::string("gnd"), "0", PortType::Ground, {}},
+    };
+  }
+
+  if (b.kind == BlockKind::Regulator) {
+    const bool negative_rail = b.regulator_supply_rail == SupplyRail::Vee;
+    const std::vector<FlagRef> vin_flags =
+        b.variant == BlockVariant::RegZenerBjt ? std::vector<FlagRef>{{0, 96}}
+                                               : std::vector<FlagRef>{{-32, 96}};
+    const std::vector<FlagRef> vout_flags =
+        b.variant == BlockVariant::RegZenerBjt ? std::vector<FlagRef>{{416, 96}}
+                                               : std::vector<FlagRef>{{256, 96}};
+    return {
+        {std::string("vin"), negative_rail ? "VIN-" : "VIN",
+         negative_rail ? PortType::PowerInNeg : PortType::PowerInPos, vin_flags},
+        {std::string("vout"), negative_rail ? "VOUT-" : "VOUT",
+         negative_rail ? PortType::PowerOutNeg : PortType::PowerOutPos, vout_flags},
         {std::string("gnd"), "0", PortType::Ground, {}},
     };
   }

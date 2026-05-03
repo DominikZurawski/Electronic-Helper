@@ -68,8 +68,9 @@ void append_export_fragment(AscAssembly &out, ExportSheetState &sheet, int dx, i
                             const std::string &asc_with_header,
                             const std::unordered_map<long long, std::string> &xy_to_net,
                             const std::string &inst_suffix) {
+  const std::string asc_with_flags = append_missing_flags(asc_with_header, xy_to_net);
   std::vector<std::string> flag_warnings;
-  auto patched_flags = patch_flags(asc_with_header, xy_to_net, flag_warnings);
+  auto patched_flags = patch_flags(asc_with_flags, xy_to_net, flag_warnings);
   out.warnings.insert(out.warnings.end(), flag_warnings.begin(), flag_warnings.end());
 
   std::unordered_set<std::string> reserved_nets;

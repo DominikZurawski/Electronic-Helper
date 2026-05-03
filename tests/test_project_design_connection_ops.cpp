@@ -144,7 +144,7 @@ void test_remap_block_power_connections_maps_negative_rail_to_ground_for_nonsymm
   blocks.push_back(pd::make_amp_model1b_block(2, "Amp #2"));
 
   std::vector<pd::Connection> connections;
-  pd::remap_block_power_connections(blocks, connections, 2, 1);
+  pd::remap_amp_power_connections(blocks, connections, 2, 1, 1);
 
   assert(pd::connection_exists(connections, endpoint(1, "vcc"), endpoint(2, "vcc")));
   assert(pd::connection_exists(connections, endpoint(1, "vee"), endpoint(2, "vee")));
@@ -165,7 +165,7 @@ void test_apply_amp_requirements_updates_connected_power_block() {
   assert(psu != nullptr);
 
   amp->amp_design_mode = pd::AmpDesignMode::SupplyForAmp;
-  amp->amp_power_source_id = 1;
+  amp->amp_power_pos_source_id = 1;
   amp->load_resistance_ohm = 8.0;
   amp->target_power_w = 20.0;
   amp->supply_headroom_v = 4.0;
@@ -184,6 +184,112 @@ void test_apply_amp_requirements_updates_connected_power_block() {
                   (psu->transformer_primary_v / psu->transformer_secondary_v)) < 1e-9);
 }
 
+void test_connect_new_block_auto_connects_power_to_regulator_then_amp() {
+  std::vector<pd::Block> blocks;
+  blocks.push_back(pd::make_power_block(1, "PSU #1", pd::BlockVariant::PsuUnregulated));
+  blocks.push_back(pd::make_regulator_block(2, "Reg #2", pd::BlockVariant::RegZener));
+  std::vector<pd::Connection> connections;
+
+  pd::connect_new_block(connections, blocks, std::nullopt, 1, 2);
+
+  assert(pd::connection_exists(connections, endpoint(1, "vcc"), endpoint(2, "vin")));
+  assert(pd::connection_exists(connections, endpoint(1, "gnd"), endpoint(2, "gnd")));
+
+  blocks.push_back(pd::make_amp_model1b_block(3, "Amp #3"));
+  pd::connect_new_block(connections, blocks, std::nullopt, 2, 3);
+
+  assert(pd::connection_exists(connections, endpoint(2, "vout"), endpoint(3, "vcc")));
+  assert(pd::connection_exists(connections, endpoint(2, "gnd"), endpoint(3, "gnd")));
+}
+
+void test_connect_new_block_inserts_regulator_between_supply_and_existing_load() {
+  std::vector<pd::Block> blocks;
+  blocks.push_back(pd::make_power_block(1, "PSU #1", pd::BlockVariant::PsuUnregulated));
+  blocks.push_back(pd::make_amp_model1b_block(2, "Amp #2"));
+  std::vector<pd::Connection> connections;
+
+  pd::connect_new_block(connections, blocks, std::nullopt, 1, 2);
+
+  blocks.push_back(pd::make_regulator_block(3, "Reg #3", pd::BlockVariant::RegZener));
+  pd::connect_new_block(connections, blocks, std::nullopt, 2, 3);
+
+  assert(pd::connection_exists(connections, endpoint(1, "vcc"), endpoint(3, "vin")));
+  assert(pd::connection_exists(connections, endpoint(1, "gnd"), endpoint(3, "gnd")));
+  assert(pd::connection_exists(connections, endpoint(3, "vout"), endpoint(2, "vcc")));
+  assert(pd::connection_exists(connections, endpoint(3, "gnd"), endpoint(2, "vee")));
+  assert(pd::connection_exists(connections, endpoint(3, "gnd"), endpoint(2, "gnd")));
+  assert(!pd::connection_exists(connections, endpoint(1, "vcc"), endpoint(2, "vcc")));
+  assert(!pd::connection_exists(connections, endpoint(1, "vee"), endpoint(2, "vee")));
+  assert(!pd::connection_exists(connections, endpoint(1, "gnd"), endpoint(2, "gnd")));
+}
+
+void test_connected_power_block_resolves_upstream_power_through_regulator() {
+  std::vector<pd::Block> blocks;
+  blocks.push_back(pd::make_power_block(1, "PSU #1", pd::BlockVariant::PsuUnregulated));
+  blocks.push_back(pd::make_regulator_block(2, "Reg #2", pd::BlockVariant::RegZener));
+  blocks.push_back(pd::make_amp_model1b_block(3, "Amp #3"));
+  blocks[1].regulator_input_source_id = 1;
+
+  std::vector<pd::Connection> connections;
+  pd::remap_block_power_connections(blocks, connections, 2, 1);
+  pd::remap_block_power_connections(blocks, connections, 3, 2);
+
+  assert(pd::connected_direct_supply_block_id(blocks, connections, 3) == 2);
+  assert(pd::resolve_power_block_id(blocks, connections, 2) == 1);
+  assert(pd::connected_power_block_id(blocks, connections, 3) == 1);
+}
+
+void test_negative_rail_regulator_connects_to_symmetric_supply_and_amp_vee() {
+  std::vector<pd::Block> blocks;
+  blocks.push_back(pd::make_power_block(1, "PSU #1", pd::BlockVariant::PsuSymmetric));
+  blocks.push_back(pd::make_regulator_block(2, "Reg #2", pd::BlockVariant::RegZener));
+  blocks.push_back(pd::make_amp_model1b_block(3, "Amp #3"));
+  blocks[1].regulator_supply_rail = pd::SupplyRail::Vee;
+  blocks[1].regulator_input_source_id = 1;
+
+  std::vector<pd::Connection> connections;
+  pd::remap_block_power_connections(blocks, connections, 2, 1);
+  pd::remap_block_power_connections(blocks, connections, 3, 2);
+
+  assert(pd::connection_exists(connections, endpoint(1, "vee"), endpoint(2, "vin")));
+  assert(pd::connection_exists(connections, endpoint(1, "gnd"), endpoint(2, "gnd")));
+  assert(pd::connection_exists(connections, endpoint(2, "vout"), endpoint(3, "vee")));
+  assert(pd::connection_exists(connections, endpoint(2, "gnd"), endpoint(3, "gnd")));
+}
+
+void test_amp_can_take_vcc_and_vee_from_two_separate_regulators() {
+  std::vector<pd::Block> blocks;
+  blocks.push_back(pd::make_power_block(1, "PSU #1", pd::BlockVariant::PsuSymmetric));
+  blocks.push_back(pd::make_regulator_block(2, "Reg +", pd::BlockVariant::RegZener));
+  blocks.push_back(pd::make_regulator_block(3, "Reg -", pd::BlockVariant::RegZener));
+  blocks.push_back(pd::make_amp_model1b_block(4, "Amp #4"));
+  blocks[2].regulator_supply_rail = pd::SupplyRail::Vee;
+
+  std::vector<pd::Connection> connections;
+  pd::remap_block_power_connections(blocks, connections, 2, 1);
+  pd::remap_block_power_connections(blocks, connections, 3, 1);
+  pd::remap_amp_power_connections(blocks, connections, 4, 2, 3);
+
+  assert(pd::connection_exists(connections, endpoint(2, "vout"), endpoint(4, "vcc")));
+  assert(pd::connection_exists(connections, endpoint(3, "vout"), endpoint(4, "vee")));
+  assert(pd::connection_exists(connections, endpoint(2, "gnd"), endpoint(4, "gnd")) ||
+         pd::connection_exists(connections, endpoint(3, "gnd"), endpoint(4, "gnd")));
+  assert(!pd::connection_exists(connections, endpoint(2, "gnd"), endpoint(4, "vee")));
+}
+
+void test_amp_uses_ground_as_negative_rail_for_nonsymmetric_supply_when_vee_unset() {
+  std::vector<pd::Block> blocks;
+  blocks.push_back(pd::make_power_block(1, "PSU #1", pd::BlockVariant::PsuUnregulated));
+  blocks.push_back(pd::make_amp_model1b_block(2, "Amp #2"));
+
+  std::vector<pd::Connection> connections;
+  pd::remap_amp_power_connections(blocks, connections, 2, 1, 0);
+
+  assert(pd::connection_exists(connections, endpoint(1, "vcc"), endpoint(2, "vcc")));
+  assert(pd::connection_exists(connections, endpoint(1, "gnd"), endpoint(2, "vee")));
+  assert(pd::connection_exists(connections, endpoint(1, "gnd"), endpoint(2, "gnd")));
+}
+
 } // namespace
 
 int main() {
@@ -197,5 +303,11 @@ int main() {
   test_connect_new_block_with_nonsymmetric_supply_maps_negative_rail_to_ground();
   test_remap_block_power_connections_maps_negative_rail_to_ground_for_nonsymmetric_supply();
   test_apply_amp_requirements_updates_connected_power_block();
+  test_connect_new_block_auto_connects_power_to_regulator_then_amp();
+  test_connect_new_block_inserts_regulator_between_supply_and_existing_load();
+  test_connected_power_block_resolves_upstream_power_through_regulator();
+  test_negative_rail_regulator_connects_to_symmetric_supply_and_amp_vee();
+  test_amp_can_take_vcc_and_vee_from_two_separate_regulators();
+  test_amp_uses_ground_as_negative_rail_for_nonsymmetric_supply_when_vee_unset();
   return 0;
 }

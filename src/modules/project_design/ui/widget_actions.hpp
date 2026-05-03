@@ -11,15 +11,18 @@ class QGraphicsScene;
 class QLabel;
 class QWidget;
 
+enum class SupplyRail;
+
 namespace pep::modules::project_design {
 
-void refresh_power_source_combo(const std::vector<Block> &blocks, QComboBox *combo);
+void refresh_supply_source_combo(const std::vector<Block> &blocks, QComboBox *combo,
+                                 bool include_regulators, std::optional<SupplyRail> regulator_rail = std::nullopt);
 
 bool delete_selected_block(QGraphicsScene *scene, std::vector<Block> &blocks,
                            std::vector<Connection> &connections,
                            std::optional<int> &active_block_id,
                            const std::function<void()> &refresh_connections_ui,
-                           const std::function<void()> &refresh_power_source_combo,
+                           const std::function<void()> &refresh_supply_source_combos,
                            const std::function<void()> &refresh_connection_controls,
                            const std::function<void(int)> &set_active,
                            const std::function<void()> &refresh_canvas,

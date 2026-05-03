@@ -87,6 +87,27 @@ void bind_widget_interactions(const WidgetBindings &bindings) {
         bindings.variant, &QComboBox::currentIndexChanged, bindings.owner,
         [on_variant_changed = bindings.on_variant_changed]() { on_variant_changed(); });
   }
+  if (bindings.regulator_variant && bindings.on_regulator_variant_changed) {
+    QObject::connect(
+        bindings.regulator_variant, &QComboBox::currentIndexChanged, bindings.owner,
+        [on_regulator_variant_changed = bindings.on_regulator_variant_changed]() {
+          on_regulator_variant_changed();
+        });
+  }
+  if (bindings.regulator_power_source && bindings.on_regulator_power_source_changed) {
+    QObject::connect(
+        bindings.regulator_power_source, &QComboBox::currentIndexChanged, bindings.owner,
+        [on_regulator_power_source_changed = bindings.on_regulator_power_source_changed]() {
+          on_regulator_power_source_changed();
+        });
+  }
+  if (bindings.regulator_supply_rail && bindings.on_regulator_supply_rail_changed) {
+    QObject::connect(
+        bindings.regulator_supply_rail, &QComboBox::currentIndexChanged, bindings.owner,
+        [on_regulator_supply_rail_changed = bindings.on_regulator_supply_rail_changed]() {
+          on_regulator_supply_rail_changed();
+        });
+  }
 
   const auto connect_line_edit = [&bindings](QLineEdit *line_edit,
                                              const std::function<void()> &handler) {
@@ -106,6 +127,10 @@ void bind_widget_interactions(const WidgetBindings &bindings) {
   connect_line_edit(bindings.current_input, bindings.on_power_input_changed);
   connect_line_edit(bindings.cap_input, bindings.on_power_input_changed);
   connect_line_edit(bindings.cap_tol_input, bindings.on_power_input_changed);
+  connect_line_edit(bindings.regulator_output_input, bindings.on_regulator_input_changed);
+  connect_line_edit(bindings.regulator_current_input, bindings.on_regulator_input_changed);
+  connect_line_edit(bindings.regulator_zener_current_input, bindings.on_regulator_input_changed);
+  connect_line_edit(bindings.regulator_dropout_input, bindings.on_regulator_input_changed);
   connect_line_edit(bindings.amp_amp_input, bindings.on_amp_amp_changed);
   connect_line_edit(bindings.amp_freq_input, bindings.on_amp_freq_changed);
   connect_line_edit(bindings.amp_gain_input, bindings.on_amp_gain_changed);
@@ -119,10 +144,16 @@ void bind_widget_interactions(const WidgetBindings &bindings) {
   connect_line_edit(bindings.amp_transformer_res_input, bindings.on_amp_specs_changed);
   connect_line_edit(bindings.amp_max_ripple_input, bindings.on_amp_specs_changed);
 
-  if (bindings.amp_power_source && bindings.on_amp_power_source_changed) {
-    QObject::connect(bindings.amp_power_source, &QComboBox::currentIndexChanged, bindings.owner,
-                     [on_amp_power_source_changed = bindings.on_amp_power_source_changed]() {
-                       on_amp_power_source_changed();
+  if (bindings.amp_power_source_pos && bindings.on_amp_power_source_pos_changed) {
+    QObject::connect(bindings.amp_power_source_pos, &QComboBox::currentIndexChanged, bindings.owner,
+                     [on_amp_power_source_pos_changed = bindings.on_amp_power_source_pos_changed]() {
+                       on_amp_power_source_pos_changed();
+                     });
+  }
+  if (bindings.amp_power_source_neg && bindings.on_amp_power_source_neg_changed) {
+    QObject::connect(bindings.amp_power_source_neg, &QComboBox::currentIndexChanged, bindings.owner,
+                     [on_amp_power_source_neg_changed = bindings.on_amp_power_source_neg_changed]() {
+                       on_amp_power_source_neg_changed();
                      });
   }
   if (bindings.amp_design_mode && bindings.on_amp_design_mode_changed) {

@@ -1,5 +1,6 @@
 #include "form_sync.hpp"
 
+#include "../model/connection_ops.hpp"
 #include "../model/model.hpp"
 
 #include "../../psu_basic/model/model.hpp"
@@ -9,6 +10,8 @@
 #include <QSignalBlocker>
 #include <QStackedWidget>
 
+#include <cmath>
+
 namespace pep::modules::project_design {
 
 namespace {
@@ -16,7 +19,14 @@ namespace {
 enum class PowerFamily { Linear, Switching };
 
 double read_or(QLineEdit *edit, double fallback) {
-  return edit->text().isEmpty() ? fallback : edit->text().toDouble();
+  if (!edit || edit->text().isEmpty()) {
+    return fallback;
+  }
+  QString normalized = edit->text().trimmed();
+  normalized.replace(',', '.');
+  bool ok = false;
+  const double value = normalized.toDouble(&ok);
+  return ok ? value : fallback;
 }
 
 struct SyncGuard {
@@ -44,8 +54,15 @@ bool widgets_ready(const FormWidgets &widgets) {
          widgets.transformer_secondary_input && widgets.vin_input && widgets.diode_drop_input &&
          widgets.freq_input &&
          widgets.current_input && widgets.cap_input && widgets.cap_tol_input &&
-         widgets.max_ripple_input &&
-         widgets.amp_waveform && widgets.amp_design_mode && widgets.amp_power_source &&
+         widgets.max_ripple_input && widgets.regulator_variant &&
+         widgets.regulator_power_source && widgets.regulator_supply_rail &&
+         widgets.regulator_source_min_input &&
+         widgets.regulator_input_min_input && widgets.regulator_margin_input &&
+         widgets.regulator_output_input &&
+         widgets.regulator_current_input && widgets.regulator_zener_current_input &&
+         widgets.regulator_dropout_input &&
+         widgets.amp_waveform && widgets.amp_design_mode && widgets.amp_power_source_pos &&
+         widgets.amp_power_source_neg &&
          widgets.amp_amp_input &&
          widgets.amp_freq_input && widgets.amp_gain_input &&
          widgets.amp_load_input && widgets.amp_power_input && widgets.amp_headroom_input &&
@@ -145,43 +162,50 @@ pep::modules::psu_basic::TransformerOutput compute_transformer_from_widgets(
           static_cast<TransformerSolveMode>(widgets.transformer_mode->currentData().toInt()))});
 }
 
-int selected_psu_for_active(const Block &active, const std::vector<Block> &blocks,
-                            const std::vector<Connection> &connections) {
-  for (const auto &connection : connections) {
-    const Endpoint a = connection.a;
-    const Endpoint b = connection.b;
-    const bool a_is_active = (a.block_id == active.id);
-    const bool b_is_active = (b.block_id == active.id);
-    if (!a_is_active && !b_is_active) {
-      continue;
-    }
-
-    const Endpoint other = a_is_active ? b : a;
-    const Block *other_block = find_block(blocks, other.block_id);
-    if (!other_block || other_block->kind != BlockKind::Power) {
-      continue;
-    }
-
-    const auto active_port = find_port(active, a_is_active ? a.port_id : b.port_id);
-    if (!active_port.has_value()) {
-      continue;
-    }
-    if (active_port->type != PortType::PowerPos && active_port->type != PortType::PowerNeg &&
-        active_port->type != PortType::Ground) {
-      continue;
-    }
-
-    return other_block->id;
+double regulator_input_min_from_power_block(const Block &power, SupplyRail rail) {
+  if (power.kind != BlockKind::Power) {
+    return 0.0;
+  }
+  if (rail == SupplyRail::Vee && power.variant != BlockVariant::PsuSymmetric) {
+    return 0.0;
   }
 
-  return 0;
+  pep::modules::psu_basic::Input input;
+  input.vin_ac_rms = power.vin_ac_rms;
+  input.mains_hz = power.mains_hz;
+  input.load_current = power.load_current;
+  input.capacitor_uF = power.capacitor_uF;
+  input.cap_tol_pct = power.capacitor_tol_pct;
+  input.diode_drop = power.diode_drop;
+  input.rectifier = pep::modules::psu_basic::RectifierType::FullWaveBridge;
+  const auto output = pep::modules::psu_basic::compute(input);
+  const double vmin = std::max(0.0, output.vmin);
+  if (vmin > 0.0) {
+    return vmin;
+  }
+  return std::max(0.0, output.vrect);
+}
+
+double regulator_required_input_min(const Block &regulator) {
+  return std::abs(regulator.regulator_output_v) + std::max(0.0, regulator.regulator_dropout_v);
+}
+
+double regulator_headroom_margin(double available_source_min, const Block &regulator) {
+  return available_source_min - regulator_required_input_min(regulator);
+}
+
+bool can_source_negative_rail_from_ground(const Block *block) {
+  return block && block->kind == BlockKind::Power && block->variant != BlockVariant::PsuSymmetric;
 }
 
 } // namespace
 
 void sync_active_to_form(const Block *active, const std::vector<Block> &blocks,
                          const std::vector<Connection> &connections, const FormWidgets &widgets,
-                         bool *sync_flag, const std::function<void()> &refresh_power_source_combo) {
+                         bool *sync_flag,
+                         const std::function<void()> &refresh_regulator_power_source_combo,
+                         const std::function<void()> &refresh_amp_power_source_combo_pos,
+                         const std::function<void()> &refresh_amp_power_source_combo_neg) {
   if (!active || !widgets_ready(widgets)) {
     return;
   }
@@ -250,17 +274,96 @@ void sync_active_to_form(const Block *active, const std::vector<Block> &blocks,
     return;
   }
 
-  widgets.props_stack->setCurrentIndex(1);
-  refresh_power_source_combo();
-
-  int selected_psu = active->amp_power_source_id;
-  if (selected_psu == 0) {
-    selected_psu = selected_psu_for_active(*active, blocks, connections);
+  if (active->kind == BlockKind::Regulator) {
+    widgets.props_stack->setCurrentIndex(1);
+    refresh_regulator_power_source_combo();
+    {
+      const QSignalBlocker blocker_variant(widgets.regulator_variant);
+      const int regulator_variant_index =
+          widgets.regulator_variant->findData(static_cast<int>(active->variant));
+      if (regulator_variant_index >= 0) {
+        widgets.regulator_variant->setCurrentIndex(regulator_variant_index);
+      }
+    }
+    {
+      const QSignalBlocker blocker_rail(widgets.regulator_supply_rail);
+      const int rail_index =
+          widgets.regulator_supply_rail->findData(static_cast<int>(active->regulator_supply_rail));
+      widgets.regulator_supply_rail->setCurrentIndex(rail_index >= 0 ? rail_index : 0);
+    }
+    int selected_source = active->regulator_input_source_id;
+    if (selected_source == 0) {
+      selected_source = connected_direct_supply_block_id(blocks, connections, active->id);
+    }
+    {
+      const QSignalBlocker blocker_source(widgets.regulator_power_source);
+      const int source_idx = widgets.regulator_power_source->findData(selected_source);
+      widgets.regulator_power_source->setCurrentIndex(source_idx >= 0 ? source_idx : 0);
+    }
+    double available_source_min = 0.0;
+    double suggested_output_current = active->regulator_output_current_a;
+    if (const Block *power = find_block(blocks, selected_source);
+        power && power->kind == BlockKind::Power) {
+      const double source_vmin =
+          regulator_input_min_from_power_block(*power, active->regulator_supply_rail);
+      if (source_vmin > 0.0) {
+        available_source_min = source_vmin;
+      }
+      if (power->load_current > 0.0) {
+        suggested_output_current = power->load_current;
+      }
+    }
+    widgets.regulator_source_min_input->setText(
+        available_source_min == 0.0 ? "" : QString::number(available_source_min));
+    widgets.regulator_input_min_input->setText(
+        regulator_required_input_min(*active) == 0.0
+            ? ""
+            : QString::number(regulator_required_input_min(*active)));
+    const double margin = regulator_headroom_margin(available_source_min, *active);
+    widgets.regulator_margin_input->setText(
+        available_source_min == 0.0 ? "" : QString::number(margin));
+    widgets.regulator_output_input->setText(
+        active->regulator_output_v == 0.0 ? "" : QString::number(active->regulator_output_v));
+    widgets.regulator_current_input->setText(suggested_output_current == 0.0
+                                                 ? ""
+                                                 : QString::number(suggested_output_current));
+    widgets.regulator_zener_current_input->setText(
+        active->regulator_zener_current_a == 0.0
+            ? ""
+            : QString::number(active->regulator_zener_current_a));
+    widgets.regulator_dropout_input->setText(active->regulator_dropout_v == 0.0
+                                                 ? ""
+                                                 : QString::number(active->regulator_dropout_v));
+    return;
   }
-  const int power_idx = widgets.amp_power_source->findData(selected_psu);
+
+  widgets.props_stack->setCurrentIndex(2);
+  refresh_amp_power_source_combo_pos();
+  refresh_amp_power_source_combo_neg();
+
+  int selected_psu_pos = active->amp_power_pos_source_id;
+  if (selected_psu_pos == 0) {
+    selected_psu_pos = connected_direct_supply_block_id(blocks, connections, active->id);
+  }
+  int selected_psu_neg = active->amp_power_neg_source_id;
+  if (selected_psu_neg == 0) {
+    selected_psu_neg = connected_direct_supply_block_id(blocks, connections, active->id);
+  }
+  if (selected_psu_neg == 0) {
+    const Block *selected_pos_block = find_block(blocks, selected_psu_pos);
+    if (can_source_negative_rail_from_ground(selected_pos_block)) {
+      selected_psu_neg = selected_psu_pos;
+    }
+  }
+  const int power_pos_idx = widgets.amp_power_source_pos->findData(selected_psu_pos);
   {
-    const QSignalBlocker blocker(widgets.amp_power_source);
-    widgets.amp_power_source->setCurrentIndex(power_idx >= 0 ? power_idx : 0);
+    const QSignalBlocker blocker(widgets.amp_power_source_pos);
+    widgets.amp_power_source_pos->setCurrentIndex(power_pos_idx >= 0 ? power_pos_idx : 0);
+  }
+  const int power_neg_idx = widgets.amp_power_source_neg->findData(selected_psu_neg);
+  {
+    const QSignalBlocker blocker(widgets.amp_power_source_neg);
+    widgets.amp_power_source_neg->setCurrentIndex(power_neg_idx >= 0 ? power_neg_idx : 0);
   }
 
   const int waveform_idx =
@@ -349,12 +452,32 @@ void sync_form_to_active(Block *active, const FormWidgets &widgets) {
     return;
   }
 
+  if (active->kind == BlockKind::Regulator) {
+    active->variant = static_cast<BlockVariant>(widgets.regulator_variant->currentData().toInt());
+    active->regulator_input_source_id = widgets.regulator_power_source->currentData().toInt();
+    active->regulator_supply_rail =
+        static_cast<SupplyRail>(widgets.regulator_supply_rail->currentData().toInt());
+    active->regulator_output_v = std::abs(read_or(widgets.regulator_output_input, 5.0));
+    active->regulator_output_current_a = read_or(widgets.regulator_current_input, 0.02);
+    active->regulator_zener_current_a = read_or(widgets.regulator_zener_current_input, 0.005);
+    active->regulator_dropout_v = read_or(widgets.regulator_dropout_input, 2.0);
+    active->regulator_input_min_v = regulator_required_input_min(*active);
+    active->regulator_series_res_ohm =
+        (active->regulator_input_min_v > active->regulator_output_v &&
+         active->regulator_output_current_a + active->regulator_zener_current_a > 0.0)
+            ? ((active->regulator_input_min_v - active->regulator_output_v) /
+               (active->regulator_output_current_a + active->regulator_zener_current_a))
+            : 0.0;
+    return;
+  }
+
   active->variant = BlockVariant::AmpModel1b;
   active->signal_waveform =
       static_cast<SignalWaveform>(widgets.amp_waveform->currentData().toInt());
   active->amp_design_mode =
       static_cast<AmpDesignMode>(widgets.amp_design_mode->currentData().toInt());
-  active->amp_power_source_id = widgets.amp_power_source->currentData().toInt();
+  active->amp_power_pos_source_id = widgets.amp_power_source_pos->currentData().toInt();
+  active->amp_power_neg_source_id = widgets.amp_power_source_neg->currentData().toInt();
   active->signal_amp_v = widgets.amp_amp_input->text().toDouble();
   active->signal_hz = read_or(widgets.amp_freq_input, 1000.0);
   active->gain = read_or(widgets.amp_gain_input, 10.0);

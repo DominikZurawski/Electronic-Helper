@@ -25,7 +25,13 @@ QPointF to_qpointf(const CanvasPoint &point) {
 }
 
 bool is_power_type(PortType type) {
-  return type == PortType::PowerPos || type == PortType::PowerNeg || type == PortType::Ground;
+  return type == PortType::PowerPos || type == PortType::PowerNeg ||
+         type == PortType::PowerInPos || type == PortType::PowerOutPos ||
+         type == PortType::Ground;
+}
+
+bool is_supply_like_block(const Block &block) {
+  return block.kind == BlockKind::Power || block.kind == BlockKind::Regulator;
 }
 
 std::optional<int> primary_power_block_id_for(const Block &block, const std::vector<Block> &blocks,
@@ -39,7 +45,7 @@ std::optional<int> primary_power_block_id_for(const Block &block, const std::vec
 
     const Endpoint other = a_is_this ? connection.b : connection.a;
     const Block *other_block = find_block(blocks, other.block_id);
-    if (other_block && other_block->kind == BlockKind::Power) {
+    if (other_block && is_supply_like_block(*other_block)) {
       return other_block->id;
     }
   }
@@ -59,7 +65,7 @@ std::optional<QPointF> port_center_for(const std::vector<Block> &blocks, int blo
     if (port.id == port_id) {
       const double radius = 6.0;
       const bool is_left = port.type == PortType::AnalogIn ||
-                           (port.type == PortType::Ground && block->kind != BlockKind::Power);
+                           (port.type == PortType::Ground && !is_supply_like_block(*block));
       const double x = is_left ? 6.0 : (240.0 - 12.0);
       const double y = 12.0 + pin_index * 14.0;
       return QPointF(block->canvas_pos.x + x + radius, block->canvas_pos.y + y + radius);
@@ -114,7 +120,7 @@ QString power_summary_for_block(const Block &block, const std::vector<Block> &bl
 
     const Endpoint other = a_is_this ? connection.b : connection.a;
     const Block *other_block = find_block(blocks, other.block_id);
-    if (!other_block || other_block->kind != BlockKind::Power) {
+    if (!other_block || !is_supply_like_block(*other_block)) {
       continue;
     }
 
@@ -130,7 +136,7 @@ QString power_summary_for_block(const Block &block, const std::vector<Block> &bl
     }
   }
 
-  if (block.kind != BlockKind::Power) {
+  if (!is_supply_like_block(block)) {
     return used_power_supplies.isEmpty() ? "Zasilanie: —"
                                          : ("Zasilanie: " + used_power_supplies.join(", "));
   }
@@ -148,8 +154,11 @@ QColor port_fill_color(PortType type, bool selected) {
   if (selected) {
     return QColor(255, 245, 180);
   }
-  if (type == PortType::PowerPos) {
+  if (type == PortType::PowerPos || type == PortType::PowerInPos) {
     return QColor(255, 210, 210);
+  }
+  if (type == PortType::PowerOutPos) {
+    return QColor(255, 228, 178);
   }
   if (type == PortType::PowerNeg) {
     return QColor(210, 220, 255);
@@ -165,7 +174,7 @@ QColor port_fill_color(PortType type, bool selected) {
 
 QColor block_fill_color(const Block &block, const std::vector<Block> &blocks,
                         const std::vector<Connection> &connections) {
-  if (block.kind == BlockKind::Power) {
+  if (is_supply_like_block(block)) {
     return QColor(255, 239, 204);
   }
 
@@ -187,13 +196,13 @@ void draw_block_ports(const Block &block, const std::optional<Endpoint> &pending
                       BlockItem *item) {
   int pin_index = 0;
   for (const auto &port : ports_for(block)) {
-    if (block.kind != BlockKind::Power && is_power_type(port.type)) {
+    if (block.kind == BlockKind::Amplifier && is_power_type(port.type)) {
       continue;
     }
 
     const double radius = 6.0;
     const bool is_left = port.type == PortType::AnalogIn ||
-                         (port.type == PortType::Ground && block.kind != BlockKind::Power);
+                         (port.type == PortType::Ground && block.kind == BlockKind::Amplifier);
     const double x = is_left ? 6.0 : (240.0 - 12.0);
     const double y = 12.0 + pin_index * 14.0;
     const bool selected = pending_connection.has_value() &&

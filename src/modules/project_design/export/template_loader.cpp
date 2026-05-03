@@ -81,6 +81,16 @@ std::string load_psu_unregulated_no_load_template(QString &label_out) {
                                      ":/ltspice/power_single_noload.asc", label_out);
 }
 
+std::string load_regulator_zener_template(QString &label_out) {
+  return load_template_with_fallback("ltspice/templates/regulator_zener_asc", "",
+                                     ":/ltspice/regulator_zener.asc", label_out);
+}
+
+std::string load_regulator_zener_bjt_template(QString &label_out) {
+  return load_template_with_fallback("ltspice/templates/regulator_zener_bjt_asc", "",
+                                     ":/ltspice/regulator_zener_bjt.asc", label_out);
+}
+
 std::string load_amp_model1b_template(QString &label_out) {
   return load_template_with_fallback("ltspice/templates/amp_model1b_asc", "",
                                      ":/ltspice/opamp_model1b.asc", label_out);

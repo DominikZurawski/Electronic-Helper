@@ -23,6 +23,81 @@ namespace pep::modules::project_design {
 
 namespace {
 
+struct RegulatorTemplateConfig {
+  std::string template_asc;
+  std::string missing_template_warning;
+  int vin_source_wire_top_x = 0;
+  int vin_source_wire_top_y1 = 0;
+  int vin_source_wire_top_y2 = 0;
+  int vin_source_wire_bottom_x = 0;
+  int vin_source_wire_bottom_y1 = 0;
+  int vin_source_wire_bottom_y2 = 0;
+  int vin_source_flag_x = 0;
+  int vin_source_flag_y = 0;
+  int load_wire_top_x = 0;
+  int load_wire_top_y1 = 0;
+  int load_wire_top_y2 = 0;
+  int load_wire_bottom_x = 0;
+  int load_wire_bottom_y1 = 0;
+  int load_wire_bottom_y2 = 0;
+  int load_link_x1 = 0;
+  int load_link_y1 = 0;
+  int load_link_x2 = 0;
+  int load_link_y2 = 0;
+  int load_flag_x = 0;
+  int load_flag_y = 0;
+};
+
+RegulatorTemplateConfig regulator_template_config(const Block &block, QString &template_label) {
+  if (block.variant == BlockVariant::RegZenerBjt) {
+    return {load_regulator_zener_bjt_template(template_label),
+            "Nie udało się wczytać szablonu stabilizatora Zenera z tranzystorem.",
+            -32,
+            176,
+            96,
+            -32,
+            320,
+            256,
+            -32,
+            320,
+            448,
+            176,
+            96,
+            448,
+            320,
+            256,
+            448,
+            96,
+            416,
+            96,
+            448,
+            320};
+  }
+
+  return {load_regulator_zener_template(template_label),
+          "Nie udało się wczytać szablonu stabilizatora Zenera.",
+          -32,
+          176,
+          96,
+          -32,
+          320,
+          256,
+          -32,
+          320,
+          400,
+          176,
+          96,
+          400,
+          320,
+          256,
+          400,
+          96,
+          256,
+          96,
+          400,
+          320};
+}
+
 bool power_block_has_non_power_load(const Block &block, const std::vector<Block> &blocks,
                                     const std::vector<Connection> &connections) {
   for (const auto &connection : connections) {
@@ -35,6 +110,46 @@ bool power_block_has_non_power_load(const Block &block, const std::vector<Block>
     const int other_id = a_is_block ? connection.b.block_id : connection.a.block_id;
     const Block *other = find_block(blocks, other_id);
     if (other && other->kind != BlockKind::Power) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool regulator_has_external_input_source(const Block &block, const std::vector<Block> &blocks,
+                                         const std::vector<Connection> &connections) {
+  for (const auto &connection : connections) {
+    const Endpoint other = connection.a.block_id == block.id ? connection.b
+                           : connection.b.block_id == block.id ? connection.a
+                                                               : Endpoint{};
+    const std::string own_port = connection.a.block_id == block.id ? connection.a.port_id
+                                : connection.b.block_id == block.id ? connection.b.port_id
+                                                                    : "";
+    if (own_port != "vin") {
+      continue;
+    }
+    const Block *other_block = find_block(blocks, other.block_id);
+    if (other_block) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool regulator_has_external_output_load(const Block &block, const std::vector<Block> &blocks,
+                                        const std::vector<Connection> &connections) {
+  for (const auto &connection : connections) {
+    const Endpoint other = connection.a.block_id == block.id ? connection.b
+                           : connection.b.block_id == block.id ? connection.a
+                                                               : Endpoint{};
+    const std::string own_port = connection.a.block_id == block.id ? connection.a.port_id
+                                : connection.b.block_id == block.id ? connection.b.port_id
+                                                                    : "";
+    if (own_port != "vout") {
+      continue;
+    }
+    const Block *other_block = find_block(blocks, other.block_id);
+    if (other_block) {
       return true;
     }
   }
@@ -188,6 +303,73 @@ AscAssembly export_project_asc(const std::vector<Block> &blocks,
 
         append_export_fragment(out, sheet, dx, dy, row_cursor_x, row_max_h, layout,
                                asc_with_directives, build_block_flag_nets(b, topology),
+                               "_B" + std::to_string(b.id));
+        continue;
+      }
+
+      if (b.kind == BlockKind::Regulator) {
+        QString template_label;
+        if (b.variant != BlockVariant::RegZener && b.variant != BlockVariant::RegZenerBjt) {
+          append_missing_element_note(
+              out, sheet, row_cursor_x, row_y, row_cursor_x, row_max_h, layout,
+              "brak schematu dla wariantu \"" + std::string(block_variant_id(b.variant)) + "\"",
+              "Brak szablonu LTspice dla wariantu: " + std::string(block_variant_id(b.variant)));
+          continue;
+        }
+
+        const auto config = regulator_template_config(b, template_label);
+        std::string tpl = config.template_asc;
+        if (tpl.empty()) {
+          out.warnings.push_back(config.missing_template_warning);
+          row_cursor_x += (700 + layout.gap_x);
+          row_max_h = std::max(row_max_h, 220);
+          continue;
+        }
+
+        const bool standalone_demo = blocks.size() == 1 && connections.empty();
+        const bool has_input_source = regulator_has_external_input_source(b, blocks, connections);
+        const bool has_output_load = regulator_has_external_output_load(b, blocks, connections);
+        if (!standalone_demo) {
+          tpl = remove_directives_with_prefix(tpl, ".dc");
+          tpl = remove_directives_with_prefix(tpl, ".step");
+        }
+        if (has_input_source) {
+          tpl = remove_component_by_instname(tpl, "V1");
+          tpl = remove_wire_segment(tpl, config.vin_source_wire_top_x, config.vin_source_wire_top_y1,
+                                    config.vin_source_wire_top_x, config.vin_source_wire_top_y2);
+          tpl = remove_wire_segment(tpl, config.vin_source_wire_bottom_x,
+                                    config.vin_source_wire_bottom_y1, config.vin_source_wire_bottom_x,
+                                    config.vin_source_wire_bottom_y2);
+          tpl = remove_flag(tpl, config.vin_source_flag_x, config.vin_source_flag_y);
+        }
+        if (has_output_load) {
+          tpl = remove_component_by_instname(tpl, "I1");
+          tpl = remove_wire_segment(tpl, config.load_wire_top_x, config.load_wire_top_y1,
+                                    config.load_wire_top_x, config.load_wire_top_y2);
+          tpl = remove_wire_segment(tpl, config.load_wire_bottom_x, config.load_wire_bottom_y1,
+                                    config.load_wire_bottom_x, config.load_wire_bottom_y2);
+          tpl = remove_wire_segment(tpl, config.load_link_x1, config.load_link_y1,
+                                    config.load_link_x2, config.load_link_y2);
+          tpl = remove_flag(tpl, config.load_flag_x, config.load_flag_y);
+        }
+
+        auto inst_values = build_regulator_instance_values(b, !standalone_demo, out.warnings);
+        auto patched_values = pep::ltspice_patch_asc_values(tpl, inst_values);
+        if (has_input_source) {
+          erase_matching_warning(patched_values.warnings, "Nie znaleziono elementu w .asc: V1");
+          erase_matching_warning(patched_values.warnings,
+                                 "Nie znaleziono pola Value dla elementu: V1");
+        }
+        if (has_output_load) {
+          erase_matching_warning(patched_values.warnings, "Nie znaleziono elementu w .asc: I1");
+          erase_matching_warning(patched_values.warnings,
+                                 "Nie znaleziono pola Value dla elementu: I1");
+        }
+        out.warnings.insert(out.warnings.end(), patched_values.warnings.begin(),
+                            patched_values.warnings.end());
+
+        append_export_fragment(out, sheet, dx, dy, row_cursor_x, row_max_h, layout,
+                               patched_values.asc, build_block_flag_nets(b, topology),
                                "_B" + std::to_string(b.id));
         continue;
       }

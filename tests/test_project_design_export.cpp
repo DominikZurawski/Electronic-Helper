@@ -250,6 +250,150 @@ void test_export_project_adds_amplifier_gain_directive() {
   assert(contains(result.asc, "BGAIN_B1 OUT_B1 0 V=V(IN_B1)*AV_B1"));
 }
 
+void test_export_project_renders_zener_regulator_standalone() {
+  const auto regulator = pd::make_regulator_block(1, "Stabilizator #1", pd::BlockVariant::RegZener);
+  const auto result = pd::export_project_asc({regulator}, {}, std::nullopt);
+
+  assert(contains(result.asc, "SYMATTR InstName R1_B1"));
+  assert(contains(result.asc, "SYMATTR InstName D1_B1"));
+  assert(contains(result.asc, "SYMATTR InstName V1_B1"));
+  assert(contains(result.asc, "SYMATTR InstName I1_B1"));
+}
+
+void test_export_project_removes_local_source_and_load_for_connected_zener_regulator() {
+  const auto psu = pd::make_power_block(1, "PSU #1", pd::BlockVariant::PsuUnregulated);
+  const auto regulator =
+      pd::make_regulator_block(2, "Stabilizator #2", pd::BlockVariant::RegZener);
+  const auto amp = pd::make_amp_model1b_block(3, "Amp #3");
+  const std::vector<pd::Connection> connections = {
+      {endpoint(1, "vcc"), endpoint(2, "vin")},
+      {endpoint(1, "gnd"), endpoint(2, "gnd")},
+      {endpoint(2, "vout"), endpoint(3, "vcc")},
+      {endpoint(2, "gnd"), endpoint(3, "gnd")},
+  };
+
+  const auto result = pd::export_project_asc({psu, regulator, amp}, connections, std::nullopt);
+
+  assert(!contains(result.asc, "SYMATTR InstName V1_B2"));
+  assert(!contains(result.asc, "SYMATTR InstName I1_B2"));
+  assert(contains(result.asc, "SYMATTR Value PPE_SELECT_ZENER"));
+  assert(contains_warning(result.warnings, "wybierz model diody"));
+}
+
+void test_export_project_supports_negative_rail_zener_regulator() {
+  auto regulator = pd::make_regulator_block(1, "Stabilizator #1", pd::BlockVariant::RegZener);
+  regulator.regulator_supply_rail = pd::SupplyRail::Vee;
+
+  const auto result = pd::export_project_asc({regulator}, {}, std::nullopt);
+
+  assert(contains(result.asc, "SYMATTR InstName V1_B1"));
+  assert(contains(result.asc, "SYMATTR Value -6"));
+}
+
+void test_export_project_renders_zener_bjt_regulator_standalone() {
+  const auto regulator =
+      pd::make_regulator_block(1, "Stabilizator #1", pd::BlockVariant::RegZenerBjt);
+  const auto result = pd::export_project_asc({regulator}, {}, std::nullopt);
+
+  assert(contains(result.asc, "SYMATTR InstName R1_B1"));
+  assert(contains(result.asc, "SYMATTR InstName D1_B1"));
+  assert(contains(result.asc, "SYMATTR InstName Q1_B1"));
+  assert(contains(result.asc, "SYMATTR InstName V1_B1"));
+  assert(contains(result.asc, "SYMATTR InstName I1_B1"));
+}
+
+void test_export_project_removes_local_source_and_load_for_connected_zener_bjt_regulator() {
+  const auto psu = pd::make_power_block(1, "PSU #1", pd::BlockVariant::PsuUnregulated);
+  const auto regulator =
+      pd::make_regulator_block(2, "Stabilizator #2", pd::BlockVariant::RegZenerBjt);
+  const auto amp = pd::make_amp_model1b_block(3, "Amp #3");
+  const std::vector<pd::Connection> connections = {
+      {endpoint(1, "vcc"), endpoint(2, "vin")},
+      {endpoint(1, "gnd"), endpoint(2, "gnd")},
+      {endpoint(2, "vout"), endpoint(3, "vcc")},
+      {endpoint(2, "gnd"), endpoint(3, "gnd")},
+  };
+
+  const auto result = pd::export_project_asc({psu, regulator, amp}, connections, std::nullopt);
+
+  assert(!contains(result.asc, "SYMATTR InstName V1_B2"));
+  assert(!contains(result.asc, "SYMATTR InstName I1_B2"));
+  assert(contains(result.asc, "SYMATTR Value PPE_SELECT_ZENER"));
+  assert(contains(result.asc, "SYMATTR Value PPE_SELECT_NPN"));
+}
+
+void test_export_project_renders_two_zener_regulators_for_symmetric_supply() {
+  const auto psu = pd::make_power_block(1, "PSU #1", pd::BlockVariant::PsuSymmetric);
+  auto reg_pos = pd::make_regulator_block(2, "Reg +", pd::BlockVariant::RegZener);
+  auto reg_neg = pd::make_regulator_block(3, "Reg -", pd::BlockVariant::RegZener);
+  reg_neg.regulator_supply_rail = pd::SupplyRail::Vee;
+  const auto amp = pd::make_amp_model1b_block(4, "Amp #4");
+
+  const std::vector<pd::Connection> connections = {
+      {endpoint(1, "vcc"), endpoint(2, "vin")},
+      {endpoint(1, "gnd"), endpoint(2, "gnd")},
+      {endpoint(2, "vout"), endpoint(4, "vcc")},
+      {endpoint(1, "vee"), endpoint(3, "vin")},
+      {endpoint(1, "gnd"), endpoint(3, "gnd")},
+      {endpoint(3, "vout"), endpoint(4, "vee")},
+      {endpoint(2, "gnd"), endpoint(4, "gnd")},
+      {endpoint(3, "gnd"), endpoint(4, "gnd")},
+  };
+
+  const auto result = pd::export_project_asc({psu, reg_pos, reg_neg, amp}, connections, std::nullopt);
+
+  assert(contains(result.asc, "SYMATTR InstName D1_B2"));
+  assert(contains(result.asc, "SYMATTR InstName D1_B3"));
+  assert(!contains(result.asc, "SYMATTR InstName V1_B2"));
+  assert(!contains(result.asc, "SYMATTR InstName I1_B2"));
+  assert(!contains(result.asc, "SYMATTR InstName V1_B3"));
+  assert(!contains(result.asc, "SYMATTR InstName I1_B3"));
+}
+
+void test_export_project_renders_two_zener_bjt_regulators_for_symmetric_supply() {
+  const auto psu = pd::make_power_block(1, "PSU #1", pd::BlockVariant::PsuSymmetric);
+  auto reg_pos = pd::make_regulator_block(2, "Reg +", pd::BlockVariant::RegZenerBjt);
+  auto reg_neg = pd::make_regulator_block(3, "Reg -", pd::BlockVariant::RegZenerBjt);
+  reg_neg.regulator_supply_rail = pd::SupplyRail::Vee;
+  const auto amp = pd::make_amp_model1b_block(4, "Amp #4");
+
+  const std::vector<pd::Connection> connections = {
+      {endpoint(1, "vcc"), endpoint(2, "vin")},
+      {endpoint(1, "gnd"), endpoint(2, "gnd")},
+      {endpoint(2, "vout"), endpoint(4, "vcc")},
+      {endpoint(1, "vee"), endpoint(3, "vin")},
+      {endpoint(1, "gnd"), endpoint(3, "gnd")},
+      {endpoint(3, "vout"), endpoint(4, "vee")},
+      {endpoint(2, "gnd"), endpoint(4, "gnd")},
+      {endpoint(3, "gnd"), endpoint(4, "gnd")},
+  };
+
+  const auto result = pd::export_project_asc({psu, reg_pos, reg_neg, amp}, connections, std::nullopt);
+
+  assert(contains(result.asc, "SYMATTR InstName Q1_B2"));
+  assert(contains(result.asc, "SYMATTR InstName Q1_B3"));
+  assert(!contains(result.asc, "SYMATTR InstName V1_B2"));
+  assert(!contains(result.asc, "SYMATTR InstName I1_B2"));
+  assert(!contains(result.asc, "SYMATTR InstName V1_B3"));
+  assert(!contains(result.asc, "SYMATTR InstName I1_B3"));
+}
+
+void test_append_missing_flags_adds_regulator_input_and_output_flags() {
+  const std::string asc = "WIRE 80 96 -32 96\n"
+                          "WIRE 256 96 160 96\n"
+                          "FLAG -32 320 0\n"
+                          "FLAG 256 320 0";
+  const std::unordered_map<long long, std::string> xy_to_net = {
+      {(static_cast<long long>(-32) << 32) ^ static_cast<unsigned int>(96), "Vcc"},
+      {(static_cast<long long>(256) << 32) ^ static_cast<unsigned int>(96), "VREG"},
+  };
+
+  const auto patched = pd::append_missing_flags(asc, xy_to_net);
+
+  assert(contains(patched, "FLAG -32 96 Vcc"));
+  assert(contains(patched, "FLAG 256 96 VREG"));
+}
+
 void test_asc_ops_strip_header_and_shift_coords() {
   const std::string asc = "Version 4.1\n"
                           "SHEET 1 880 680\n"
@@ -319,6 +463,14 @@ int main() {
   test_export_project_adds_k1_for_symmetric_supply();
   test_export_project_adds_k1_for_nonsymmetric_supply();
   test_export_project_adds_amplifier_gain_directive();
+  test_export_project_renders_zener_regulator_standalone();
+  test_export_project_removes_local_source_and_load_for_connected_zener_regulator();
+  test_export_project_supports_negative_rail_zener_regulator();
+  test_export_project_renders_zener_bjt_regulator_standalone();
+  test_export_project_removes_local_source_and_load_for_connected_zener_bjt_regulator();
+  test_export_project_renders_two_zener_regulators_for_symmetric_supply();
+  test_export_project_renders_two_zener_bjt_regulators_for_symmetric_supply();
+  test_append_missing_flags_adds_regulator_input_and_output_flags();
   test_asc_ops_strip_header_and_shift_coords();
   test_asc_ops_uniquify_instnames_and_flag_nets();
   test_asc_ops_patch_flags_updates_matching_coordinates_and_warns_for_missing();

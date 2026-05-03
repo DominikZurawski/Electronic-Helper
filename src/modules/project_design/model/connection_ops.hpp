@@ -20,9 +20,18 @@ void remove_block(std::vector<Block> &blocks, std::vector<Connection> &connectio
 
 void remap_block_power_connections(const std::vector<Block> &blocks,
                                    std::vector<Connection> &connections, int block_id, int psu_id);
+void remap_amp_power_connections(const std::vector<Block> &blocks,
+                                 std::vector<Connection> &connections, int amp_id,
+                                 int psu_pos_id, int psu_neg_id);
+
+int connected_direct_supply_block_id(const std::vector<Block> &blocks,
+                                     const std::vector<Connection> &connections, int block_id);
 
 int connected_power_block_id(const std::vector<Block> &blocks,
                              const std::vector<Connection> &connections, int block_id);
+
+int resolve_power_block_id(const std::vector<Block> &blocks,
+                           const std::vector<Connection> &connections, int source_block_id);
 
 void apply_amp_requirements_to_power(std::vector<Block> &blocks,
                                      const std::vector<Connection> &connections, int amp_id,

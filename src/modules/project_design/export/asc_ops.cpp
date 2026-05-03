@@ -273,6 +273,46 @@ std::string uniquify_flag_nets(const std::string &asc, const std::string &suffix
   return out.str();
 }
 
+std::string append_missing_flags(const std::string &asc,
+                                 const std::unordered_map<long long, std::string> &xy_to_net) {
+  if (xy_to_net.empty()) {
+    return asc;
+  }
+
+  std::set<long long> existing;
+  std::istringstream in(asc);
+  std::string line;
+  while (std::getline(in, line)) {
+    if (line.rfind("FLAG ", 0) != 0) {
+      continue;
+    }
+    std::istringstream iss(line);
+    std::string head;
+    int x = 0;
+    int y = 0;
+    std::string net;
+    if (iss >> head >> x >> y >> net) {
+      const long long key = (static_cast<long long>(x) << 32) ^ (static_cast<unsigned int>(y));
+      existing.insert(key);
+    }
+  }
+
+  std::ostringstream out;
+  out << asc;
+  bool appended = false;
+  for (const auto &[key, net] : xy_to_net) {
+    if (existing.find(key) != existing.end()) {
+      continue;
+    }
+    const int x = static_cast<int>(key >> 32);
+    const int y = static_cast<int>(static_cast<unsigned int>(key & 0xffffffffu));
+    out << (appended || !asc.empty() ? "\n" : "") << "FLAG " << x << " " << y << " " << net;
+    appended = true;
+  }
+
+  return out.str();
+}
+
 std::string remove_component_by_instname(const std::string &asc, const std::string &instname) {
   if (instname.empty()) {
     return asc;
@@ -387,6 +427,64 @@ std::string remove_wire_segment(const std::string &asc, int x1, int y1, int x2, 
       int by = 0;
       if (iss >> ax >> ay >> bx >> by) {
         if (matches(ax, ay, bx, by)) {
+          continue;
+        }
+      }
+    }
+
+    if (!first) {
+      out << "\n";
+    }
+    out << line;
+    first = false;
+  }
+
+  return out.str();
+}
+
+std::string remove_flag(const std::string &asc, int x, int y) {
+  std::istringstream in(asc);
+  std::ostringstream out;
+  std::string line;
+  bool first = true;
+
+  while (std::getline(in, line)) {
+    std::istringstream iss(line);
+    std::string head;
+    iss >> head;
+    if (head == "FLAG") {
+      int ax = 0;
+      int ay = 0;
+      std::string net;
+      if (iss >> ax >> ay >> net) {
+        if (ax == x && ay == y) {
+          continue;
+        }
+      }
+    }
+
+    if (!first) {
+      out << "\n";
+    }
+    out << line;
+    first = false;
+  }
+
+  return out.str();
+}
+
+std::string remove_directives_with_prefix(const std::string &asc, const std::string &prefix) {
+  std::istringstream in(asc);
+  std::ostringstream out;
+  std::string line;
+  bool first = true;
+
+  while (std::getline(in, line)) {
+    if (line.rfind("TEXT ", 0) == 0) {
+      const auto bang = line.find('!');
+      if (bang != std::string::npos && bang + 1 < line.size()) {
+        const std::string directive = line.substr(bang + 1);
+        if (directive.rfind(prefix, 0) == 0) {
           continue;
         }
       }

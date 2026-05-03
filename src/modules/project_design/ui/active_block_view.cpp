@@ -434,6 +434,27 @@ std::vector<PowerStageViewData> build_power_stages(const Block &active) {
   return stages;
 }
 
+pep::modules::psu_basic::WaveformParams final_power_output_waveform(const Block &active) {
+  const auto stages = build_power_stages(active);
+  if (stages.empty()) {
+    return {};
+  }
+  return stages.back().output_waveform;
+}
+
+pep::modules::psu_basic::WaveformParams final_power_output_waveform_for_rail(
+    const Block &active, SupplyRail rail) {
+  auto waveform = final_power_output_waveform(active);
+  if (rail == SupplyRail::Vee) {
+    if (active.variant != BlockVariant::PsuSymmetric) {
+      return {};
+    }
+    waveform.vpeak = -std::abs(waveform.vpeak);
+    waveform.vrect = -std::abs(waveform.vrect);
+  }
+  return waveform;
+}
+
 CalculationDocument build_power_document(const std::vector<PowerStageViewData> &stages) {
   CalculationDocument document;
   document.title = "Kalkulator zasilacza";
@@ -488,6 +509,261 @@ void update_power_view(const Block &active, const ActiveBlockWidgets &widgets) {
   pep::modules::psu_basic::WaveformParams empty_waveform;
   widgets.waveform_in->set_params(empty_waveform);
   widgets.waveform_out->set_params(empty_waveform);
+}
+
+void update_regulator_view(const Block &active, const std::vector<Block> &blocks,
+                          const std::vector<Connection> &connections,
+                          const ActiveBlockWidgets &widgets) {
+  if (!widgets.compute_view) {
+    return;
+  }
+
+  CalculationDocument document;
+  document.title = "Kalkulator stabilizatora";
+
+  const double vout_abs = std::abs(active.regulator_output_v);
+  const double rail_sign = active.regulator_supply_rail == SupplyRail::Vee ? -1.0 : 1.0;
+  const double vout = rail_sign * vout_abs;
+  const double vin_min = active.regulator_input_min_v;
+  const double iout = active.regulator_output_current_a;
+  const double iz = active.regulator_zener_current_a;
+  const double total_current = iout + iz;
+  const double series_res =
+      (vin_min > vout_abs && total_current > 0.0) ? ((vin_min - vout_abs) / total_current) : 0.0;
+
+  if (active.variant == BlockVariant::RegZener) {
+    document.intro =
+        "Wariant Zenera liczy minimalny rezystor szeregowy dla zadanego napięcia wejściowego i prądu obciążenia.";
+    CalculationSection section =
+        make_section("Stabilizator z diodą Zenera",
+                     "Model zakłada dodatnią gałąź z rezystorem szeregowym i diodą Zenera do masy.");
+    section.entries.push_back(make_entry(
+        "Wymagane napięcie wejściowe regulatora", "V_{req,min}", format_fixed(vin_min, 3), "V",
+        "V_{req,min} = V_{out} + zapas", format_fixed(vin_min, 3),
+        "To minimalne napięcie potrzebne, aby regulator utrzymał zadane wyjście."));
+    section.entries.push_back(make_entry(
+        "Napięcie wyjściowe", "V_{out}", format_fixed(vout, 3), "V", "V_{out} \\approx V_Z",
+        format_fixed(vout, 3),
+        "W eksporcie całego projektu trzeba ręcznie dobrać model diody Zenera do docelowego napięcia."));
+    section.entries.push_back(make_entry(
+        "Suma prądów przez rezystor", "I_R", format_fixed(total_current * 1000.0, 3), "mA",
+        "I_R = I_{out,max} + I_Z",
+        QString("%1 + %2 = %3 mA")
+            .arg(iout * 1000.0, 0, 'f', 3)
+            .arg(iz * 1000.0, 0, 'f', 3)
+            .arg(total_current * 1000.0, 0, 'f', 3)
+            .toStdString(),
+        "Przyjęto minimalny zapas prądu Zenera dla utrzymania stabilizacji."));
+    section.entries.push_back(make_entry(
+        "Rezystor szeregowy", "R", format_fixed(series_res, 3), "Ohm",
+        "R = \\frac{V_{in,min} - V_{out}}{I_{out,max} + I_Z}",
+        QString("(%1 - %2) / (%3 + %4) = %5")
+            .arg(vin_min, 0, 'f', 3)
+            .arg(vout_abs, 0, 'f', 3)
+            .arg(iout, 0, 'f', 4)
+            .arg(iz, 0, 'f', 4)
+            .arg(series_res, 0, 'f', 3)
+            .toStdString(),
+        "To wartość graniczna dla najniższego napięcia wejściowego."));
+    section.notes.push_back(make_warning_note(
+        "Eksport całego układu",
+        "Po eksporcie całego układu wybierz własny model diody Zenera w LTspice. Napięcie i prąd testowy zależą od tego, jaki stabilizator budujesz."));
+    section.checklist_items.push_back(make_checklist_item(
+        "Czy napięcie wejściowe jest większe od wyjściowego?", vin_min > vout_abs));
+    section.checklist_items.push_back(make_checklist_item(
+        "Czy suma prądów obciążenia i Zenera jest dodatnia?", total_current > 0.0));
+    document.sections.push_back(section);
+  } else if (active.variant == BlockVariant::RegZenerBjt) {
+    document.intro =
+        "Wariant z tranzystorem bipolarnym wykorzystuje Zenera jako referencję, a tranzystor przenosi większy prąd obciążenia.";
+    CalculationSection section = make_section(
+        "Stabilizator Zenera z tranzystorem",
+        "Model zakłada wtórnik emiterowy sterowany przez diodę Zenera, więc tranzystor odciąża samą diodę przy większym prądzie wyjściowym.");
+    section.entries.push_back(make_entry(
+        "Minimalne wymagane wejście", "V_{req,min}", format_fixed(vin_min, 3), "V",
+        "V_{req,min} = |V_{out}| + V_{drop}", format_fixed(vin_min, 3),
+        "To przybliżony próg wejścia potrzebny do utrzymania regulacji."));
+    section.entries.push_back(make_entry(
+        "Napięcie wyjściowe", "V_{out}", format_fixed(vout, 3), "V", "V_{out}",
+        format_fixed(vout, 3),
+        "Dla rzeczywistego układu trzeba jeszcze sprawdzić spadek baza-emiter wybranego tranzystora."));
+    section.entries.push_back(make_entry(
+        "Maksymalny prąd wyjściowy", "I_{out,max}", format_fixed(iout * 1000.0, 3), "mA",
+        "I_{out,max}", format_fixed(iout * 1000.0, 3),
+        "Tranzystor przejmuje główną część prądu obciążenia."));
+    section.notes.push_back(make_warning_note(
+        "Eksport LTspice",
+        "Po eksporcie wybierz własny model diody Zenera i tranzystora NPN. Upewnij się też, że tranzystor wytrzyma przewidywaną moc."));
+    document.sections.push_back(section);
+  } else {
+    document.intro = "Wariant scalony opisuje wymagane napięcia i prądy, ale docelowy model LTspice trzeba dobrać ręcznie.";
+    CalculationSection section = make_section(
+        "Stabilizator scalony",
+        "W tej wersji najważniejsze są napięcie wejściowe, napięcie wyjściowe, prąd i zapas dropout.");
+    const double required_vin = vout_abs + std::max(0.0, active.regulator_dropout_v);
+    section.entries.push_back(make_entry(
+        "Minimalne wymagane wejście", "V_{in,min}", format_fixed(required_vin, 3), "V",
+        "V_{in,min} = V_{out} + V_{drop}", QString("%1 + %2 = %3")
+                                                  .arg(vout_abs, 0, 'f', 3)
+                                                  .arg(active.regulator_dropout_v, 0, 'f', 3)
+                                                  .arg(required_vin, 0, 'f', 3)
+                                                  .toStdString(),
+        "To punkt startowy do doboru konkretnego stabilizatora z katalogu."));
+    section.notes.push_back(make_warning_note(
+        "Eksport LTspice",
+        "Po eksporcie całego układu podstaw własny model stabilizatora scalonego i sprawdź dropout oraz zakres prądu."));
+    document.sections.push_back(section);
+  }
+
+  pep::modules::psu_basic::WaveformParams input_waveform;
+  int power_id = active.regulator_input_source_id;
+  if (power_id == 0) {
+    power_id = connected_direct_supply_block_id(blocks, connections, active.id);
+  }
+  power_id = resolve_power_block_id(blocks, connections, power_id);
+  if (const Block *power = find_block(blocks, power_id);
+      power && power->kind == BlockKind::Power) {
+    input_waveform = final_power_output_waveform_for_rail(*power, active.regulator_supply_rail);
+  }
+
+  const double input_rect_abs = std::abs(input_waveform.vrect);
+  const double input_peak_abs = std::abs(input_waveform.vpeak);
+  const double available_source_min =
+      std::max(0.0, input_rect_abs - std::max(0.0, input_waveform.ripple_vpp));
+  const double required_vin = vout_abs + std::max(0.0, active.regulator_dropout_v);
+  const double headroom_margin = available_source_min - required_vin;
+  const bool can_regulate = available_source_min >= required_vin && input_rect_abs > 0.0;
+
+  auto output_waveform = input_waveform;
+  const double dropout = std::max(0.0, active.regulator_dropout_v);
+  const double available_peak = std::max(0.0, input_peak_abs - dropout);
+  const double available_rect = std::max(0.0, input_rect_abs - dropout);
+  output_waveform.vpeak = can_regulate ? vout : (rail_sign * available_peak);
+  output_waveform.vrect = can_regulate ? vout : (rail_sign * available_rect);
+  output_waveform.ripple_vpp = can_regulate ? 0.0 : input_waveform.ripple_vpp;
+  output_waveform.type = pep::modules::psu_basic::WaveformType::Filtered;
+  const double input_avg_abs =
+      std::max(0.0, input_rect_abs - std::max(0.0, input_waveform.ripple_vpp) / 2.0);
+  const double regulator_loss_w = std::max(0.0, input_avg_abs - vout_abs) * std::max(0.0, iout);
+  const double regulator_loss_peak_w =
+      std::max(0.0, input_peak_abs - vout_abs) * std::max(0.0, iout);
+  const bool thermal_warning = regulator_loss_w >= 1.0 || regulator_loss_peak_w >= 2.0;
+  const double zener_resistor_loss_w =
+      (active.variant == BlockVariant::RegZener)
+          ? std::max(0.0, available_source_min - vout_abs) * std::max(0.0, total_current)
+          : 0.0;
+  const double zener_diode_loss_w =
+      (active.variant == BlockVariant::RegZener) ? vout_abs * std::max(0.0, iz) : 0.0;
+
+  if (active.variant == BlockVariant::RegZener) {
+    auto &section = document.sections.front();
+    section.entries.insert(section.entries.begin(), make_entry(
+        "Dostępne minimum z zasilacza", "V_{src,min}", format_fixed(available_source_min, 3), "V",
+        "V_{src,min} = V_{dc} - V_{ripple}", "",
+        "To najniższe napięcie, jakie regulator dostaje z wybranego bloku zasilania."));
+    section.entries.insert(section.entries.begin() + 1, make_entry(
+        "Wymagane minimum regulatora", "V_{req,min}", format_fixed(required_vin, 3), "V",
+        "V_{req,min} = V_{out} + V_{drop}", QString("%1 + %2 = %3")
+                                                .arg(vout_abs, 0, 'f', 3)
+                                                .arg(active.regulator_dropout_v, 0, 'f', 3)
+                                                .arg(required_vin, 0, 'f', 3)
+                                                .toStdString(),
+        "Jeśli źródło spadnie poniżej tej wartości, regulator przestaje utrzymywać stałe wyjście."));
+    section.entries.insert(section.entries.begin() + 2, make_entry(
+        "Margines regulacji", "\\Delta V", format_fixed(headroom_margin, 3), "V",
+        "\\Delta V = V_{src,min} - V_{req,min}",
+        QString("%1 - %2 = %3")
+            .arg(available_source_min, 0, 'f', 3)
+            .arg(required_vin, 0, 'f', 3)
+            .arg(headroom_margin, 0, 'f', 3)
+            .toStdString(),
+        "To nie jest sztucznie dodany zapas. To tylko różnica między tym, co daje zasilacz, a minimum potrzebnym regulatorowi."));
+    section.entries.push_back(make_entry(
+        "Strata mocy regulatora", "P_{reg}", format_fixed(regulator_loss_w, 3), "W",
+        "P_{reg} \\approx (V_{in,avg} - V_{out}) \\cdot I_{out}",
+        QString("(%1 - %2) \\cdot %3 = %4")
+            .arg(input_avg_abs, 0, 'f', 3)
+            .arg(vout_abs, 0, 'f', 3)
+            .arg(iout, 0, 'f', 4)
+            .arg(regulator_loss_w, 0, 'f', 3)
+            .toStdString(),
+        "To przybliżona średnia strata mocy dla regulatora liniowego."));
+    section.entries.push_back(make_entry(
+        "Strata mocy rezystora", "P_R", format_fixed(zener_resistor_loss_w, 3), "W",
+        "P_R \\approx (V_{src,min} - V_{out}) \\cdot (I_{out} + I_Z)",
+        "",
+        "Dobierz rezystor z zapasem mocy, nie tylko z samej rezystancji."));
+    section.entries.push_back(make_entry(
+        "Strata mocy diody Zenera", "P_Z", format_fixed(zener_diode_loss_w, 3), "W",
+        "P_Z \\approx V_Z \\cdot I_Z", "",
+        "To uproszczone oszacowanie minimalnej mocy traconej w diodzie."));
+    section.checklist_items.push_back(make_checklist_item(
+        "Czy wybrane zasilanie ma wystarczający zapas do stabilizacji?", can_regulate));
+    section.checklist_items.push_back(
+        make_checklist_item("Czy przewidywana strata mocy nie wymaga mocniejszego elementu lub radiatora?",
+                            !thermal_warning));
+    if (!can_regulate) {
+      section.notes.push_back(make_warning_note(
+          "Brak zapasu regulacji",
+          "Wyjście na wykresie nie pokazuje już stabilnych " + format_fixed(vout, 3) +
+              " V. Gdy napięcie wejściowe spada za nisko, model pokazuje przybliżone wyjście ograniczone przez dropout i przepuszczone tętnienia."));
+    }
+    if (thermal_warning) {
+      section.notes.push_back(make_warning_note(
+          "Straty cieplne",
+          "Na regulatorze lub rezystorze szeregowym może wydzielać się zauważalna moc. Sprawdź dobór mocy elementu i potrzebę radiatora."));
+    }
+  } else if (!document.sections.empty()) {
+    document.sections.front().entries.insert(document.sections.front().entries.begin(), make_entry(
+        "Dostępne minimum z zasilacza", "V_{src,min}", format_fixed(available_source_min, 3), "V",
+        "V_{src,min} = V_{dc} - V_{ripple}", "",
+        "To najniższe napięcie, jakie regulator dostaje z wybranego bloku zasilania."));
+    document.sections.front().entries.insert(document.sections.front().entries.begin() + 1, make_entry(
+        "Wymagane minimum regulatora", "V_{req,min}", format_fixed(required_vin, 3), "V",
+        "V_{req,min} = V_{out} + V_{drop}", QString("%1 + %2 = %3")
+                                                .arg(vout_abs, 0, 'f', 3)
+                                                .arg(active.regulator_dropout_v, 0, 'f', 3)
+                                                .arg(required_vin, 0, 'f', 3)
+                                                .toStdString(),
+        "To minimalne napięcie potrzebne do utrzymania regulacji."));
+    document.sections.front().entries.insert(document.sections.front().entries.begin() + 2, make_entry(
+        "Margines regulacji", "\\Delta V", format_fixed(headroom_margin, 3), "V",
+        "\\Delta V = V_{src,min} - V_{req,min}",
+        QString("%1 - %2 = %3")
+            .arg(available_source_min, 0, 'f', 3)
+            .arg(required_vin, 0, 'f', 3)
+            .arg(headroom_margin, 0, 'f', 3)
+            .toStdString(),
+        "Dodatni wynik oznacza realny zapas napięcia. Ujemny oznacza utratę regulacji."));
+    document.sections.front().entries.push_back(make_entry(
+        "Strata mocy regulatora", "P_{reg}", format_fixed(regulator_loss_w, 3), "W",
+        "P_{reg} \\approx (V_{in,avg} - V_{out}) \\cdot I_{out}",
+        QString("(%1 - %2) \\cdot %3 = %4")
+            .arg(input_avg_abs, 0, 'f', 3)
+            .arg(vout_abs, 0, 'f', 3)
+            .arg(iout, 0, 'f', 4)
+            .arg(regulator_loss_w, 0, 'f', 3)
+            .toStdString(),
+        "To przybliżona średnia strata cieplna stabilizatora."));
+    document.sections.front().entries.push_back(make_entry(
+        "Szczytowa strata mocy", "P_{reg,pk}", format_fixed(regulator_loss_peak_w, 3), "W",
+        "P_{reg,pk} \\approx (V_{in,max} - V_{out}) \\cdot I_{out}", "",
+        "Orientacyjny górny punkt pracy cieplnej przy najwyższym napięciu wejściowym."));
+    if (!can_regulate) {
+      document.sections.front().notes.push_back(make_warning_note(
+          "Brak zapasu regulacji",
+          "Wyjście na wykresie pokazuje stan po utracie regulacji: napięcie zależy wtedy od wejścia i dropout."));
+    }
+    if (thermal_warning) {
+      document.sections.front().notes.push_back(make_warning_note(
+          "Straty cieplne",
+          "Przy dużej różnicy między wejściem a wyjściem regulator liniowy może wymagać lepszego elementu lub radiatora."));
+    }
+  }
+
+  widgets.compute_view->set_document(document);
+  widgets.waveform_in->set_params(input_waveform);
+  widgets.waveform_out->set_params(output_waveform);
 }
 
 pep::modules::psu_basic::WaveformType waveform_type_for(const Block &active) {
@@ -932,17 +1208,24 @@ void update_validation(const Block *active, const std::vector<Block> &blocks,
 
   if (active && active->kind == BlockKind::Amplifier &&
       active->amp_design_mode == AmpDesignMode::SupplyForAmp) {
-    int psu_id = active->amp_power_source_id;
-    if (psu_id == 0) {
-      psu_id = pep::modules::project_design::connected_power_block_id(blocks, connections,
-                                                                      active->id);
+    int source_id = active->amp_power_pos_source_id;
+    if (source_id == 0) {
+      source_id = pep::modules::project_design::connected_direct_supply_block_id(
+          blocks, connections, active->id);
     }
-    if (psu_id == 0) {
-      warnings.push_back("Projektowanie zasilacza: brak wybranego lub podłączonego zasilacza.");
+    if (source_id == 0) {
+      warnings.push_back(
+          "Projektowanie zasilacza: brak wybranego lub podłączonego źródła zasilania.");
     } else {
+      const Block *source = find_block(blocks, source_id);
+      const int psu_id =
+          pep::modules::project_design::resolve_power_block_id(blocks, connections, source_id);
       const Block *psu = find_block(blocks, psu_id);
-      if (!psu || psu->kind != BlockKind::Power) {
-        warnings.push_back("Projektowanie zasilacza: wskazany blok nie jest zasilaczem.");
+      if (!source || (source->kind != BlockKind::Power && source->kind != BlockKind::Regulator)) {
+        warnings.push_back("Projektowanie zasilacza: wskazany blok nie jest poprawnym zasilaniem.");
+      } else if (!psu || psu->kind != BlockKind::Power) {
+        warnings.push_back(
+            "Projektowanie zasilacza: dla wybranego źródła nie znaleziono nadrzędnego zasilacza.");
       } else {
         if (active->load_resistance_ohm <= 0.0) {
           warnings.push_back("Projektowanie zasilacza: brak obciążenia (R) we wzmacniaczu.");
@@ -1005,6 +1288,8 @@ void recompute_and_validate(const Block *active, const std::vector<Block> &block
 
   if (active->kind == BlockKind::Power) {
     update_power_view(*active, widgets);
+  } else if (active->kind == BlockKind::Regulator) {
+    update_regulator_view(*active, blocks, connections, widgets);
   } else {
     update_amplifier_view(*active, widgets);
   }

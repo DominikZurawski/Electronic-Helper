@@ -24,9 +24,10 @@ bool has_amplifier_block(const std::vector<Block> &blocks) {
 }
 
 QString describe_block(const Block &block) {
-  const QString kind = block.kind == BlockKind::Power ? "power" :
-                       block.kind == BlockKind::Amplifier ? "amp" :
-                                                            "unknown";
+  const QString kind = block.kind == BlockKind::Power      ? "power"
+                       : block.kind == BlockKind::Regulator ? "regulator"
+                       : block.kind == BlockKind::Amplifier ? "amp"
+                                                            : "unknown";
   return QString("#%1 %2 (%3)")
       .arg(block.id)
       .arg(QString::fromStdString(block_variant_id(block.variant)))

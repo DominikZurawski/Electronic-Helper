@@ -6,14 +6,35 @@
 
 namespace pep::modules::project_design {
 
-enum class PortType { PowerPos, PowerNeg, Ground, AnalogIn, AnalogOut, Unknown };
-enum class BlockKind { Power, Amplifier, Unknown };
-enum class BlockVariant { PsuSymmetric, PsuUnregulated, PsuSwitching, AmpModel1b, Unknown };
+enum class PortType {
+  PowerPos,
+  PowerNeg,
+  PowerInPos,
+  PowerInNeg,
+  PowerOutPos,
+  PowerOutNeg,
+  Ground,
+  AnalogIn,
+  AnalogOut,
+  Unknown
+};
+enum class BlockKind { Power, Regulator, Amplifier, Unknown };
+enum class BlockVariant {
+  PsuSymmetric,
+  PsuUnregulated,
+  PsuSwitching,
+  RegZener,
+  RegZenerBjt,
+  RegIntegrated,
+  AmpModel1b,
+  Unknown
+};
 enum class SignalWaveform { Sine, Square, Triangle };
 enum class TransformerSolveMode { SecondaryFromRatio, RatioFromSecondary };
 enum class VoltageQuantity { Rms, Peak };
 enum class PowerDesignMode { SupplyForLoad, LoadForSupply, AllFields };
 enum class AmpDesignMode { SupplyForAmp, AmpForSupply, AllFields };
+enum class SupplyRail { Vcc, Vee };
 
 struct FlagRef {
   int x = 0;
@@ -70,7 +91,18 @@ struct Block {
   double capacitor_esr_ohm = 0.08;
   double transformer_secondary_res_ohm = 0.30;
   AmpDesignMode amp_design_mode = AmpDesignMode::AmpForSupply;
-  int amp_power_source_id = 0;
+  int amp_power_pos_source_id = 0;
+  int amp_power_neg_source_id = 0;
+
+  // Voltage regulator parameters.
+  int regulator_input_source_id = 0;
+  SupplyRail regulator_supply_rail = SupplyRail::Vcc;
+  double regulator_input_min_v = 6.0;
+  double regulator_output_v = 5.0;
+  double regulator_output_current_a = 0.02;
+  double regulator_zener_current_a = 0.005;
+  double regulator_dropout_v = 2.0;
+  double regulator_series_res_ohm = 50.0;
 };
 
 struct Endpoint {
@@ -90,6 +122,7 @@ const char *signal_waveform_id(SignalWaveform waveform);
 SignalWaveform signal_waveform_from_id(std::string_view waveform_id);
 
 Block make_power_block(int id, const std::string &title, BlockVariant variant);
+Block make_regulator_block(int id, const std::string &title, BlockVariant variant);
 Block make_amp_model1b_block(int id, const std::string &title);
 
 std::vector<PortDef> ports_for(const Block &b);

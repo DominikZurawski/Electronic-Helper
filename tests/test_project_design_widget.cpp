@@ -34,6 +34,18 @@ QPushButton *find_button(QWidget &widget, const QString &text) {
   return nullptr;
 }
 
+QAction *find_action(QMenu *menu, const QString &text) {
+  if (!menu) {
+    return nullptr;
+  }
+  for (auto *action : menu->actions()) {
+    if (action && action->text() == text) {
+      return action;
+    }
+  }
+  return nullptr;
+}
+
 QComboBox *find_combo_with_items(QWidget &widget, std::initializer_list<QString> items) {
   const auto combos = widget.findChildren<QComboBox *>();
   for (auto *combo : combos) {
@@ -409,15 +421,17 @@ void test_power_variant_is_preserved_per_block_after_switching_active_selection(
   linear_variant->setCurrentIndex(1);
   app.processEvents();
 
-  const auto actions = add_button->menu()->actions();
-  assert(actions.size() >= 3);
-  actions[0]->trigger();
+  auto *add_power = find_action(add_button->menu(), "Zasilacz liniowy");
+  auto *add_amp = find_action(add_button->menu(), "Wzmacniacz klasy B (audio)");
+  assert(add_power != nullptr);
+  assert(add_amp != nullptr);
+  add_power->trigger();
   app.processEvents();
 
   linear_variant->setCurrentIndex(1);
   app.processEvents();
 
-  actions[2]->trigger();
+  add_amp->trigger();
   app.processEvents();
 
   auto *block1 = find_block_item(scene, 1);
@@ -460,9 +474,9 @@ void test_amp_supply_mode_shows_disturbance_inputs_and_amp_mode_hides_them() {
   auto *add_button = find_button(widget, "Dodaj element");
   assert(add_button != nullptr);
   assert(add_button->menu() != nullptr);
-  const auto actions = add_button->menu()->actions();
-  assert(actions.size() >= 3);
-  actions[2]->trigger();
+  auto *add_amp = find_action(add_button->menu(), "Wzmacniacz klasy B (audio)");
+  assert(add_amp != nullptr);
+  add_amp->trigger();
   app.processEvents();
 
   auto *design_mode =
@@ -497,6 +511,156 @@ void test_amp_supply_mode_shows_disturbance_inputs_and_amp_mode_hides_them() {
   assert(!disturbance_freq_input->isVisible());
   assert(!cap_esr_input->isVisible());
   assert(!transformer_res_input->isVisible());
+}
+
+void test_regulator_source_combo_lists_only_power_blocks() {
+  int argc = 0;
+  char **argv = nullptr;
+  qputenv("QT_QPA_PLATFORM", "offscreen");
+  QApplication app(argc, argv);
+
+  pep::modules::project_design::Widget widget;
+  widget.resize(1200, 900);
+  widget.show();
+  app.processEvents();
+
+  auto *add_button = find_button(widget, "Dodaj element");
+  assert(add_button != nullptr);
+  auto *add_power = find_action(add_button->menu(), "Zasilacz liniowy");
+  auto *add_regulator = find_action(add_button->menu(), "Stabilizator napięcia");
+  assert(add_power != nullptr);
+  assert(add_regulator != nullptr);
+
+  add_power->trigger();
+  add_regulator->trigger();
+  app.processEvents();
+
+  auto *scene = find_graphics_scene(widget);
+  assert(scene != nullptr);
+  auto *regulator = find_block_item(scene, 3);
+  assert(regulator != nullptr);
+  regulator->setSelected(true);
+  app.processEvents();
+
+  auto *combo = find_combo_by_object_name(widget, "regulatorPowerSource");
+  assert(combo != nullptr);
+  assert(combo->count() == 3);
+  assert(combo->itemText(0) == "— (brak)");
+  assert(combo->itemText(1).contains("Zasilanie #1"));
+  assert(combo->itemText(2).contains("Zasilanie #2"));
+}
+
+void test_amp_source_combo_lists_power_and_regulator_blocks() {
+  int argc = 0;
+  char **argv = nullptr;
+  qputenv("QT_QPA_PLATFORM", "offscreen");
+  QApplication app(argc, argv);
+
+  pep::modules::project_design::Widget widget;
+  widget.resize(1200, 900);
+  widget.show();
+  app.processEvents();
+
+  auto *add_button = find_button(widget, "Dodaj element");
+  assert(add_button != nullptr);
+  auto *add_regulator = find_action(add_button->menu(), "Stabilizator napięcia");
+  auto *add_amp = find_action(add_button->menu(), "Wzmacniacz klasy B (audio)");
+  assert(add_regulator != nullptr);
+  assert(add_amp != nullptr);
+
+  add_regulator->trigger();
+  add_amp->trigger();
+  app.processEvents();
+
+  auto *scene = find_graphics_scene(widget);
+  assert(scene != nullptr);
+  auto *amp = find_block_item(scene, 3);
+  assert(amp != nullptr);
+  amp->setSelected(true);
+  app.processEvents();
+
+  auto *combo_pos = find_combo_by_object_name(widget, "ampPowerSourcePos");
+  auto *combo_neg = find_combo_by_object_name(widget, "ampPowerSourceNeg");
+  assert(combo_pos != nullptr);
+  assert(combo_neg != nullptr);
+  assert(combo_pos->count() == 3);
+  assert(combo_pos->itemText(0) == "— (brak)");
+  assert(combo_pos->itemText(1).contains("Zasilanie #1"));
+  assert(combo_pos->itemText(2).contains("Stabilizator #2"));
+  assert(combo_neg->count() == 2);
+  assert(combo_neg->itemText(0) == "— (brak)");
+  assert(combo_neg->itemText(1).contains("Zasilanie #1"));
+}
+
+void test_regulator_form_hides_series_resistor_and_prefills_from_power() {
+  int argc = 0;
+  char **argv = nullptr;
+  qputenv("QT_QPA_PLATFORM", "offscreen");
+  QApplication app(argc, argv);
+
+  pep::modules::project_design::Widget widget;
+  widget.resize(1200, 900);
+  widget.show();
+  app.processEvents();
+
+  auto *add_button = find_button(widget, "Dodaj element");
+  auto *add_regulator = find_action(add_button->menu(), "Stabilizator napięcia");
+  assert(add_regulator != nullptr);
+  add_regulator->trigger();
+  app.processEvents();
+
+  auto *scene = find_graphics_scene(widget);
+  auto *regulator = find_block_item(scene, 2);
+  assert(regulator != nullptr);
+  regulator->setSelected(true);
+  app.processEvents();
+
+  auto *source_combo = find_combo_by_object_name(widget, "regulatorPowerSource");
+  auto *rail_combo = find_combo_by_object_name(widget, "regulatorSupplyRail");
+  auto *source_min_input = find_line_edit_by_object_name(widget, "regulatorSourceMinInput");
+  auto *vin_input = find_line_edit_by_object_name(widget, "regulatorInputMinInput");
+  auto *margin_input = find_line_edit_by_object_name(widget, "regulatorMarginInput");
+  auto *output_input = find_line_edit_by_object_name(widget, "regulatorOutputInput");
+  auto *dropout_input = find_line_edit_by_object_name(widget, "regulatorDropoutInput");
+  auto *current_input = find_line_edit_by_object_name(widget, "regulatorCurrentInput");
+  assert(source_combo != nullptr);
+  assert(rail_combo != nullptr);
+  assert(source_min_input != nullptr);
+  assert(vin_input != nullptr);
+  assert(margin_input != nullptr);
+  assert(output_input != nullptr);
+  assert(dropout_input != nullptr);
+  assert(current_input != nullptr);
+  assert(source_min_input->isReadOnly());
+  assert(vin_input->isReadOnly());
+  assert(margin_input->isReadOnly());
+  assert(find_line_edit_by_object_name(widget, "regulatorSeriesResInput") == nullptr);
+  assert(find_label_containing(widget, "Dla wariantu Zenera rezystor szeregowy") == nullptr);
+
+  source_combo->setCurrentIndex(1);
+  app.processEvents();
+
+  assert(!vin_input->text().isEmpty());
+  assert(vin_input->text().toDouble() > 0.0);
+  if (!margin_input->text().isEmpty()) {
+    assert(std::abs(margin_input->text().toDouble()) >= 0.0);
+  }
+  assert(!current_input->text().isEmpty());
+  assert(current_input->text().toDouble() > 0.0);
+
+  output_input->setText("5");
+  dropout_input->setText("3");
+  app.processEvents();
+  assert(vin_input->text().toDouble() > 7.9 && vin_input->text().toDouble() < 8.1);
+
+  output_input->setText("5,5");
+  dropout_input->setText("2,5");
+  app.processEvents();
+  assert(vin_input->text().toDouble() > 7.9 && vin_input->text().toDouble() < 8.1);
+
+  rail_combo->setCurrentIndex(1);
+  app.processEvents();
+  assert(rail_combo->currentText().contains("Vee"));
 }
 
 void test_calculation_panel_is_visible_and_has_space() {
@@ -643,6 +807,9 @@ int main() {
   test_filtration_can_compute_required_capacitance_from_max_ripple();
   test_power_variant_is_preserved_per_block_after_switching_active_selection();
   test_amp_supply_mode_shows_disturbance_inputs_and_amp_mode_hides_them();
+  test_regulator_source_combo_lists_only_power_blocks();
+  test_amp_source_combo_lists_power_and_regulator_blocks();
+  test_regulator_form_hides_series_resistor_and_prefills_from_power();
   test_calculation_panel_is_visible_and_has_space();
   test_transformer_waveforms_show_primary_and_secondary_signals();
   test_power_waveforms_follow_active_calculator_tab();

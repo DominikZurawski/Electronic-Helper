@@ -28,6 +28,8 @@
     <file>ltspice/power.asc</file>
     <file>ltspice/power_single.asc</file>
     <file>ltspice/power_single_noload.asc</file>
+    <file>ltspice/regulator_zener.asc</file>
+    <file>ltspice/regulator_zener_bjt.asc</file>
     <file>ltspice/opamp_model1b.asc</file>
   </qresource>
 </RCC>

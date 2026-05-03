@@ -10,7 +10,9 @@ namespace pep::modules::project_design {
 namespace {
 
 bool is_power_type(PortType type) {
-  return type == PortType::PowerPos || type == PortType::PowerNeg || type == PortType::Ground;
+  return type == PortType::PowerPos || type == PortType::PowerNeg ||
+         type == PortType::PowerInPos || type == PortType::PowerOutPos ||
+         type == PortType::Ground;
 }
 
 void add_edge(const std::unordered_map<int, int> &id_to_idx, std::vector<std::vector<int>> &adj,

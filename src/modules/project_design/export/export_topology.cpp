@@ -57,6 +57,10 @@ std::string base_name_for_group(const std::vector<EpInfo> &endpoints,
   bool has_gnd = false;
   bool has_vcc = false;
   bool has_vee = false;
+  bool has_vin = false;
+  bool has_vin_neg = false;
+  bool has_vout = false;
+  bool has_vout_neg = false;
   bool has_in = false;
   bool has_out = false;
   for (const auto &endpoint : endpoints) {
@@ -69,6 +73,18 @@ std::string base_name_for_group(const std::vector<EpInfo> &endpoints,
     if (endpoint.type == PortType::PowerNeg) {
       has_vee = true;
     }
+    if (endpoint.type == PortType::PowerInPos) {
+      has_vin = true;
+    }
+    if (endpoint.type == PortType::PowerInNeg) {
+      has_vin_neg = true;
+    }
+    if (endpoint.type == PortType::PowerOutPos) {
+      has_vout = true;
+    }
+    if (endpoint.type == PortType::PowerOutNeg) {
+      has_vout_neg = true;
+    }
     if (endpoint.type == PortType::AnalogIn) {
       has_in = true;
     }
@@ -78,21 +94,34 @@ std::string base_name_for_group(const std::vector<EpInfo> &endpoints,
   }
 
   if (has_gnd) {
-    if (has_vcc) {
-      warnings.push_back("Sprzeczne typy w jednej sieci (Vcc i GND) — nadaję nazwę automatyczną.");
+    if (has_vcc || has_vin || has_vout || has_vin_neg || has_vout_neg) {
+      warnings.push_back(
+          "Sprzeczne typy w jednej sieci (zasilanie dodatnie i GND) — nadaję nazwę automatyczną.");
       return "NET";
     }
     return "0";
   }
-  if (has_vcc && has_vee) {
+  if ((has_vcc || has_vin || has_vout) && has_vee) {
     warnings.push_back("Sprzeczne typy w jednej sieci (Vcc i Vee) — nadaję nazwę automatyczną.");
     return "NET";
   }
   if (has_vcc) {
     return "Vcc";
   }
+  if (has_vout) {
+    return "VREG";
+  }
+  if (has_vin) {
+    return "VIN";
+  }
   if (has_vee) {
     return "Vee";
+  }
+  if (has_vout_neg) {
+    return "VREG_NEG";
+  }
+  if (has_vin_neg) {
+    return "VIN_NEG";
   }
   if (has_in && has_out) {
     return "SIG";

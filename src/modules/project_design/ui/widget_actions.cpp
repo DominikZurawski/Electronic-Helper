@@ -11,7 +11,8 @@
 
 namespace pep::modules::project_design {
 
-void refresh_power_source_combo(const std::vector<Block> &blocks, QComboBox *combo) {
+void refresh_supply_source_combo(const std::vector<Block> &blocks, QComboBox *combo,
+                                 bool include_regulators, std::optional<SupplyRail> regulator_rail) {
   if (!combo) {
     return;
   }
@@ -21,7 +22,10 @@ void refresh_power_source_combo(const std::vector<Block> &blocks, QComboBox *com
   combo->clear();
   combo->addItem("— (brak)", 0);
   for (const auto &block : blocks) {
-    if (block.kind == BlockKind::Power) {
+    const bool include_regulator =
+        include_regulators && block.kind == BlockKind::Regulator &&
+        (!regulator_rail.has_value() || block.regulator_supply_rail == *regulator_rail);
+    if (block.kind == BlockKind::Power || include_regulator) {
       combo->addItem(QString("#%1 %2").arg(block.id).arg(QString::fromStdString(block.title)),
                      block.id);
     }
@@ -35,7 +39,7 @@ bool delete_selected_block(QGraphicsScene *scene, std::vector<Block> &blocks,
                            std::vector<Connection> &connections,
                            std::optional<int> &active_block_id,
                            const std::function<void()> &refresh_connections_ui,
-                           const std::function<void()> &refresh_power_source_combo,
+                           const std::function<void()> &refresh_supply_source_combos,
                            const std::function<void()> &refresh_connection_controls,
                            const std::function<void(int)> &set_active,
                            const std::function<void()> &refresh_canvas,
@@ -56,7 +60,7 @@ bool delete_selected_block(QGraphicsScene *scene, std::vector<Block> &blocks,
 
   remove_block(blocks, connections, item->block_id());
   refresh_connections_ui();
-  refresh_power_source_combo();
+  refresh_supply_source_combos();
   refresh_connection_controls();
 
   if (blocks.empty()) {

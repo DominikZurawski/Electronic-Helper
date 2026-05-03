@@ -32,9 +32,20 @@ struct FormWidgets {
   QLineEdit *cap_input = nullptr;
   QLineEdit *cap_tol_input = nullptr;
   QLineEdit *max_ripple_input = nullptr;
+  QComboBox *regulator_variant = nullptr;
+  QComboBox *regulator_power_source = nullptr;
+  QComboBox *regulator_supply_rail = nullptr;
+  QLineEdit *regulator_source_min_input = nullptr;
+  QLineEdit *regulator_input_min_input = nullptr;
+  QLineEdit *regulator_margin_input = nullptr;
+  QLineEdit *regulator_output_input = nullptr;
+  QLineEdit *regulator_current_input = nullptr;
+  QLineEdit *regulator_zener_current_input = nullptr;
+  QLineEdit *regulator_dropout_input = nullptr;
   QComboBox *amp_waveform = nullptr;
   QComboBox *amp_design_mode = nullptr;
-  QComboBox *amp_power_source = nullptr;
+  QComboBox *amp_power_source_pos = nullptr;
+  QComboBox *amp_power_source_neg = nullptr;
   QLineEdit *amp_amp_input = nullptr;
   QLineEdit *amp_freq_input = nullptr;
   QLineEdit *amp_gain_input = nullptr;
@@ -51,7 +62,10 @@ struct FormWidgets {
 
 void sync_active_to_form(const Block *active, const std::vector<Block> &blocks,
                          const std::vector<Connection> &connections, const FormWidgets &widgets,
-                         bool *sync_flag, const std::function<void()> &refresh_power_source_combo);
+                         bool *sync_flag,
+                         const std::function<void()> &refresh_regulator_power_source_combo,
+                         const std::function<void()> &refresh_amp_power_source_combo_pos,
+                         const std::function<void()> &refresh_amp_power_source_combo_neg);
 
 void sync_form_to_active(Block *active, const FormWidgets &widgets);
 

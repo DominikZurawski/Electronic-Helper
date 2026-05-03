@@ -1,5 +1,6 @@
 #include "export_value_builders.hpp"
 
+#include <cmath>
 #include <iomanip>
 #include <ios>
 #include <sstream>
@@ -55,6 +56,49 @@ build_amplifier_instance_values(const Block &block, std::vector<std::string> &wa
   }
 
   inst_values.emplace("V2", "SINE(0 " + format_double(amp, 6) + " " + format_double(hz, 3) + ")");
+  return inst_values;
+}
+
+std::unordered_map<std::string, std::string>
+build_regulator_instance_values(const Block &block, bool project_export,
+                                std::vector<std::string> &warnings) {
+  std::unordered_map<std::string, std::string> inst_values;
+  if (block.variant != BlockVariant::RegZener && block.variant != BlockVariant::RegZenerBjt) {
+    warnings.push_back("Brak buildera wartości LTspice dla wybranego wariantu stabilizatora.");
+    return inst_values;
+  }
+
+  const double vin_min = std::abs(block.regulator_input_min_v);
+  const double vout = std::abs(block.regulator_output_v);
+  const double iout = block.regulator_output_current_a;
+  const double iz = block.regulator_zener_current_a;
+  const double total_current = iout + iz;
+  if (vin_min <= vout || total_current <= 0.0) {
+    warnings.push_back(
+        "Nieprawidłowe parametry stabilizatora Zenera — potrzebne Vin > Vout oraz dodatni prąd.");
+    return inst_values;
+  }
+
+  const double series_res = (vin_min - vout) / total_current;
+  const double source_value = block.regulator_supply_rail == SupplyRail::Vee ? -vin_min : vin_min;
+  const double current_value = block.regulator_supply_rail == SupplyRail::Vee ? -iout : iout;
+  inst_values.emplace("R1", format_double(series_res, 6));
+  inst_values.emplace("V1", format_double(source_value, 6));
+  inst_values.emplace("I1", format_double(current_value, 6));
+  if (project_export) {
+    inst_values.emplace("D1", "PPE_SELECT_ZENER");
+    if (block.variant == BlockVariant::RegZenerBjt) {
+      inst_values.emplace("Q1", "PPE_SELECT_NPN");
+      warnings.push_back("Stabilizator Zenera z tranzystorem: po eksporcie całego układu wybierz "
+                         "model diody Zenera dla około " +
+                         format_double(vout, 3) +
+                         " V oraz odpowiedni model tranzystora NPN dla wymaganego prądu.");
+    } else {
+      warnings.push_back("Stabilizator Zenera: po eksporcie całego układu wybierz model diody dla "
+                         "około " +
+                         format_double(vout, 3) + " V i wymaganego prądu.");
+    }
+  }
   return inst_values;
 }
 
